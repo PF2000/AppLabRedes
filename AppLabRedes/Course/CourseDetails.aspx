@@ -44,33 +44,42 @@
                     <label class="col-md-2 control-label">Login Time</label>
                     <div class="col-md-10 ">
 
-                        <asp:ListView ID="lstTimes" runat="server" DataKeyNames="tBegin">
-                            <ItemTemplate>
-                                <div class="form-group">
-                                    <div class="col-xs-12">
-                                        <div class="form-inline">
-                                            <div class="col-xs-6">
-                                                <div class="form-group">
-                                                    <label>Begin Date</label>
-                                                    <asp:TextBox ID="txtBeginDate" runat="server" CssClass="form-control" Text='<%# Eval("tBegin") %>'></asp:TextBox>
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-5">
-                                                <div class="form-group">
-                                                    <label>End Date</label>
-                                                    <asp:TextBox ID="txtEndDate" runat="server" CssClass="form-control" Text='<%# Eval("tEnd") %>'></asp:TextBox>
-                                                </div>
-                                            </div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <div class="form-inline">
+                                    <div class="col-xs-6">
+                                        <div class="form-group">
+                                            <label>Begin Date</label>
+                                            <asp:TextBox ID="txtnBDate" runat="server" CssClass="form-control datetime"></asp:TextBox>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <div class="form-group">
+                                            <label>End Date</label>
+                                            <asp:TextBox ID="txtnEDate" runat="server" CssClass="form-control datetime"></asp:TextBox>
                                         </div>
                                     </div>
                                 </div>
-                            </ItemTemplate>
-                            <LayoutTemplate>
-                                <div runat="server" id="itemPlaceholderContainer" style=""><span runat="server" id="itemPlaceholder" /></div>
-                                <div style="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <div class="form-inline">
+                                    <div class="col-xs-6">
+                                        <div class="form-group">
+                                            <label>Begin Time</label>
+                                            <asp:TextBox ID="txtnBTime" runat="server" CssClass="form-control datetime"></asp:TextBox>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <div class="form-group">
+                                            <label>End Time</label>
+                                            <asp:TextBox ID="txtnETime" runat="server" CssClass="form-control datetime"></asp:TextBox>
+                                        </div>
+                                    </div>
                                 </div>
-                            </LayoutTemplate>
-                        </asp:ListView>
+                            </div>
+                        </div>
                         <hr />
                     </div>
                 </div>

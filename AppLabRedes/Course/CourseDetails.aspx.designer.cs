@@ -49,13 +49,40 @@ namespace AppLabRedes.Course {
         protected global::System.Web.UI.WebControls.TextBox txtType;
         
         /// <summary>
-        /// lstTimes control.
+        /// txtnBDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListView lstTimes;
+        protected global::System.Web.UI.WebControls.TextBox txtnBDate;
+        
+        /// <summary>
+        /// txtnEDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtnEDate;
+        
+        /// <summary>
+        /// txtnBTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtnBTime;
+        
+        /// <summary>
+        /// txtnETime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtnETime;
         
         /// <summary>
         /// txtNumPods control.

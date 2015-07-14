@@ -208,6 +208,37 @@ namespace AppLabRedes.Scripts.MyScripts
             return number;
         }
 
+        public static string SelectForString(String SelectCommand)
+        {
+            String str = "";
+            Object retCmd;
+            //especifica o acesso a BD
+            //ddefinir acesso a Connection String
+            String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            //especificar Connection (a 'estrada')
+            SqlConnection MyConn = new SqlConnection(strConn);
+
+            //especificar o comando SQL
+            string strSqlConn = SelectCommand;
+
+            //especificar o 'Command'
+            SqlCommand MyComand = new SqlCommand(strSqlConn, MyConn);
+
+            //opens the connection
+            MyConn.Open();
+
+            //execute command
+            retCmd = MyComand.ExecuteScalar();
+
+            if (retCmd != System.DBNull.Value)
+                str = Convert.ToString(retCmd);
+
+            //closes the connection
+            MyConn.Close();
+
+            return str;
+        }
         /// <summary>
         /// Updates the table Ping Status
         /// </summary>

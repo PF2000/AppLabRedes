@@ -37,13 +37,23 @@ namespace AppLabRedes.Course
 
             //data from LoginTimes
 
-            DataTable dt1 = SqlCode.PullDataToDataTable("select * from tblCourse c,tblLOginTimes as lt where lt.course=c.id and c.id='" + idCourse + "'");
-
-            lstTimes.DataSource = dt1;
-            lstTimes.DataBind();
 
 
+            String begin = SqlCode.SelectForString("select min(tBegin) from tblCourse c,tblLOginTimes as lt where lt.course=c.id and c.id='" + idCourse + "'");
+            String end = SqlCode.SelectForString("select max(tBegin) from tblCourse c,tblLOginTimes as lt where lt.course=c.id and c.id='" + idCourse + "'");
+            //to get time
+            String endTime = SqlCode.SelectForString("select max(tEnd) from tblCourse c,tblLOginTimes as lt where lt.course=c.id and c.id='" + idCourse + "'");
 
+            //Converts to dateTime
+            DateTime tBegin = Convert.ToDateTime(begin);
+            DateTime tEnd = Convert.ToDateTime(end);
+            DateTime tEndTime = Convert.ToDateTime(endTime);
+            //begin
+            txtnBDate.Text = tBegin.Date.ToString("d");
+            txtnBTime.Text = tBegin.TimeOfDay+"";
+            //end
+            txtnEDate.Text = tEnd.Date.ToString("d");
+            txtnETime.Text = tEndTime.TimeOfDay + "";
 
             //data from Users
             DataTable dt2 = SqlCode.PullDataToDataTable("select * from tblCourse c,tblUsers as u where u.course=c.id and c.id='" + idCourse + "'");
