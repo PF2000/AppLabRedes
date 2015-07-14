@@ -42,6 +42,9 @@ namespace AppLabRedes.Course
             lstTimes.DataSource = dt1;
             lstTimes.DataBind();
 
+
+
+
             //data from Users
             DataTable dt2 = SqlCode.PullDataToDataTable("select * from tblCourse c,tblUsers as u where u.course=c.id and c.id='" + idCourse + "'");
 

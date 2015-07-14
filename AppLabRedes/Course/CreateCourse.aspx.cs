@@ -22,6 +22,10 @@ namespace AppLabRedes.CourseDetails
         static int numPodsLeftTotal = 0;
         static int numPodsFromLab = 0;
 
+        static String eDate;
+        static String bDate;
+        static String eTime;
+        static String bTime;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -136,35 +140,66 @@ namespace AppLabRedes.CourseDetails
 
         protected void btnTime_Click(object sender, EventArgs e)
         {
-            String tB = txtnBDate.Text;
-            String tE = txtnEDate.Text;
+            bDate = txtnBDate.Text;
+            eDate = txtnEDate.Text;
 
-            if (tB != "" && tE != "")
+            bTime = txtBTime.Text;
+            eTime = txtETime.Text;
+
+            //id fields are not empty
+            if (bDate != "" && eDate != "" && bTime != "" && eTime != "")
             {
-                DateTime tBegin = Convert.ToDateTime(txtnBDate.Text);
-                DateTime tEnd = Convert.ToDateTime(txtnEDate.Text);
-                if (tBegin < tEnd)
+                //Converts to dateTime
+                DateTime tBegin = Convert.ToDateTime(bDate);
+                DateTime tEnd = Convert.ToDateTime(eDate);
+                //Converts to dateTime
+                DateTime timeBegin = Convert.ToDateTime(bTime);
+                DateTime timeEnd = Convert.ToDateTime(eTime);
+
+                //se end time is bigger than begin time
+                if (tBegin <= tEnd)
                 {
+                    //counts the number of days
+                    TimeSpan ts = tEnd - tBegin;
+                    int numDays = ts.Days;
+
+                    //counts the number of days
+                    TimeSpan timeHours = timeEnd - timeBegin;
+                    int numHours = timeHours.Hours;
+
+                    DateTime dtt = new DateTime(tBegin.Year, tBegin.Month, tBegin.Day, timeBegin.Hour, timeBegin.Minute, timeBegin.Second);
+                    DateTime dtEnd = new DateTime(tEnd.Year, tEnd.Month, tEnd.Day, timeEnd.Hour, timeEnd.Minute, timeEnd.Second);
+
                     //gets lab id
                     int idLab = Convert.ToInt16(ddlLabs.SelectedValue);
 
                     //initializes the number of pods left by date with the max number of users
                     numPodsLeftByDate = numPodsFromLab;
 
-                    //gets the number os pods available
-                    podsLeft(tBegin, tEnd, idLab);
-                    //numero da proxima linha
-                    int rCount = dtTimes.Rows.Count + 1;
 
-                    dtTimes.Rows.Add(tB, tE, numPodsLeftByDate, numPodsFromLab, rCount);
-                    //update datasource
-                    lstTimes.DataSource = dtTimes;
-                    lstTimes.DataBind();
+                    while (dtt.AddHours(numHours) <= dtEnd)
+                    {
+                        DateTime tB = dtt;
+                        DateTime tE = dtt.AddHours(numHours);
 
+
+                        //gets the number os pods available
+                        podsLeft(tBegin, tEnd, idLab);
+
+                        //numero da proxima linha
+                        int rCount = dtTimes.Rows.Count + 1;
+
+                        dtTimes.Rows.Add(tB, tE, numPodsLeftByDate, numPodsFromLab, rCount);
+                        //update datasource
+
+                        dtt = dtt.AddDays(1);
+                    }
+                    cphPodsLeft.Visible = true;
                     cphTime.Visible = true;
 
-                    txtnBDate.Text = "";
-                    txtnEDate.Text = "";
+                    lblnumAvlPods.InnerText = numPodsLeftTotal + "";
+                    lblnumTotalPods.InnerText = numPodsFromLab + "";
+
                     bindDdl();
                     UpdatePanel1.Update();
 
@@ -189,7 +224,7 @@ namespace AppLabRedes.CourseDetails
                 podsAvl = Convert.ToInt16(row["numUsers"]);
 
                 //ifThereUsers
-                if( (dBegin > tB && dBegin < tE) || (dEnd <tB && dEnd > tE) )
+                if ((dBegin > tB && dBegin < tE) || (dEnd < tB && dEnd > tE))
                 {
                     //updates the number minimum number of pod by date
                     if (podsAvl < numPodsLeftByDate)
@@ -260,7 +295,7 @@ namespace AppLabRedes.CourseDetails
             UpdatePanel4.Update();
 
         }
-
+        /*
         protected void btnTimeRemove_Command(object sender, CommandEventArgs e)
         {
             int rid = Convert.ToInt16(e.CommandArgument.ToString());
@@ -286,11 +321,12 @@ namespace AppLabRedes.CourseDetails
                 UpdatePanel4.Update();
                 UpdatePanel5.Update();
             }
-            lstTimes.DataSource = dtTimes;
-            lstTimes.DataBind();
+           // lstTimes.DataSource = dtTimes;
+           // lstTimes.DataBind();
             UpdatePanel1.Update();
 
         }
+        */
 
         protected void btnAddCourse_Click(object sender, EventArgs e)
         {

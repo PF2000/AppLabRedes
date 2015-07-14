@@ -35,7 +35,7 @@ namespace AppLabRedes.Course
                 ddlLabs.Items.Add(lst);
             }
 
-            DataTable dt = SqlCode.PullDataToDataTable("select * from tblcourse c ,tblLOginTimes lt where lt.course=c.id and (select MONTH(lt.tBegin)) = (SELECT MONTH(GETDATE())) ; ");
+            DataTable dt = SqlCode.PullDataToDataTable("select DISTINCT c.id,c.description,c.numUsers,c.cName from tblcourse c ,tblLOginTimes lt where lt.course=c.id and (select MONTH(lt.tBegin)) = (SELECT MONTH(GETDATE())) ;");
 
             lstCourses.DataSource = dt;
             lstCourses.DataBind();

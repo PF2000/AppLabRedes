@@ -103,15 +103,6 @@ namespace AppLabRedes.CourseDetails {
         protected global::System.Web.UI.WebControls.PlaceHolder cphTime;
         
         /// <summary>
-        /// lstTimes control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ListView lstTimes;
-        
-        /// <summary>
         /// txtnBDate control.
         /// </summary>
         /// <remarks>
@@ -128,6 +119,51 @@ namespace AppLabRedes.CourseDetails {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtnEDate;
+        
+        /// <summary>
+        /// txtBTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtBTime;
+        
+        /// <summary>
+        /// txtETime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtETime;
+        
+        /// <summary>
+        /// cphPodsLeft control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder cphPodsLeft;
+        
+        /// <summary>
+        /// lblnumAvlPods control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblnumAvlPods;
+        
+        /// <summary>
+        /// lblnumTotalPods control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblnumTotalPods;
         
         /// <summary>
         /// btnTime control.
