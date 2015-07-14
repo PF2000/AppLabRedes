@@ -1,0 +1,8 @@
+en 
+conf 
+aaa user ExGroup3                                           
+password 9ef93262                                           
+group default 
+policy vpn 
+exit 
+ 
