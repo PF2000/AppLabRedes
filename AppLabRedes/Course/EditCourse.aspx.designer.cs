@@ -94,31 +94,67 @@ namespace AppLabRedes.Course {
         protected global::System.Web.UI.WebControls.PlaceHolder cphTime;
         
         /// <summary>
-        /// lstTimes control.
+        /// txtBDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListView lstTimes;
+        protected global::System.Web.UI.WebControls.TextBox txtBDate;
         
         /// <summary>
-        /// txtnBDate control.
+        /// txtEDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtnBDate;
+        protected global::System.Web.UI.WebControls.TextBox txtEDate;
         
         /// <summary>
-        /// txtnEDate control.
+        /// txtBTime control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtnEDate;
+        protected global::System.Web.UI.WebControls.TextBox txtBTime;
+        
+        /// <summary>
+        /// txtETime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtETime;
+        
+        /// <summary>
+        /// cphPodsLeft control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder cphPodsLeft;
+        
+        /// <summary>
+        /// lblnumAvlPods control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblnumAvlPods;
+        
+        /// <summary>
+        /// lblnumTotalPods control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblnumTotalPods;
         
         /// <summary>
         /// btnTime control.
@@ -193,12 +229,12 @@ namespace AppLabRedes.Course {
         protected global::System.Web.UI.WebControls.TextBox txtDescription;
         
         /// <summary>
-        /// btnAddCourse control.
+        /// btnUpdateCourse control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAddCourse;
+        protected global::System.Web.UI.WebControls.Button btnUpdateCourse;
     }
 }

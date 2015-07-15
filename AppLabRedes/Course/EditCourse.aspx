@@ -16,7 +16,7 @@
         </p>
         <div class="col-md-6">
 
-            <h4>Create Lab</h4>
+            <h4>Edit Course</h4>
             <hr />
             <div class="form-horizontal">
 
@@ -55,43 +55,7 @@
                         <asp:PlaceHolder runat="server" ID="cphTime" Visible="true">
                             <div class="form-group">
                                 <label class="col-md-2 control-label">Login Time</label>
-                                <div class="col-md-10 ">
-
-                                    <asp:ListView ID="lstTimes" runat="server" DataKeyNames="begin">
-
-                                        <ItemTemplate>
-                                            <div class="form-group">
-                                                <div class="col-xs-12">
-                                                    <div class="form-inline">
-                                                        <div class="col-xs-6">
-                                                            <div class="form-group">
-                                                                <label>Begin Date</label>
-                                                                <asp:TextBox ID="txtBeginDate" runat="server" CssClass="form-control" Text='<%# Eval("begin") %>'></asp:TextBox>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xs-5">
-                                                            <div class="form-group">
-                                                                <label>End Date</label>
-                                                                <asp:TextBox ID="txtEndDate" runat="server" CssClass="form-control" Text='<%# Eval("end") %>'></asp:TextBox>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xs-1">
-                                                            <asp:LinkButton ID="btnTimeRemove" runat="server" OnCommand="btnTimeRemove_Command" CommandArgument='<%# Eval("rId") %>'>&nbsp;<span class="glyphicon glyphicon-minus fa-1x" /></asp:LinkButton>
-                                                        </div>
-                                                    </div>
-                                                    <label runat="server" id="numAvlPods">Number of pods available <%# Eval("numPods") %></label>
-                                                    /
-                                                    <label runat="server" id="numTotalPods"><%# Eval("TotalPods") %></label>
-
-                                                </div>
-                                            </div>
-                                        </ItemTemplate>
-                                        <LayoutTemplate>
-                                            <div runat="server" id="itemPlaceholderContainer" style=""><span runat="server" id="itemPlaceholder" /></div>
-                                            <div style="">
-                                            </div>
-                                        </LayoutTemplate>
-                                    </asp:ListView>
+                                 <div class="col-md-10 ">
                                     <hr />
                                     <!-- to insert -->
                                     <div class="form-group">
@@ -100,20 +64,47 @@
                                                 <div class="col-xs-6">
                                                     <div class="form-group">
                                                         <label>Begin Date</label>
-                                                        <asp:TextBox ID="txtnBDate" runat="server" CssClass="form-control datetime"></asp:TextBox>
+                                                        <asp:TextBox ID="txtBDate" runat="server" CssClass="form-control datetime"></asp:TextBox>
                                                     </div>
                                                 </div>
                                                 <div class="col-xs-6">
                                                     <div class="form-group">
                                                         <label>End Date</label>
-                                                        <asp:TextBox ID="txtnEDate" runat="server" CssClass="form-control datetime"></asp:TextBox>
+                                                        <asp:TextBox ID="txtEDate" runat="server" CssClass="form-control datetime"></asp:TextBox>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <asp:Button ID="btnTime" runat="server" Text="add" OnClick="btnTime_Click" CssClass="btn btn-default" />
+                                    <div class="form-group">
+                                        <div class="col-xs-12">
+                                            <div class="form-inline">
+                                                <div class="col-xs-6">
+                                                    <div class="form-group">
+                                                        <label>Begin Time</label>
+                                                        <asp:TextBox ID="txtBTime" runat="server" CssClass="form-control datetime"></asp:TextBox>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <div class="form-group">
+                                                        <label>End Time</label>
+                                                        <asp:TextBox ID="txtETime" runat="server" CssClass="form-control datetime"></asp:TextBox>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <asp:PlaceHolder runat="server" ID="cphPodsLeft" Visible="true">
+                                    <div class="form-group">
+                                        <div class="col-xs-12">
+                                            Number of pods available : 
+                                            <label runat="server" id="lblnumAvlPods"></label>
+                                            /
+                                            <label runat="server" id="lblnumTotalPods"></label>
+                                        </div>
+                                    </div>
+                                        </asp:PlaceHolder>
+                                    <asp:Button ID="btnTime" runat="server" Text="Verify" OnClick="btnTime_Click" CssClass="btn btn-default" />
                                 </div>
                             </div>
                         </asp:PlaceHolder>
@@ -193,7 +184,7 @@
                                 <br />
                                 <div class="col-md-offset-2 col-md-10">
                                     <br />
-                                    <asp:Button ID="btnAddCourse" runat="server" Text="Add Course" OnClick="btnAddCourse_Click" CssClass="btn btn-default" />
+                                    <asp:Button ID="btnUpdateCourse" runat="server" Text="Update Course" OnClick="btnUpdateCourse_Click" CssClass="btn btn-default" />
                                 </div>
                             </div>
 

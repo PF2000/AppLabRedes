@@ -50,7 +50,7 @@
                                     <div class="col-xs-6">
                                         <div class="form-group">
                                             <label>Begin Date</label>
-                                            <asp:TextBox ID="txtnBDate" runat="server" CssClass="form-control datetime"></asp:TextBox>
+                                            <asp:TextBox ID="txtnBDate" runat="server" CssClass="form-control"></asp:TextBox>
                                         </div>
                                     </div>
                                     <div class="col-xs-6">

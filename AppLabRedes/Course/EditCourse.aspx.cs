@@ -21,7 +21,8 @@ namespace AppLabRedes.Course
         static int numPodsLeftTotal = 0;
         static int numPodsFromLab = 0;
         int idCourse = 0;
-        int LabId =0;
+        int LabId = 0;
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -38,7 +39,7 @@ namespace AppLabRedes.Course
 
             idCourse = Convert.ToInt16(Request.QueryString["idCourse"]);
 
-            LabId = SqlCode.SelectForINT("select lab from tblCourse where id='"+idCourse+"' ");
+            LabId = SqlCode.SelectForINT("select lab from tblCourse where id='" + idCourse + "' ");
 
             DataTable dt = SqlCode.PullDataToDataTable("select * from tblCourse c,tblLabs l, tblLabType t where c.lab=l.id and c.cType=t.id and c.id='" + idCourse + "'");
             DataRow row = dt.Rows[0];
@@ -60,17 +61,9 @@ namespace AppLabRedes.Course
             initDdlUsers();
             //Populate UserList
             initUsersList();
-            
+
             txtDescription.Text = description;
 
-
-
-
-            ////data from Users
-            //DataTable dt2 = SqlCode.PullDataToDataTable("select * from tblCourse c,tblUsers as u where u.course=c.id and c.id='" + idCourse + "'");
-
-            //lstUsers.DataSource = dt2;
-            //lstUsers.DataBind();
         }
 
         private void initDdlLabs()
@@ -127,32 +120,86 @@ namespace AppLabRedes.Course
 
                 ddlTypes.Items.Add(lst);
             }
-            int TypeId = SqlCode.SelectForINT("select cType from tblCourse where id='"+idCourse+"'");
+            int TypeId = SqlCode.SelectForINT("select cType from tblCourse where id='" + idCourse + "'");
             //set selection
             ddlTypes.Items.FindByValue(TypeId + "").Selected = true;
         }
 
         private void initLoginTimes()
         {
-            DataTable dt1 = SqlCode.PullDataToDataTable("select * from tblCourse c,tblLOginTimes as lt where lt.course=c.id and c.id='" + idCourse + "'");
+
+            //to put in HTML
+            String begin = SqlCode.SelectForString("select min(tBegin) from tblCourse c,tblLOginTimes as lt where lt.course=c.id and c.id='" + idCourse + "'");
+            String end = SqlCode.SelectForString("select max(tBegin) from tblCourse c,tblLOginTimes as lt where lt.course=c.id and c.id='" + idCourse + "'");
+            //to get time
+            String endTime = SqlCode.SelectForString("select max(tEnd) from tblCourse c,tblLOginTimes as lt where lt.course=c.id and c.id='" + idCourse + "'");
+
+            //Converts to dateTime
+            DateTime tBegin = Convert.ToDateTime(begin);
+            DateTime tEnd = Convert.ToDateTime(end);
+            DateTime tEndTime = Convert.ToDateTime(endTime);
+            //begin
+            txtBDate.Text = tBegin.Date.ToString("d");
+            txtBTime.Text = tBegin.TimeOfDay + "";
+            //ed
+            txtEDate.Text = tEnd.Date.ToString("d");
+            txtETime.Text = tEndTime.TimeOfDay + "";
+
+            //-------------------------------------------------------------------
+            //to generate the dataTable
+
+            String bDate = txtBDate.Text;
+            String eDate = txtEDate.Text;
+
+            String bTime = txtBTime.Text;
+            String eTime = txtETime.Text;
+
+            //Converts to dateTime
+            DateTime dateeBegin = Convert.ToDateTime(bDate);
+            DateTime dateeEnd = Convert.ToDateTime(eDate);
+            //Converts to dateTime
+            DateTime timeBegin = Convert.ToDateTime(bTime);
+            DateTime timeEnd = Convert.ToDateTime(eTime);
+
+
+            //counts the number of days
+            TimeSpan ts = dateeEnd - dateeBegin;
+            int numDays = ts.Days;
+
+            //counts the number of days
+            TimeSpan timeHours = timeEnd - timeBegin;
+            int numHours = timeHours.Hours;
+
+            DateTime dtt = new DateTime(dateeBegin.Year, dateeBegin.Month, dateeBegin.Day, timeBegin.Hour, timeBegin.Minute, timeBegin.Second);
+            DateTime dtEnd = new DateTime(dateeEnd.Year, dateeEnd.Month, dateeEnd.Day, timeEnd.Hour, timeEnd.Minute, timeEnd.Second);
 
             //gets lab id
             int idLab = Convert.ToInt16(ddlLabs.SelectedValue);
-            foreach (DataRow row in dt1.Rows)
+
+            //initializes the number of pods left by date with the max number of users
+            numPodsLeftByDate = numPodsFromLab;
+
+
+            while (dtt.AddHours(numHours) <= dtEnd)
             {
-                //initializes the number of pods left by date with the max number of users
-                numPodsLeftByDate = numPodsFromLab;
+                DateTime tB = dtt;
+                DateTime tE = dtt.AddHours(numHours);
+
 
                 //gets the number os pods available
-                podsLeft(Convert.ToDateTime(row["tBegin"]), Convert.ToDateTime(row["tEnd"]), idLab);
+                podsLeft(dateeBegin, dateeEnd, idLab);
+
                 //numero da proxima linha
                 int rCount = dtTimes.Rows.Count + 1;
 
-                dtTimes.Rows.Add(Convert.ToDateTime(row["tBegin"]), Convert.ToDateTime(row["tEnd"]) , numPodsLeftByDate, numPodsFromLab, rCount);
+                dtTimes.Rows.Add(tB, tE, numPodsLeftByDate, numPodsFromLab, rCount);
                 //update datasource
-                lstTimes.DataSource = dtTimes;
-                lstTimes.DataBind();
+
+                dtt = dtt.AddDays(1);
             }
+            lblnumAvlPods.InnerText = numPodsLeftTotal + "";
+            lblnumTotalPods.InnerText = numPodsFromLab + "";
+
         }
 
         private void initDdlUsers()
@@ -167,7 +214,7 @@ namespace AppLabRedes.Course
                 ListItem lst = new ListItem(k + "", k + "");
                 ddlNumPods.Items.Add(lst);
             }
-            int numUsersPods = SqlCode.SelectForINT("select numUsers from tblCourse where id='"+idCourse+"'");
+            int numUsersPods = SqlCode.SelectForINT("select numUsers from tblCourse where id='" + idCourse + "'");
             //set selection
             ddlNumPods.Items.FindByValue(numUsersPods + "").Selected = true;
         }
@@ -200,7 +247,7 @@ namespace AppLabRedes.Course
             {
 
                 initTable();
-                numPodsLeftTotal = numPodsFromLab; 
+                numPodsLeftTotal = numPodsFromLab;
 
 
                 ddlTypes.ID = "ddlTypes";
@@ -245,8 +292,16 @@ namespace AppLabRedes.Course
                 cphUsers.Visible = false;
                 initTable();
                 numPodsLeftTotal = numPodsFromLab;
-                lstTimes.DataSource = dtTimes;
-                lstTimes.DataBind();
+
+                //refresh txt
+                txtBDate.Text = "";
+                txtBTime.Text = "";
+                txtEDate.Text = "";
+                txtETime.Text = "";
+                foreach (ListViewItem lstItem in lstUsers.Items)
+                {
+                    ((TextBox)lstItem.FindControl("txtName")).Text = "";
+                }
 
             }
             UpdatePanel1.Update();
@@ -284,8 +339,16 @@ namespace AppLabRedes.Course
                 cphUsers.Visible = false;
                 initTable();
                 numPodsLeftTotal = numPodsFromLab;
-                lstTimes.DataSource = dtTimes;
-                lstTimes.DataBind();
+
+                //refresh txt
+                txtBDate.Text = "";
+                txtBTime.Text = "";
+                txtEDate.Text = "";
+                txtETime.Text = "";
+                foreach (ListViewItem lstItem in lstUsers.Items)
+                {
+                    ((TextBox)lstItem.FindControl("txtName")).Text = "";
+                }
             }
             UpdatePanel1.Update();
             UpdatePanel2.Update();
@@ -295,33 +358,66 @@ namespace AppLabRedes.Course
 
         protected void btnTime_Click(object sender, EventArgs e)
         {
-            String tB = txtnBDate.Text;
-            String tE = txtnEDate.Text;
+            String bDate = txtBDate.Text;
+            String eDate = txtEDate.Text;
 
-            if (tB != "" && tE != "")
+            String bTime = txtBTime.Text;
+            String eTime = txtETime.Text;
+
+            //id fields are not empty
+            if (bDate != "" && eDate != "" && bTime != "" && eTime != "")
             {
-                DateTime tBegin = Convert.ToDateTime(txtnBDate.Text);
-                DateTime tEnd = Convert.ToDateTime(txtnEDate.Text);
-                if (tBegin < tEnd)
+                //Converts to dateTime
+                DateTime tBegin = Convert.ToDateTime(bDate);
+                DateTime tEnd = Convert.ToDateTime(eDate);
+                //Converts to dateTime
+                DateTime timeBegin = Convert.ToDateTime(bTime);
+                DateTime timeEnd = Convert.ToDateTime(eTime);
+
+                //se end time is bigger than begin time
+                if (tBegin <= tEnd)
                 {
+                    //counts the number of days
+                    TimeSpan ts = tEnd - tBegin;
+                    int numDays = ts.Days;
+
+                    //counts the number of days
+                    TimeSpan timeHours = timeEnd - timeBegin;
+                    int numHours = timeHours.Hours;
+
+                    DateTime dtt = new DateTime(tBegin.Year, tBegin.Month, tBegin.Day, timeBegin.Hour, timeBegin.Minute, timeBegin.Second);
+                    DateTime dtEnd = new DateTime(tEnd.Year, tEnd.Month, tEnd.Day, timeEnd.Hour, timeEnd.Minute, timeEnd.Second);
+
                     //gets lab id
                     int idLab = Convert.ToInt16(ddlLabs.SelectedValue);
 
                     //initializes the number of pods left by date with the max number of users
                     numPodsLeftByDate = numPodsFromLab;
 
-                    //numero da proxima linha
-                    int rCount = dtTimes.Rows.Count + 1;
 
-                    dtTimes.Rows.Add(tB, tE, numPodsLeftByDate, numPodsFromLab, rCount);
-                    //update datasource
-                    lstTimes.DataSource = dtTimes;
-                    lstTimes.DataBind();
+                    while (dtt.AddHours(numHours) <= dtEnd)
+                    {
+                        DateTime tB = dtt;
+                        DateTime tE = dtt.AddHours(numHours);
 
+
+                        //gets the number os pods available
+                        podsLeft(tBegin, tEnd, idLab);
+
+                        //numero da proxima linha
+                        int rCount = dtTimes.Rows.Count + 1;
+
+                        dtTimes.Rows.Add(tB, tE, numPodsLeftByDate, numPodsFromLab, rCount);
+                        //update datasource
+
+                        dtt = dtt.AddDays(1);
+                    }
+                    cphPodsLeft.Visible = true;
                     cphTime.Visible = true;
 
-                    txtnBDate.Text = "";
-                    txtnEDate.Text = "";
+                    lblnumAvlPods.InnerText = numPodsLeftTotal + "";
+                    lblnumTotalPods.InnerText = numPodsFromLab + "";
+
                     bindDdl();
                     UpdatePanel1.Update();
 
@@ -398,7 +494,7 @@ namespace AppLabRedes.Course
                 {
                     usr = UserType + ((i + 1) + k);
                     k++;
-                } while (isForbiddenUser(usr));
+                } while (isForbiddenUser(usr,dt));
                 //Pass para user
                 String pass = (Guid.NewGuid().ToString("N").Substring(1, 8) + ".").Trim();
                 dt.Rows.Add(usr, pass);
@@ -418,47 +514,14 @@ namespace AppLabRedes.Course
 
         }
 
-        protected void btnTimeRemove_Command(object sender, CommandEventArgs e)
+        protected void btnUpdateCourse_Click(object sender, EventArgs e)
         {
-            int rid = Convert.ToInt16(e.CommandArgument.ToString());
-
-            dtTimes.Rows[rid - 1].Delete();
-
-            if (dtTimes.Rows.Count != 0)
-            {
-                //updates the number of pods left
-                foreach (DataRow row in dtTimes.Rows)
-                {
-                    int ll = Convert.ToInt16(row["numPods"]);
-                    if (ll < numPodsLeftByDate)
-                    {
-                        numPodsLeftByDate = ll;
-                    }
-                }
-            }
-            else
-            {
-                cphPods.Visible = false;
-                cphUsers.Visible = false;
-                UpdatePanel4.Update();
-                UpdatePanel5.Update();
-            }
-            lstTimes.DataSource = dtTimes;
-            lstTimes.DataBind();
-            UpdatePanel1.Update();
-
-        }
-
-        protected void btnAddCourse_Click(object sender, EventArgs e)
-        {
-            //gets the maxId
-            int maxId = SqlCode.SelectForINT("Select Max(id)+1 From tblLabType");
 
             bool valid = true;
             foreach (ListViewItem lstItem in lstUsers.Items)
             {
                 String usr = ((TextBox)lstItem.FindControl("txtName")).Text;
-                if (isForbiddenUserBeforeInsert(usr))
+                if (isForbiddenUserBeforeInsert(usr, idCourse))
                 {
                     valid = false;
                 }
@@ -466,27 +529,32 @@ namespace AppLabRedes.Course
 
             if (valid == true)
             {
-                insertCourse(maxId);
-                insertLoginTimes(maxId);
-                insertUsers(maxId);
+                updateCourse(idCourse);
+                //removes 
+                RemoveLogTimes(idCourse);
+                RemoveUsers(idCourse);
+                //inserts agains
+                insertLoginTimes(idCourse);
+                insertUsers(idCourse);
+                //redirect
                 System.Threading.Thread.Sleep(3000);
-                Response.Redirect("~/Course/CreateCourse.aspx");
+                Response.Redirect("~/Course/Courses.aspx");
             }
         }
 
-        protected void insertCourse(int maxId)
+        protected void updateCourse(int idCourse)
         {
 
             String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection openCon = new SqlConnection(strConn))
             {
-                string saveTypes_Lab = " insert into tblCourse (id,Lab,active,description,numUsers,cName,cType) VALUES (@id,@idLab,@active,@description,@numUsers,@cName,@cType)"; ;
+                string strr = " update tblCourse set Lab=@idLab,active=@active,description=@description,numUsers=@numUsers,cName=@cName,cType=@cType where id=@id"; ;
 
 
-                using (SqlCommand command = new SqlCommand(saveTypes_Lab, openCon))
+                using (SqlCommand command = new SqlCommand(strr, openCon))
                 {
 
-                    command.Parameters.AddWithValue("@id", maxId);
+                    command.Parameters.AddWithValue("@id", idCourse);
                     command.Parameters.AddWithValue("@idLab", ddlLabs.SelectedValue);
                     command.Parameters.AddWithValue("@active", false);
                     command.Parameters.AddWithValue("@description", txtDescription.Text);
@@ -500,7 +568,7 @@ namespace AppLabRedes.Course
                     }
                     catch (SqlException ex)
                     {
-                        txtOutput.Text = ex.Message + "@InsertData";
+                        txtOutput.Text = ex.Message + "@updateData";
 
                     }
                     finally
@@ -511,6 +579,80 @@ namespace AppLabRedes.Course
                 }
             }
             txtOutput.Text = "";
+        }
+
+        private void RemoveLogTimes(int idCourse)
+        {
+
+            String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            using (SqlConnection openCon = new SqlConnection(strConn))
+            {
+                string strr = " delete from tblLOginTimes where course = @idCourse"; ;
+
+
+
+                using (SqlCommand command = new SqlCommand(strr, openCon))
+                {
+
+                    command.Parameters.AddWithValue("@idCourse", idCourse);
+
+                    try
+                    {
+                        openCon.Open();
+                        int recordsAffected = command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        txtOutput.Text = ex.Message + "@DeleteData";
+
+                    }
+                    finally
+                    {
+                        openCon.Close();
+                    }
+                    command.Parameters.Clear();
+
+                }
+            }
+            txtOutput.Text = "";
+
+        }
+
+        private void RemoveUsers(int idCourse)
+        {
+
+            String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            using (SqlConnection openCon = new SqlConnection(strConn))
+            {
+                string strr = " delete from tblUsers where course = @idCourse"; ;
+
+
+
+                using (SqlCommand command = new SqlCommand(strr, openCon))
+                {
+
+                    command.Parameters.AddWithValue("@idCourse", idCourse);
+
+                    try
+                    {
+                        openCon.Open();
+                        int recordsAffected = command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        txtOutput.Text = ex.Message + "@DeleteData";
+
+                    }
+                    finally
+                    {
+                        openCon.Close();
+                    }
+                    command.Parameters.Clear();
+
+                }
+            }
+            txtOutput.Text = "";
+
         }
 
         protected void insertLoginTimes(int idCourse)
@@ -592,7 +734,7 @@ namespace AppLabRedes.Course
             txtOutput.Text = "";
         }
 
-        private bool isForbiddenUser(String name)
+        private bool isForbiddenUser(String name, DataTable dt)
         {
 
             int count = SqlCode.SelectForINT("select count(*) from tblUsers where usr='" + name + "'");
@@ -601,9 +743,9 @@ namespace AppLabRedes.Course
                 return true;
             }
 
-            foreach (ListViewItem lstItem in lstUsers.Items)
+            foreach (DataRow row in dt.Rows)
             {
-                String usr = ((TextBox)lstItem.FindControl("txtName")).Text;
+                String usr = row["Name"].ToString();
                 if (usr.Equals(name))
                 {
                     return true;
@@ -613,10 +755,10 @@ namespace AppLabRedes.Course
             return false;
         }
 
-        private bool isForbiddenUserBeforeInsert(String name)
+        private bool isForbiddenUserBeforeInsert(String name, int idCourse)
         {
 
-            int count = SqlCode.SelectForINT("select count(*) from tblUsers where usr='" + name + "'");
+            int count = SqlCode.SelectForINT("select count(*) from tblUsers where usr='" + name + "' and course != '" + idCourse + "'");
             if (count != 0)
             {
                 return true;
@@ -640,6 +782,5 @@ namespace AppLabRedes.Course
                 return true;
             }
         }
-
     }
 }

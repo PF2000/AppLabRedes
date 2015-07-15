@@ -44,31 +44,31 @@ namespace AppLabRedes.Course
 
         protected void btnRemoveCourse_Command(object sender, CommandEventArgs e)
         {
-            int idLab = Convert.ToInt16(e.CommandArgument.ToString());
-            /*
+            int idCourse = Convert.ToInt16(e.CommandArgument.ToString());
+            
             //adds the labTypes to database
-            RemoveType_Lab(idLab);
+            RemoveUsers(idCourse);
+            //adds the labTypes to database
+            RemoveLogTimes(idCourse);
             //remove lab
-            RemoveLab(idLab);
+            RemoveCourse(idCourse);
             //PostBack
             Response.Redirect(Request.RawUrl);
-             */
+             
         }
 
-
-
-        private void RemoveLab(int idLabb)
+        private void RemoveCourse(int idCourse)
         {
 
             String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection openCon = new SqlConnection(strConn))
             {
-                string saveLab = " delete tblLabs where id = @idLab "; ;
+                string saveLab = " delete tblCourse where id = @idCourse "; ;
 
                 using (SqlCommand command = new SqlCommand(saveLab, openCon))
                 {
 
-                    command.Parameters.AddWithValue("@idLab", idLabb);
+                    command.Parameters.AddWithValue("@idCourse", idCourse);
 
                     try
                     {
@@ -93,20 +93,20 @@ namespace AppLabRedes.Course
 
         }
 
-        private void RemoveType_Lab(int idLabb)
+        private void RemoveLogTimes(int idCourse)
         {
 
             String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection openCon = new SqlConnection(strConn))
             {
-                string saveTypes_Lab = " delete from tblTypes_Labss where idLab= @idLab"; ;
+                string strr = " delete from tblLOginTimes where course = @idCourse"; ;
 
 
 
-                using (SqlCommand command = new SqlCommand(saveTypes_Lab, openCon))
+                using (SqlCommand command = new SqlCommand(strr, openCon))
                 {
 
-                    command.Parameters.AddWithValue("@idLab", idLabb);
+                    command.Parameters.AddWithValue("@idCourse", idCourse);
 
                     try
                     {
@@ -130,7 +130,42 @@ namespace AppLabRedes.Course
 
         }
 
+        private void RemoveUsers(int idCourse)
+        {
 
+            String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            using (SqlConnection openCon = new SqlConnection(strConn))
+            {
+                string strr = " delete from tblUsers where course = @idCourse"; ;
+
+
+
+                using (SqlCommand command = new SqlCommand(strr, openCon))
+                {
+
+                    command.Parameters.AddWithValue("@idCourse", idCourse);
+
+                    try
+                    {
+                        openCon.Open();
+                        int recordsAffected = command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        txtOutput.Text = ex.Message + "@DeleteData";
+
+                    }
+                    finally
+                    {
+                        openCon.Close();
+                    }
+                    command.Parameters.Clear();
+
+                }
+            }
+            txtOutput.Text = "";
+
+        }
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
