@@ -187,7 +187,7 @@ namespace AppLabRedes.Course
 
 
                 //gets the number os pods available
-                podsLeft(dateeBegin, dateeEnd, idLab);
+                podsLeftOnInit(dateeBegin, dateeEnd, idLab,idCourse);
 
                 //numero da proxima linha
                 int rCount = dtTimes.Rows.Count + 1;
@@ -283,9 +283,30 @@ namespace AppLabRedes.Course
                 //adicionar
                 cphTypes.Visible = true;
 
+                #region on change clears all
+                cphPods.Visible = false;
+                cphTime.Visible = false;
+                cphUsers.Visible = false;
+                cphPodsLeft.Visible = false;
+                initTable();
+                numPodsLeftTotal = numPodsFromLab;
+
+                //refresh txt
+                txtBDate.Text = "";
+                txtBTime.Text = "";
+                txtEDate.Text = "";
+                txtETime.Text = "";
+                lblnumAvlPods.InnerText = "";
+                lblnumTotalPods.InnerText = "";
+                foreach (ListViewItem lstItem in lstUsers.Items)
+                {
+                    ((TextBox)lstItem.FindControl("txtName")).Text = "";
+                }
+                #endregion
             }
             else
             {
+                #region if there are no labs selected
                 cphTypes.Visible = false;
                 cphPods.Visible = false;
                 cphTime.Visible = false;
@@ -303,24 +324,13 @@ namespace AppLabRedes.Course
                     ((TextBox)lstItem.FindControl("txtName")).Text = "";
                 }
 
+                #endregion
+
             }
             UpdatePanel1.Update();
             UpdatePanel2.Update();
             UpdatePanel4.Update();
             UpdatePanel5.Update();
-        }
-
-        protected void ddlLabs_DataBound(object sender, EventArgs e)
-        {
-
-            ListItem lst1 = new ListItem("Labs", "-1");
-            ddlLabs.Items.Insert(0, lst1);
-        }
-
-        protected void ddlType_DataBound(object sender, EventArgs e)
-        {
-            ListItem lst1 = new ListItem("Types", "-1");
-            ddlTypes.Items.Insert(0, lst1);
         }
 
         protected void ddlType_SelectedIndexChanged(object sender, EventArgs e)
@@ -357,6 +367,19 @@ namespace AppLabRedes.Course
             UpdatePanel2.Update();
             UpdatePanel4.Update();
             UpdatePanel5.Update();
+        }
+
+        protected void ddlLabs_DataBound(object sender, EventArgs e)
+        {
+
+            ListItem lst1 = new ListItem("Labs", "-1");
+            ddlLabs.Items.Insert(0, lst1);
+        }
+
+        protected void ddlType_DataBound(object sender, EventArgs e)
+        {
+            ListItem lst1 = new ListItem("Types", "-1");
+            ddlTypes.Items.Insert(0, lst1);
         }
 
         protected void btnTime_Click(object sender, EventArgs e)
@@ -428,7 +451,7 @@ namespace AppLabRedes.Course
             }
         }
 
-        public void podsLeft(DateTime tB, DateTime tE, int idLab)
+        private void podsLeft(DateTime tB, DateTime tE, int idLab)
         {
 
             DataTable dt = SqlCode.PullDataToDataTable(
@@ -464,7 +487,43 @@ namespace AppLabRedes.Course
             }
         }
 
-        protected void bindDdl()
+        private void podsLeftOnInit(DateTime tB, DateTime tE, int idLab, int idCourse)
+        {
+
+            DataTable dt = SqlCode.PullDataToDataTable(
+               " select lt.tBegin , lt.tEnd, c.numUsers" +
+               " from tblLabs as l , tblCourse as c , tblLOginTimes as lt, tblUsers as u " +
+               " where l.Id=" + idLab + " and c.id != '"+idCourse+"' and l.id=c.Lab and lt.course=c.id and u.course=c.id");
+            int podsAvl = 50;
+
+            //verificações
+            foreach (DataRow row in dt.Rows)
+            {
+                DateTime dBegin = Convert.ToDateTime(row["tBegin"]);
+                DateTime dEnd = Convert.ToDateTime(row["tEnd"]);
+                podsAvl = Convert.ToInt16(row["numUsers"]);
+
+                //ifThereUsers
+                if ((dBegin > tB && dBegin < tE) || (dEnd < tB && dEnd > tE))
+                {
+                    //updates the number minimum number of pod by date
+                    if (podsAvl < numPodsLeftByDate)
+                    {
+                        numPodsLeftByDate = podsAvl;
+                        //updates the number minimum number of pod total
+                        if (numPodsLeftByDate < numPodsLeftTotal)
+                        {
+                            numPodsLeftTotal = numPodsLeftByDate;
+                        }
+                    }
+
+
+                }
+
+            }
+        }
+
+        private void bindDdl()
         {
             ddlNumPods.Items.Clear();
             ListItem lst1 = new ListItem("Num Pods", "-1");
@@ -545,7 +604,7 @@ namespace AppLabRedes.Course
             }
         }
 
-        protected void updateCourse(int idCourse)
+        private void updateCourse(int idCourse)
         {
 
             String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -658,7 +717,7 @@ namespace AppLabRedes.Course
 
         }
 
-        protected void insertLoginTimes(int idCourse)
+        private void insertLoginTimes(int idCourse)
         {
             String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection openCon = new SqlConnection(strConn))
@@ -696,7 +755,7 @@ namespace AppLabRedes.Course
             txtOutput.Text = "";
         }
 
-        protected void insertUsers(int idCourse)
+        private void insertUsers(int idCourse)
         {
             String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection openCon = new SqlConnection(strConn))

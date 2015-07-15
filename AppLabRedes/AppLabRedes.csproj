@@ -390,7 +390,7 @@
     <Content Include="Site.Master" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="VPNUsers\ManageVPNUsers\HistoricalUsers.aspx" />
-    <Content Include="VPNUsers\ManageVPNUsers\ManageCreationVpn.aspx" />
+    <Content Include="Course\PdfGeneration.aspx" />
     <Content Include="VPNUsers\ManageVPNUsers\ScheduleUsers.aspx" />
     <Content Include="VPNUsers\ManageVPNUsers\UserDetails.aspx" />
     <Content Include="Web.config">
@@ -619,12 +619,12 @@
     <Compile Include="VPNUsers\ManageVPNUsers\HistoricalUsers.aspx.designer.cs">
       <DependentUpon>HistoricalUsers.aspx</DependentUpon>
     </Compile>
-    <Compile Include="VPNUsers\ManageVPNUsers\ManageCreationVpn.aspx.cs">
-      <DependentUpon>ManageCreationVpn.aspx</DependentUpon>
+    <Compile Include="Course\PdfGeneration.aspx.cs">
+      <DependentUpon>PdfGeneration.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="VPNUsers\ManageVPNUsers\ManageCreationVpn.aspx.designer.cs">
-      <DependentUpon>ManageCreationVpn.aspx</DependentUpon>
+    <Compile Include="Course\PdfGeneration.aspx.designer.cs">
+      <DependentUpon>PdfGeneration.aspx</DependentUpon>
     </Compile>
     <Compile Include="VPNUsers\ManageVPNUsers\ScheduleUsers.aspx.cs">
       <DependentUpon>ScheduleUsers.aspx</DependentUpon>

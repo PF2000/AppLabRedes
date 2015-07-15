@@ -124,39 +124,13 @@
                             <a runat="server" href="~/Admin/Logger.aspx"><i class="fa fa-bell fa-fw"></i>Event Logs</a>
                         </li>
                         <li>
-                            <li>
-                                <a runat="server" href="~/Lab/Labs.aspx"><i class="fa fa-cog fa-fw"></i>Labs</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="~/Course/Courses.aspx"><i class="fa fa-cog fa-fw"></i>Courses</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="~/VPNUsers/ManageVPNUsers/ManageCreationVpn.aspx"><i class="fa fa-cog fa-fw"></i>Options</a>
-                            </li>
-
-                            <!--
-                            <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-tasks fa-fw"></i>Lab Management<span class="fa arrow"></a>
-                            <ul id="demo" class="collapse">
-                                <li>
-                                    <a runat="server" href="~/Lab/Labs.aspx"><i class="fa fa-cog fa-fw"></i>Labs</a>
-                                </li>
-                                <li>
-                                    <a runat="server" href="~/VPNUsers/ManageVPNUsers/ManageCreationVpn.aspx"><i class="fa fa-cog fa-fw"></i>Options</a>
-                                </li>
-                                <li>
-                                    <a runat="server" href="~/VPNUsers/CreateUsers/GenerateScript.aspx"><i class="fa fa-dashboard fa-fw"></i>Create Users</a>
-                                </li>
-                                <li>
-                                    <a runat="server" href="~/VPNUsers/ManageVPNUsers/ActiveUsers.aspx"><i class="fa fa-desktop fa-fw"></i>Active Users</a>
-                                </li>
-                                <li>
-                                    <a runat="server" href="~/VPNUsers/ManageVPNUsers/ScheduleUsers.aspx"><i class="fa fa-calendar fa-fw"></i>Schedule Users</a>
-                                </li>
-                                <li>
-                                    <a runat="server" href="~/VPNUsers/ManageVPNUsers/HistoricalUsers.aspx"><i class="fa fa-support fa-fw"></i>Historical Users</a>
-                                </li>
-                            </ul>
-                            -->
+                            <a runat="server" href="~/Lab/Labs.aspx"><i class="fa fa-cog fa-fw"></i>Labs</a>
+                        </li>
+                        <li>
+                            <a runat="server" href="~/Course/Courses.aspx"><i class="fa fa-cog fa-fw"></i>Courses</a>
+                        </li>
+                        <li>
+                            <a runat="server" href="~/Course/PdfGeneration.aspx "><i class="fa fa-cog fa-fw"></i>PDF</a>
                         </li>
                         <li>
                             <a runat="server" href="~/Settings/Settings.aspx"><i class="fa fa-wrench fa-fw"></i>Settings</a>
