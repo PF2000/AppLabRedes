@@ -610,7 +610,7 @@ namespace AppLabRedes.Course
             String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection openCon = new SqlConnection(strConn))
             {
-                string strr = " update tblCourse set Lab=@idLab,active=@active,description=@description,numUsers=@numUsers,cName=@cName,cType=@cType where id=@id"; ;
+                string strr = " update tblCourse set Lab=@idLab,description=@description,numUsers=@numUsers,cName=@cName,cType=@cType where id=@id"; ;
 
 
                 using (SqlCommand command = new SqlCommand(strr, openCon))
@@ -618,7 +618,6 @@ namespace AppLabRedes.Course
 
                     command.Parameters.AddWithValue("@id", idCourse);
                     command.Parameters.AddWithValue("@idLab", ddlLabs.SelectedValue);
-                    command.Parameters.AddWithValue("@active", false);
                     command.Parameters.AddWithValue("@description", txtDescription.Text);
                     command.Parameters.AddWithValue("@numUsers", ddlNumPods.SelectedValue);
                     command.Parameters.AddWithValue("@cName", txtCourseName.Text);

@@ -12,20 +12,20 @@ namespace AppLabRedes.Scripts.MyScripts
     public class SqlCode
     {
         //Method to copy data from a DataTable to Database
-        public static void UpdateDB(DataTable dt, Boolean boolean)
+        public static void UpdateDB(DataTable dt, int active)
         {
             String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             SqlConnection con = new SqlConnection(strConn);
 
 
             if (!dt.Columns.Contains("active"))
-                dt.Columns.Add("active", Type.GetType("System.Boolean"));
+                dt.Columns.Add("active", typeof(Int32));
             foreach (DataRow row in dt.Rows)
             {
-                row["active"] = true;
+                row["active"] = active;
             }
 
-            string saveStaff = "update VPNUsers set active = @bool where id=@id";
+            string saveStaff = "update tblLOginTimes set active = @active where id=@id";
 
             using (SqlCommand command = new SqlCommand(saveStaff, con))
             {
@@ -33,8 +33,9 @@ namespace AppLabRedes.Scripts.MyScripts
                 foreach (DataRow row in dt.Rows)
                 {
                     con.Open();
+
                     command.Parameters.AddWithValue("@id", row["id"]);
-                    command.Parameters.AddWithValue("@bool", boolean);
+                    command.Parameters.AddWithValue("@active", active);
 
                     command.ExecuteNonQuery();
 

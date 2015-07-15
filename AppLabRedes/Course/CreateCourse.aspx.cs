@@ -327,7 +327,7 @@ namespace AppLabRedes.CourseDetails
             String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection openCon = new SqlConnection(strConn))
             {
-                string saveTypes_Lab = " insert into tblCourse (id,Lab,active,description,numUsers,cName,cType) VALUES (@id,@idLab,@active,@description,@numUsers,@cName,@cType)"; ;
+                string saveTypes_Lab = " insert into tblCourse (id,Lab,description,numUsers,cName,cType) VALUES (@id,@idLab,@description,@numUsers,@cName,@cType)"; ;
 
 
                 using (SqlCommand command = new SqlCommand(saveTypes_Lab, openCon))
@@ -335,7 +335,6 @@ namespace AppLabRedes.CourseDetails
 
                     command.Parameters.AddWithValue("@id", maxId);
                     command.Parameters.AddWithValue("@idLab", ddlLabs.SelectedValue);
-                    command.Parameters.AddWithValue("@active", false);
                     command.Parameters.AddWithValue("@description", txtDescription.Text);
                     command.Parameters.AddWithValue("@numUsers", ddlNumPods.SelectedValue);
                     command.Parameters.AddWithValue("@cName", txtCourseName.Text);

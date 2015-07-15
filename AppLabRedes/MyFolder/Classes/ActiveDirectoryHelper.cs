@@ -238,12 +238,12 @@ namespace ActiveDirectoryHelper
         #endregion
 
         #region CreateUser
-        public void CreateUser(TextBox txt, string userLogonName, string userPassword, DateTime datetime)
+        public void CreateUser(TextBox txt, string userLogonName, string userPassword)
         {
 
                 _directoryEntry = null;
                 ADManager admanager = new ADManager();
-                admanager.CreateUser(txt, userLogonName, userPassword,datetime);
+                admanager.CreateUser(txt, userLogonName, userPassword);
                 
 
         }

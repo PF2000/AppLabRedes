@@ -70,7 +70,7 @@ namespace ActiveDirectoryHelper
         /// <param name="userPassword"></param>
         /// <param name="datetime">account expiration date</param>
         /// <returns>true if users if deleted sucessfully </returns>
-        public void CreateUser(TextBox txt, string userLogonName, string userPassword, DateTime datetime)
+        public void CreateUser(TextBox txt, string userLogonName, string userPassword)
         {
             // Creating the PrincipalContext
             PrincipalContext principalContext = null;
@@ -91,22 +91,24 @@ namespace ActiveDirectoryHelper
             {
                 txt.Text = userLogonName + " already exists. Please use a different User Logon Name.";
             }
+            else
+            {
+                // Create the new UserPrincipal object
+                UserPrincipal userPrincipal = new UserPrincipal(context);
+                // username
+                userPrincipal.SamAccountName = userLogonName;
+                // Expiring date
+                // userPrincipal.AccountExpirationDate = datetime;
+                //Password
+                userPrincipal.SetPassword(userPassword);
+                //Activate the account
+                userPrincipal.Enabled = true;
+                //cant change the password
+                userPrincipal.UserCannotChangePassword = true;
 
-            // Create the new UserPrincipal object
-            UserPrincipal userPrincipal = new UserPrincipal(context);
-            // username
-            userPrincipal.SamAccountName = userLogonName;
-            // Expiring date
-            userPrincipal.AccountExpirationDate = datetime;
-            //Password
-            userPrincipal.SetPassword(userPassword);
-            //Activate the account
-            userPrincipal.Enabled = true;
-            //cant change the password
-            userPrincipal.UserCannotChangePassword = true;
+                userPrincipal.Save();
 
-            userPrincipal.Save();
-
+            }
         }
 
 
@@ -137,7 +139,7 @@ namespace ActiveDirectoryHelper
             else
             {
                 txt.Text = userLogonName + " doesn't exists. Please use a different User Logon Name.";
-                throw new System.InvalidOperationException("The user does not exist");
+               // throw new System.InvalidOperationException("The user does not exist");
             }
 
         }

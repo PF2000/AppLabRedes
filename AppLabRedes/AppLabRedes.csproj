@@ -282,8 +282,6 @@
     <Content Include="Scripts\jquery.simple-dtpicker.js" />
     <Content Include="Scripts\metisMenu.js" />
     <Content Include="Scripts\sb-admin-2.js" />
-    <Content Include="VPNUsers\ManageVPNUsers\ActiveUsers.aspx" />
-    <Content Include="VPNUsers\CreateUsers\GenerateScript.aspx" />
     <Content Include="packages.config" />
     <Content Include="Account\Web.config" />
     <Content Include="Content\fonts\fontawesome-webfont.woff2" />
@@ -389,10 +387,7 @@
     <Content Include="Settings\Settings.aspx" />
     <Content Include="Site.Master" />
     <Content Include="ViewSwitcher.ascx" />
-    <Content Include="VPNUsers\ManageVPNUsers\HistoricalUsers.aspx" />
     <Content Include="Course\PdfGeneration.aspx" />
-    <Content Include="VPNUsers\ManageVPNUsers\ScheduleUsers.aspx" />
-    <Content Include="VPNUsers\ManageVPNUsers\UserDetails.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -565,20 +560,6 @@
     <Compile Include="MyFolder\Classes\Network.cs" />
     <Compile Include="MyFolder\Classes\SqlCode.cs" />
     <Compile Include="MyFolder\Classes\SSH.cs" />
-    <Compile Include="VPNUsers\ManageVPNUsers\ActiveUsers.aspx.cs">
-      <DependentUpon>ActiveUsers.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="VPNUsers\ManageVPNUsers\ActiveUsers.aspx.designer.cs">
-      <DependentUpon>ActiveUsers.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="VPNUsers\CreateUsers\GenerateScript.aspx.cs">
-      <DependentUpon>GenerateScript.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="VPNUsers\CreateUsers\GenerateScript.aspx.designer.cs">
-      <DependentUpon>GenerateScript.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MyFolder\Classes\FileScript.cs" />
@@ -612,33 +593,12 @@
     <Compile Include="ViewSwitcher.ascx.designer.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
     </Compile>
-    <Compile Include="VPNUsers\ManageVPNUsers\HistoricalUsers.aspx.cs">
-      <DependentUpon>HistoricalUsers.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="VPNUsers\ManageVPNUsers\HistoricalUsers.aspx.designer.cs">
-      <DependentUpon>HistoricalUsers.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Course\PdfGeneration.aspx.cs">
       <DependentUpon>PdfGeneration.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Course\PdfGeneration.aspx.designer.cs">
       <DependentUpon>PdfGeneration.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="VPNUsers\ManageVPNUsers\ScheduleUsers.aspx.cs">
-      <DependentUpon>ScheduleUsers.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="VPNUsers\ManageVPNUsers\ScheduleUsers.aspx.designer.cs">
-      <DependentUpon>ScheduleUsers.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="VPNUsers\ManageVPNUsers\UserDetails.aspx.cs">
-      <DependentUpon>UserDetails.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="VPNUsers\ManageVPNUsers\UserDetails.aspx.designer.cs">
-      <DependentUpon>UserDetails.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

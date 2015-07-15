@@ -101,21 +101,82 @@ namespace AppLabRedes
 
             //SqlCode.copyData("Check the Users - begin or end","info");
 
-            //Gets the users to Add
-            DataTable dt = SqlCode.PullDataToDataTable("select * from VPNUsers where GETDATE() > initDate and active is NULL");
-            if (dt.Rows.Count != 0)
-            {
-                SaveUsers(dt);
-
-            }
             //Gets the users to Remove
-            dt = SqlCode.PullDataToDataTable("select * from VPNUsers where GETDATE() > endDate and active= 'true'");
+            DataTable dt = SqlCode.PullDataToDataTable("select distinct usr,pass, tl.id as id  from tblLOginTimes tl, tblUsers u where tl.course = u.course and GETDATE() > tl.tEnd and tl.active = '1'");
             if (dt.Rows.Count != 0)
             {
                 RemoveUsers(dt);
             }
 
+            //Gets the users to Add
+            dt = SqlCode.PullDataToDataTable("select distinct usr,pass, tl.id as id from tblLOginTimes tl, tblUsers u where tl.course = u.course and GETDATE() > tl.tBegin and tl.active = '0'");
+            if (dt.Rows.Count != 0)
+            {
+                SaveUsers(dt);
+
+            }
         }
+
+        public void RemoveUsers(DataTable dt)
+        {
+            String st = "";
+            try
+            {
+
+                TextBox txt = new TextBox();
+                ActiveDirectory ad = new ActiveDirectory();
+
+                foreach (DataRow row in dt.Rows) // Loop over the items.
+                {
+                    String userName = row["usr"].ToString();
+                    String pwd = row["pass"].ToString();
+                    //DateTime dateTime = (DateTime)row["endDate"];
+                    ad.DeleteUser(txt, userName);
+                    st = txt.Text;
+                }
+                SqlCode.UpdateDB(dt, 2);
+                SqlCode.copyDataEventLogger("Successfully deleted users", "success", st);
+                errorRemove = false;
+            }
+            catch (Exception ex)
+            {
+                if (errorRemove == false)
+                SqlCode.copyDataEventLogger("Error removing users", "danger", ex.Message);
+                errorRemove = true;
+            }
+        }
+
+        public void SaveUsers(DataTable dt)
+        {
+            String st = "";
+            try
+            {
+                TextBox txt = new TextBox();
+                ActiveDirectory ad = new ActiveDirectory();
+
+                foreach (DataRow row in dt.Rows) // Loop over the items.
+                {                   
+                    String userName = row["usr"].ToString();
+                    String pwd = row["pass"].ToString();
+                    //DateTime dateTime = (DateTime)row["tEnd"];
+                    ad.CreateUser(txt, userName, pwd);
+                    ad.AddUserToGroup(userName, "RadiusUsers");
+                    st = txt.Text;
+                }
+                SqlCode.UpdateDB(dt, 1);
+                //Email.SendEmails(dt);
+                SqlCode.copyDataEventLogger("Successfully created users", "success", st);
+                errorAdd = false;
+            }
+            catch (Exception ex)
+            {
+                if(errorAdd == false)
+                    SqlCode.copyDataEventLogger("Error creating users", "danger", ex.Message);
+                errorAdd = true;
+            }
+        }
+
+
 
         /// <summary>
         /// Method to start the Thread, to check users for runnings scripts
@@ -167,7 +228,7 @@ namespace AppLabRedes
                         //updates the ping status 
 
                         Application["RouterStatus"] = itPings;
-                        Application["PingTime"] = Network.PingTimeAverage(RouterIP, 8);                        
+                        Application["PingTime"] = Network.PingTimeAverage(RouterIP, 8);
                         SqlCode.copyDataEventLogger("Router is UP", "success", "");
                     }
                     else
@@ -188,63 +249,5 @@ namespace AppLabRedes
 
         }
 
-        public void RemoveUsers(DataTable dt)
-        {
-            String st = "";
-            try
-            {
-
-                TextBox txt = new TextBox();
-                ActiveDirectory ad = new ActiveDirectory();
-
-                foreach (DataRow row in dt.Rows) // Loop over the items.
-                {
-                    String userName = row["usr"].ToString().Trim();
-                    String pwd = row["pwd"].ToString();
-                    DateTime dateTime = (DateTime)row["endDate"];
-                    ad.DeleteUser(txt, userName);
-                    st = txt.Text;
-                }
-                SqlCode.UpdateDB(dt, false);
-                SqlCode.copyDataEventLogger("Successfully deleted users", "success", st);
-                errorRemove = false;
-            }
-            catch (Exception ex)
-            {
-                if (errorRemove == false)
-                SqlCode.copyDataEventLogger("Error removing users", "danger", ex.Message);
-                errorRemove = true;
-            }
-        }
-
-        public void SaveUsers(DataTable dt)
-        {
-            String st = "";
-            try
-            {
-                TextBox txt = new TextBox();
-                ActiveDirectory ad = new ActiveDirectory();
-
-                foreach (DataRow row in dt.Rows) // Loop over the items.
-                {                   
-                    String userName = row["usr"].ToString();
-                    String pwd = row["pwd"].ToString();
-                    DateTime dateTime = (DateTime)row["endDate"];
-                    ad.CreateUser(txt, userName.Trim(), pwd, dateTime);
-                    ad.AddUserToGroup(userName.Trim(), "RadiusUsers");
-                    st = txt.Text;
-                }
-                SqlCode.UpdateDB(dt, true);
-                Email.SendEmails(dt);
-                SqlCode.copyDataEventLogger("Successfully created users", "success", st);
-                errorAdd = false;
-            }
-            catch (Exception ex)
-            {
-                if(errorAdd == false)
-                    SqlCode.copyDataEventLogger("Error creating users", "danger", ex.Message);
-                errorAdd = true;
-            }
-        }
     }
 }
