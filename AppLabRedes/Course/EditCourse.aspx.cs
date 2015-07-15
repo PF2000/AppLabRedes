@@ -334,6 +334,7 @@ namespace AppLabRedes.Course
             }
             else
             {
+                //toclear
                 cphPods.Visible = false;
                 cphTime.Visible = false;
                 cphUsers.Visible = false;
@@ -349,7 +350,9 @@ namespace AppLabRedes.Course
                 {
                     ((TextBox)lstItem.FindControl("txtName")).Text = "";
                 }
+
             }
+
             UpdatePanel1.Update();
             UpdatePanel2.Update();
             UpdatePanel4.Update();
@@ -494,7 +497,7 @@ namespace AppLabRedes.Course
                 {
                     usr = UserType + ((i + 1) + k);
                     k++;
-                } while (isForbiddenUser(usr,dt));
+                } while (isForbiddenUser(usr, dt));
                 //Pass para user
                 String pass = (Guid.NewGuid().ToString("N").Substring(1, 8) + ".").Trim();
                 dt.Rows.Add(usr, pass);
