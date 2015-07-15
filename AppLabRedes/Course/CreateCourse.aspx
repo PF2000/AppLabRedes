@@ -15,7 +15,7 @@
         </p>
         <div class="col-md-6">
 
-            <h4>Create Lab</h4>
+            <h4>Create Course</h4>
             <hr />
             <div class="form-horizontal">
 

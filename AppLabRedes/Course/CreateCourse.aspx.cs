@@ -276,7 +276,7 @@ namespace AppLabRedes.CourseDetails
                 {
                     usr = UserType + ((i + 1) + k);
                     k++;
-                } while (isForbiddenUser(usr));
+                } while (isForbiddenUser(usr,dt));
                 //Pass para user
                 String pass = (Guid.NewGuid().ToString("N").Substring(1, 8) + ".").Trim();
                 dt.Rows.Add(usr, pass);
@@ -295,38 +295,6 @@ namespace AppLabRedes.CourseDetails
             UpdatePanel4.Update();
 
         }
-        /*
-        protected void btnTimeRemove_Command(object sender, CommandEventArgs e)
-        {
-            int rid = Convert.ToInt16(e.CommandArgument.ToString());
-
-            dtTimes.Rows[rid - 1].Delete();
-
-            if (dtTimes.Rows.Count != 0)
-            {
-                //updates the number of pods left
-                foreach (DataRow row in dtTimes.Rows)
-                {
-                    int ll = Convert.ToInt16(row["numPods"]);
-                    if (ll < numPodsLeftByDate)
-                    {
-                        numPodsLeftByDate = ll;
-                    }
-                }
-            }
-            else
-            {
-                cphPods.Visible = false;
-                cphUsers.Visible = false;
-                UpdatePanel4.Update();
-                UpdatePanel5.Update();
-            }
-           // lstTimes.DataSource = dtTimes;
-           // lstTimes.DataBind();
-            UpdatePanel1.Update();
-
-        }
-        */
 
         protected void btnAddCourse_Click(object sender, EventArgs e)
         {
@@ -471,7 +439,7 @@ namespace AppLabRedes.CourseDetails
             txtOutput.Text = "";
         }
 
-        private bool isForbiddenUser(String name)
+        private bool isForbiddenUser(String name, DataTable dt)
         {
 
             int count = SqlCode.SelectForINT("select count(*) from tblUsers where usr='" + name + "'");
@@ -480,9 +448,9 @@ namespace AppLabRedes.CourseDetails
                 return true;
             }
 
-            foreach (ListViewItem lstItem in lstUsers.Items)
+            foreach (DataRow row in dt.Rows)
             {
-                String usr = ((TextBox)lstItem.FindControl("txtName")).Text;
+                String usr = row["Name"].ToString();
                 if (usr.Equals(name))
                 {
                     return true;

@@ -48,7 +48,7 @@
     </div>
     <hr />
     <div class="row">
-        <h4>Overview Labs </h4>
+        <h4>Overview Courses </h4>
         <hr />
         <asp:ListView ID="lstCourses" runat="server" DataKeyNames="id">
             <ItemTemplate>
