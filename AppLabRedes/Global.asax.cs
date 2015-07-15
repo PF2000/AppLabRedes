@@ -30,7 +30,6 @@ namespace AppLabRedes
     public class Global : HttpApplication
     {
 
-        private static Task tsk = null;
         /// <summary>
         /// Thread To verify dates to run Scripts
         /// </summary>
@@ -90,12 +89,6 @@ namespace AppLabRedes
             SqlCode.copyDataEventLogger("The Thread has been started", "success", "");
         }
 
-
-        /// <summary>
-        /// // Specify what you want to happen when the Elapsed event is raised.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="e"></param>
         private void OnTimedEvent(object source, ElapsedEventArgs e)
         {
 
@@ -119,23 +112,22 @@ namespace AppLabRedes
 
         public void RemoveUsers(DataTable dt)
         {
-            String st = "";
+            StringBuilder sb = new StringBuilder();
             try
             {
-
-                TextBox txt = new TextBox();
+                //TextBox txt = new TextBox();
                 ActiveDirectory ad = new ActiveDirectory();
-
+                
                 foreach (DataRow row in dt.Rows) // Loop over the items.
                 {
                     String userName = row["usr"].ToString();
                     String pwd = row["pass"].ToString();
                     //DateTime dateTime = (DateTime)row["endDate"];
-                    ad.DeleteUser(txt, userName);
-                    st = txt.Text;
+                    ad.DeleteUser(sb, userName);
                 }
                 SqlCode.UpdateDB(dt, 2);
-                SqlCode.copyDataEventLogger("Successfully deleted users", "success", st);
+                SqlCode.copyDataEventLogger("Successfully deleted users", "success",sb.ToString());
+
                 errorRemove = false;
             }
             catch (Exception ex)
@@ -148,7 +140,7 @@ namespace AppLabRedes
 
         public void SaveUsers(DataTable dt)
         {
-            String st = "";
+            StringBuilder sb = new StringBuilder();
             try
             {
                 TextBox txt = new TextBox();
@@ -159,13 +151,12 @@ namespace AppLabRedes
                     String userName = row["usr"].ToString();
                     String pwd = row["pass"].ToString();
                     //DateTime dateTime = (DateTime)row["tEnd"];
-                    ad.CreateUser(txt, userName, pwd);
+                    ad.CreateUser(sb, userName, pwd);
                     ad.AddUserToGroup(userName, "RadiusUsers");
-                    st = txt.Text;
                 }
                 SqlCode.UpdateDB(dt, 1);
                 //Email.SendEmails(dt);
-                SqlCode.copyDataEventLogger("Successfully created users", "success", st);
+                SqlCode.copyDataEventLogger("Successfully created users", "success", sb.ToString());
                 errorAdd = false;
             }
             catch (Exception ex)

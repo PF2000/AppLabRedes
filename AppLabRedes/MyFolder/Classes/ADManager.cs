@@ -70,29 +70,15 @@ namespace ActiveDirectoryHelper
         /// <param name="userPassword"></param>
         /// <param name="datetime">account expiration date</param>
         /// <returns>true if users if deleted sucessfully </returns>
-        public void CreateUser(TextBox txt, string userLogonName, string userPassword)
+        public void CreateUser(StringBuilder sb, string userLogonName, string userPassword)
         {
             // Creating the PrincipalContext
             PrincipalContext principalContext = null;
-            //try
-            //{
-            //principalContext = new PrincipalContext(ContextType.Domain);
             principalContext = context;
-            //}
-            //catch (Exception ex)
-            //{
-            //    txt.Text = "Failed to create PrincipalContext. Exception: " + ex.Message;
-            //    return false;
-            //}
 
             // Check if user object already exists in the store
             UserPrincipal usr = UserPrincipal.FindByIdentity(principalContext, userLogonName);
-            if (usr != null)
-            {
-                txt.Text = userLogonName + " already exists. Please use a different User Logon Name.";
-            }
-            else
-            {
+            if (usr == null){
                 // Create the new UserPrincipal object
                 UserPrincipal userPrincipal = new UserPrincipal(context);
                 // username
@@ -118,30 +104,18 @@ namespace ActiveDirectoryHelper
         /// <param name="txt">textbox to warnings</param>
         /// <param name="userLogonName">username</param>
         /// <returns>true if users if deleted sucessfully </returns>
-        public void DeleteUser(TextBox txt, string userLogonName)
+        public void DeleteUser(StringBuilder sb, string userLogonName)
         {
-            // Creating the PrincipalContext
             PrincipalContext principalContext = null;
-
-            //principalContext = new PrincipalContext(ContextType.Domain);
             principalContext = context;
-
-            //txt.Text = "Failed to create PrincipalContext. Exception: " + ex.Message;
-
 
             // Check if user object already exists in the store
             UserPrincipal usr = UserPrincipal.FindByIdentity(principalContext, userLogonName);
-            if (usr != null)
+            if (usr == null)
             {
                 usr.Delete();
-                txt.Text = userLogonName + " Deleted.";
+                sb.AppendLine(userLogonName + " Deleted.");
             }
-            else
-            {
-                txt.Text = userLogonName + " doesn't exists. Please use a different User Logon Name.";
-               // throw new System.InvalidOperationException("The user does not exist");
-            }
-
         }
 
 
