@@ -37,7 +37,6 @@ namespace AppLabRedes
             updateRouterStatus();
         }
 
-
         private void updateRouterStatus()
         {
 
@@ -117,10 +116,10 @@ namespace AppLabRedes
                 {
                     //gets all the users active in the day
                     courses = (from DataRow dr in dt.Rows
-                               where (DateTime)dr["tbegin"] < e.Day.Date && (DateTime)dr["tEnd"] > e.Day.Date
+                               where (DateTime)dr["tbegin"] <= e.Day.Date && (DateTime)dr["tEnd"] >= e.Day.Date
                                select (String)dr["cName"]);
                     strr = (from DataRow dr in dt.Rows
-                              where (DateTime)dr["tbegin"] < e.Day.Date && (DateTime)dr["tEnd"] > e.Day.Date
+                              where (DateTime)dr["tbegin"] <= e.Day.Date && (DateTime)dr["tEnd"] >= e.Day.Date
                               select (int)dr["id"]);
                     lstId = strr.ToList();
                     lst = courses.ToList();
@@ -131,8 +130,7 @@ namespace AppLabRedes
 
                 //if there are courses
                 if (lst.Count != 0)
-                {
-    
+                {    
                     e.Cell.HorizontalAlign = HorizontalAlign.Left;
                     e.Cell.BackColor = Color.FromArgb(92, 184, 92);
 

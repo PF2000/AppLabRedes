@@ -3,12 +3,8 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-
-
     <h2><%: Title %></h2>
     <!-- /.row -->
-
-
     <div class="row">
 
         <p class="text-danger">
@@ -55,7 +51,7 @@
                         <asp:PlaceHolder runat="server" ID="cphTime" Visible="true">
                             <div class="form-group">
                                 <label class="col-md-2 control-label">Login Time</label>
-                                 <div class="col-md-10 ">
+                                <div class="col-md-10 ">
                                     <hr />
                                     <!-- to insert -->
                                     <div class="form-group">
@@ -95,15 +91,15 @@
                                         </div>
                                     </div>
                                     <asp:PlaceHolder runat="server" ID="cphPodsLeft" Visible="true">
-                                    <div class="form-group">
-                                        <div class="col-xs-12">
-                                            Number of pods available : 
+                                        <div class="form-group">
+                                            <div class="col-xs-12">
+                                                Number of pods available : 
                                             <label runat="server" id="lblnumAvlPods"></label>
-                                            /
+                                                /
                                             <label runat="server" id="lblnumTotalPods"></label>
+                                            </div>
                                         </div>
-                                    </div>
-                                        </asp:PlaceHolder>
+                                    </asp:PlaceHolder>
                                     <asp:Button ID="btnTime" runat="server" Text="Verify" OnClick="btnTime_Click" CssClass="btn btn-default" />
                                 </div>
                             </div>
@@ -159,6 +155,20 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="form-group">
+                                                <div class="col-xs-12">
+                                                    <div class="form-inline">
+                                                        <div class="col-md-12 ">
+                                                            <div class="form-group">
+                                                                <label class="control-label">E-Mail</label>
+                                                                <asp:TextBox ID="TextBox1" runat="server" CssClass="form-control"></asp:TextBox>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
 
                                             <hr />
                                         </ItemTemplate>

@@ -384,6 +384,13 @@ namespace AppLabRedes.Course
 
         protected void btnTime_Click(object sender, EventArgs e)
         {
+
+            int LabId = Convert.ToInt16(ddlLabs.SelectedValue);
+            //gets pods from lab
+            numPodsFromLab = SqlCode.SelectForINT("select numPods from tblLabs where id='" + LabId + "';");
+            //initializes the number of pods left with the max number of users
+            numPodsLeftTotal = numPodsFromLab;
+
             String bDate = txtBDate.Text;
             String eDate = txtEDate.Text;
 
@@ -428,7 +435,7 @@ namespace AppLabRedes.Course
 
 
                         //gets the number os pods available
-                        podsLeft(tBegin, tEnd, idLab);
+                        podsLeft(tB, tE, idLab);
 
                         //numero da proxima linha
                         int rCount = dtTimes.Rows.Count + 1;
@@ -451,11 +458,11 @@ namespace AppLabRedes.Course
             }
         }
 
-        private void podsLeft(DateTime tB, DateTime tE, int idLab)
+        public void podsLeft(DateTime tB, DateTime tE, int idLab)
         {
 
             DataTable dt = SqlCode.PullDataToDataTable(
-               " select lt.tBegin , lt.tEnd, c.numUsers" +
+               " select distinct lt.tBegin , lt.tEnd, c.numUsers" +
                " from tblLabs as l , tblCourse as c , tblLOginTimes as lt, tblUsers as u " +
                " where l.Id=" + idLab + " and l.id=c.Lab and lt.course=c.id and u.course=c.id");
             int podsAvl = 50;
@@ -466,12 +473,12 @@ namespace AppLabRedes.Course
                 DateTime dBegin = Convert.ToDateTime(row["tBegin"]);
                 DateTime dEnd = Convert.ToDateTime(row["tEnd"]);
                 podsAvl = Convert.ToInt16(row["numUsers"]);
-
+                podsAvl = numPodsFromLab - podsAvl;
                 //ifThereUsers
-                if ((dBegin > tB && dBegin < tE) || (dEnd < tB && dEnd > tE))
+                if ((dBegin >= tB && dBegin <= tE) || (dEnd <= tB && dEnd >= tE))
                 {
                     //updates the number minimum number of pod by date
-                    if (podsAvl < numPodsLeftByDate)
+                    if (podsAvl <= numPodsLeftByDate)
                     {
                         numPodsLeftByDate = podsAvl;
                         //updates the number minimum number of pod total
@@ -759,7 +766,7 @@ namespace AppLabRedes.Course
             String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection openCon = new SqlConnection(strConn))
             {
-                string saveTypes_Lab = " insert into tblUsers (usr,pass,course) VALUES (@user,@pass,@course)"; ;
+                string saveTypes_Lab = " insert into tblUsers (usr,pass,course,email) VALUES (@user,@pass,@course,@mail)"; ;
 
                 foreach (ListViewItem lstItem in lstUsers.Items)
                 {
@@ -769,9 +776,11 @@ namespace AppLabRedes.Course
 
                         String usr = ((TextBox)lstItem.FindControl("txtName")).Text;
                         String pass = ((TextBox)lstItem.FindControl("txtPass")).Text;
+                        String mail = ((TextBox)lstItem.FindControl("txtMail")).Text;
 
                         command.Parameters.AddWithValue("@user", usr);
                         command.Parameters.AddWithValue("@pass", pass);
+                        command.Parameters.AddWithValue("@mail", mail);
                         command.Parameters.AddWithValue("@course", idCourse);
 
                         try
