@@ -27,6 +27,7 @@ namespace AppLabRedes.CourseDetails
         static String eTime;
         static String bTime;
 
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -54,6 +55,10 @@ namespace AppLabRedes.CourseDetails
             if (LabId != -1)
             {
 
+                initTable();
+               // numPodsLeftTotal = numPodsFromLab;
+
+
                 ddlTypes.ID = "ddlTypes";
                 ddlTypes.AutoPostBack = true;
                 ddlTypes.CssClass = "form-control";
@@ -68,10 +73,6 @@ namespace AppLabRedes.CourseDetails
                 ListItem lst1 = new ListItem("Types", "-1");
                 ddlTypes.Items.Add(lst1);
 
-                //gets pods from lab
-                numPodsFromLab = SqlCode.SelectForINT("select numPods from tblLabs where id='" + LabId + "';");
-                //initializes the number of pods left with the max number of users
-                numPodsLeftTotal = numPodsFromLab;
 
                 foreach (DataRow row in dt.Rows) // Loop over the items.
                 {
@@ -86,14 +87,47 @@ namespace AppLabRedes.CourseDetails
                 //adicionar
                 cphTypes.Visible = true;
 
+                #region on change clears all
+                cphPods.Visible = false;
+                cphTime.Visible = false;
+                cphUsers.Visible = false;
+                cphPodsLeft.Visible = false;
+                initTable();
+
+                //refresh txt
+                txtBDate.Text = "";
+                txtBTime.Text = "";
+                txtEDate.Text = "";
+                txtETime.Text = "";
+                lblnumAvlPods.InnerText = "";
+                lblnumTotalPods.InnerText = "";
+                foreach (ListViewItem lstItem in lstUsers.Items)
+                {
+                    ((TextBox)lstItem.FindControl("txtName")).Text = "";
+                }
+                #endregion
             }
             else
             {
+                #region if there are no labs selected
                 cphTypes.Visible = false;
                 cphPods.Visible = false;
                 cphTime.Visible = false;
                 cphUsers.Visible = false;
                 initTable();
+
+                //refresh txt
+                txtBDate.Text = "";
+                txtBTime.Text = "";
+                txtEDate.Text = "";
+                txtETime.Text = "";
+                foreach (ListViewItem lstItem in lstUsers.Items)
+                {
+                    ((TextBox)lstItem.FindControl("txtName")).Text = "";
+                }
+
+                #endregion
+
             }
             UpdatePanel1.Update();
             UpdatePanel2.Update();
@@ -130,7 +164,6 @@ namespace AppLabRedes.CourseDetails
                 cphTime.Visible = false;
                 cphUsers.Visible = false;
                 initTable();
-                numPodsLeftTotal = numPodsFromLab; ;
             }
             UpdatePanel1.Update();
             UpdatePanel2.Update();
@@ -140,8 +173,14 @@ namespace AppLabRedes.CourseDetails
 
         protected void btnTime_Click(object sender, EventArgs e)
         {
-            bDate = txtnBDate.Text;
-            eDate = txtnEDate.Text;
+            int LabId = Convert.ToInt16(ddlLabs.SelectedValue);
+            //gets pods from lab
+            numPodsFromLab = SqlCode.SelectForINT("select numPods from tblLabs where id='" + LabId + "';");
+            //initializes the number of pods left with the max number of users
+            numPodsLeftTotal = numPodsFromLab;
+
+            bDate = txtBDate.Text;
+            eDate = txtEDate.Text;
 
             bTime = txtBTime.Text;
             eTime = txtETime.Text;
@@ -156,7 +195,7 @@ namespace AppLabRedes.CourseDetails
                 DateTime timeBegin = Convert.ToDateTime(bTime);
                 DateTime timeEnd = Convert.ToDateTime(eTime);
 
-                //se end time is bigger than begin time
+                //if end time is bigger than begin time
                 if (tBegin <= tEnd)
                 {
                     //counts the number of days
@@ -184,7 +223,7 @@ namespace AppLabRedes.CourseDetails
 
 
                         //gets the number os pods available
-                        podsLeft(tBegin, tEnd, idLab);
+                        podsLeft(tB, tE, idLab);
 
                         //numero da proxima linha
                         int rCount = dtTimes.Rows.Count + 1;
@@ -211,7 +250,7 @@ namespace AppLabRedes.CourseDetails
         {
 
             DataTable dt = SqlCode.PullDataToDataTable(
-               " select lt.tBegin , lt.tEnd, c.numUsers" +
+               " select distinct lt.tBegin , lt.tEnd, c.numUsers" +
                " from tblLabs as l , tblCourse as c , tblLOginTimes as lt, tblUsers as u " +
                " where l.Id=" + idLab + " and l.id=c.Lab and lt.course=c.id and u.course=c.id");
             int podsAvl = 50;
@@ -222,12 +261,12 @@ namespace AppLabRedes.CourseDetails
                 DateTime dBegin = Convert.ToDateTime(row["tBegin"]);
                 DateTime dEnd = Convert.ToDateTime(row["tEnd"]);
                 podsAvl = Convert.ToInt16(row["numUsers"]);
-
+                podsAvl = numPodsFromLab - podsAvl;
                 //ifThereUsers
-                if ((dBegin > tB && dBegin < tE) || (dEnd < tB && dEnd > tE))
+                if ((dBegin >= tB && dBegin <= tE) || (dEnd <= tB && dEnd >= tE))
                 {
                     //updates the number minimum number of pod by date
-                    if (podsAvl < numPodsLeftByDate)
+                    if (podsAvl <= numPodsLeftByDate)
                     {
                         numPodsLeftByDate = podsAvl;
                         //updates the number minimum number of pod total
@@ -402,7 +441,7 @@ namespace AppLabRedes.CourseDetails
             String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection openCon = new SqlConnection(strConn))
             {
-                string saveTypes_Lab = " insert into tblUsers (usr,pass,course) VALUES (@user,@pass,@course)"; ;
+                string saveTypes_Lab = " insert into tblUsers (usr,pass,course,email) VALUES (@user,@pass,@course,@mail)"; ;
 
                 foreach (ListViewItem lstItem in lstUsers.Items)
                 {
@@ -412,9 +451,11 @@ namespace AppLabRedes.CourseDetails
 
                         String usr = ((TextBox)lstItem.FindControl("txtName")).Text;
                         String pass = ((TextBox)lstItem.FindControl("txtPass")).Text;
+                        String mail = ((TextBox)lstItem.FindControl("txtMail")).Text;
 
                         command.Parameters.AddWithValue("@user", usr);
                         command.Parameters.AddWithValue("@pass", pass);
+                        command.Parameters.AddWithValue("@mail", mail);
                         command.Parameters.AddWithValue("@course", idCourse);
 
                         try

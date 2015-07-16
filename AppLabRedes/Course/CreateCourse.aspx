@@ -64,13 +64,13 @@
                                                 <div class="col-xs-6">
                                                     <div class="form-group">
                                                         <label>Begin Date</label>
-                                                        <asp:TextBox ID="txtnBDate" runat="server" CssClass="form-control datetime"></asp:TextBox>
+                                                        <asp:TextBox ID="txtBDate" runat="server" CssClass="form-control datetime"></asp:TextBox>
                                                     </div>
                                                 </div>
                                                 <div class="col-xs-6">
                                                     <div class="form-group">
                                                         <label>End Date</label>
-                                                        <asp:TextBox ID="txtnEDate" runat="server" CssClass="form-control datetime"></asp:TextBox>
+                                                        <asp:TextBox ID="txtEDate" runat="server" CssClass="form-control datetime"></asp:TextBox>
                                                     </div>
                                                 </div>
                                             </div>
@@ -95,15 +95,15 @@
                                         </div>
                                     </div>
                                     <asp:PlaceHolder runat="server" ID="cphPodsLeft" Visible="false">
-                                    <div class="form-group">
-                                        <div class="col-xs-12">
-                                            Number of pods available : 
+                                        <div class="form-group">
+                                            <div class="col-xs-12">
+                                                Number of pods available : 
                                             <label runat="server" id="lblnumAvlPods"></label>
-                                            /
+                                                /
                                             <label runat="server" id="lblnumTotalPods"></label>
+                                            </div>
                                         </div>
-                                    </div>
-                                        </asp:PlaceHolder>
+                                    </asp:PlaceHolder>
                                     <asp:Button ID="btnTime" runat="server" Text="Verify" OnClick="btnTime_Click" CssClass="btn btn-default" />
                                 </div>
                             </div>
@@ -142,7 +142,7 @@
                                     <asp:ListView ID="lstUsers" runat="server" DataKeyNames="Name">
                                         <ItemTemplate>
                                             <div class="form-group">
-                                                <div class="col-xs-12">
+                                                <div class="col-lg-12">
                                                     <div class="form-inline">
                                                         <div class="col-xs-6">
                                                             <div class="form-group">
@@ -159,7 +159,18 @@
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            <div class="form-group">
+                                                <div class="col-xs-12">
+                                                    <div class="form-inline">
+                                                        <div class="col-md-12 ">
+                                                            <div class="form-group">
+                                                                <label class="control-label">E-Mail</label>
+                                                                <asp:TextBox ID="txtMail" runat="server" CssClass="form-control" Text='<%# Eval("Mail") %>'></asp:TextBox>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <hr />
                                         </ItemTemplate>
                                         <LayoutTemplate>

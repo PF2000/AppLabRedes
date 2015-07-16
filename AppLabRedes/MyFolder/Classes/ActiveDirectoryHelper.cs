@@ -237,29 +237,20 @@ namespace ActiveDirectoryHelper
         }
         #endregion
 
-        #region CreateUser
+
         public void CreateUser(StringBuilder sb, string userLogonName, string userPassword)
         {
-
-                _directoryEntry = null;
-                ADManager admanager = new ADManager();
-                admanager.CreateUser(sb,userLogonName, userPassword);
-                
+            _directoryEntry = null;
+            ADManager admanager = new ADManager();
+            admanager.CreateUser(sb, userLogonName, userPassword);
 
         }
-        #endregion
 
-        #region DeleteUser
         public void DeleteUser(StringBuilder sb, string userLogonName)
         {
-                _directoryEntry = null;
-                ADManager admanager = new ADManager();
-                admanager.DeleteUser(sb,userLogonName);
-
+            _directoryEntry = null;
+            ADManager admanager = new ADManager();
+            admanager.DeleteUser(sb, userLogonName);
         }
-        #endregion
-
-        
-
     }
 }
