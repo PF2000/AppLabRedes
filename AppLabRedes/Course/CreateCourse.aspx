@@ -64,13 +64,13 @@
                                                 <div class="col-xs-6">
                                                     <div class="form-group">
                                                         <label>Begin Date</label>
-                                                        <asp:TextBox ID="txtBDate" runat="server" CssClass="form-control datetime"></asp:TextBox>
+                                                        <asp:TextBox ID="txtBDate" runat="server" CssClass="form-control date"></asp:TextBox>
                                                     </div>
                                                 </div>
                                                 <div class="col-xs-6">
                                                     <div class="form-group">
                                                         <label>End Date</label>
-                                                        <asp:TextBox ID="txtEDate" runat="server" CssClass="form-control datetime"></asp:TextBox>
+                                                        <asp:TextBox ID="txtEDate" runat="server" CssClass="form-control date"></asp:TextBox>
                                                     </div>
                                                 </div>
                                             </div>
@@ -82,13 +82,13 @@
                                                 <div class="col-xs-6">
                                                     <div class="form-group">
                                                         <label>Begin Time</label>
-                                                        <asp:TextBox ID="txtBTime" runat="server" CssClass="form-control datetime"></asp:TextBox>
+                                                        <asp:TextBox ID="txtBTime" runat="server" CssClass="form-control time" data-date="" data-date-format="hh:ii" data-link-field="dtp_input3" data-link-format="hh:ii"></asp:TextBox>
                                                     </div>
                                                 </div>
                                                 <div class="col-xs-6">
                                                     <div class="form-group">
                                                         <label>End Time</label>
-                                                        <asp:TextBox ID="txtETime" runat="server" CssClass="form-control datetime"></asp:TextBox>
+                                                        <asp:TextBox ID="txtETime" runat="server" CssClass="form-control time" data-date="" data-date-format="hh:ii" data-link-field="dtp_input3" data-link-format="hh:ii"></asp:TextBox>
                                                     </div>
                                                 </div>
                                             </div>
@@ -165,7 +165,7 @@
                                                         <div class="col-md-12 ">
                                                             <div class="form-group">
                                                                 <label class="control-label">E-Mail</label>
-                                                                <asp:TextBox ID="txtMail" runat="server" CssClass="form-control" Text='<%# Eval("Mail") %>'></asp:TextBox>
+                                                                <asp:TextBox ID="txtMail" runat="server" CssClass="form-control"  ></asp:TextBox>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -206,21 +206,34 @@
         </div>
     </div>
     <%--http://mugifly.github.io/jquery-simple-datetimepicker/--%>
-    <script type="text/javascript" src="/MyFolder/Scripts/jquery.simple-dtpicker.js"></script>
+    <script type="text/javascript" src="../MyFolder/Scripts/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="../MyFolder/Scripts/bootstrap-datetimepicker.min.js"></script>
     <script>
 
         $(function () {
-            $("body").find(".datetime").appendDtpicker();
-            $('body').delegate('.datetime').appendDtpicker();
-
             $("body").on("mousemove", function () {
+                $("body").find(".date").datepicker({
+                    daysOfWeekDisabled: "0",
+                    format: "dd/mm/yyyy",
+                    daysOfWeekDisabled: "0",
+                    autoclose: true,
+                    todayHighlight: true,
+                    datesDisabled: ['07/06/2015', '07/21/2015'],
+                    toggleActive: true
+                });
 
-                $("body").find(".datetime").appendDtpicker();
-                $('body').delegate('.datetime').appendDtpicker();
-
+                $("body").find('.time').datetimepicker({
+                    language: 'en',
+                    weekStart: 1,
+                    todayBtn: 1,
+                    autoclose: 1,
+                    todayHighlight: 1,
+                    startView: 1,
+                    minView: 0,
+                    maxView: 1,
+                    forceParse: 0
+                });
             });
         });
-
-
     </script>
 </asp:Content>

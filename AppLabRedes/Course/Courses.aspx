@@ -10,10 +10,13 @@
         <h4>Search</h4>
 
         <hr />
-        <p class="text-danger">
-            <asp:Literal runat="server" ID="txtOutput" />
-        </p>
-
+        <asp:PlaceHolder runat="server" ID="cphErrorMessage" Visible="false">
+            <div class="form-group">
+                <asp:Label runat="server" CssClass="text-danger col-lg-12 control-label" ID="txtOutput"></asp:Label>
+            </div>
+            <br />
+            <hr />
+        </asp:PlaceHolder>
 
         <div class="form-group">
             <div class="col-xs-12">
@@ -27,13 +30,13 @@
                     <div class="col-xs-4">
                         <div class="form-group">
                             <label>Begin Date</label>
-                            <asp:TextBox ID="txtBegin" runat="server" CssClass="form-control datetime"></asp:TextBox>
+                            <asp:TextBox ID="txtBegin" runat="server" CssClass="form-control date "></asp:TextBox>
                         </div>
                     </div>
                     <div class="col-xs-4">
                         <div class="form-group">
                             <label>End Date</label>
-                            <asp:TextBox ID="txtEnd" runat="server" CssClass="form-control datetime"></asp:TextBox>
+                            <asp:TextBox ID="txtEnd" runat="server" CssClass="form-control date "></asp:TextBox>
                         </div>
                     </div>
                     <div class="col-xs-">
@@ -44,7 +47,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <hr />
     <div class="row">
@@ -70,32 +72,37 @@
                     </div>
                 </div>
             </ItemTemplate>
+            <EmptyDataTemplate>
+                <h4>No courses in the time span selected</h4>
+            </EmptyDataTemplate>
             <LayoutTemplate>
                 <div runat="server" id="itemPlaceholderContainer" style=""><span runat="server" id="itemPlaceholder" /></div>
                 <div style="">
                 </div>
             </LayoutTemplate>
         </asp:ListView>
-
         <asp:LinkButton runat="server" PostBackUrl="~/Course/CreateCourse.aspx" ToolTip="Create Course">&nbsp;<span class="glyphicon glyphicon-plus fa-4x" /></asp:LinkButton>
     </div>
 
     <%--http://mugifly.github.io/jquery-simple-datetimepicker/--%>
-    <script type="text/javascript" src="/MyFolder/Scripts/jquery.simple-dtpicker.js"></script>
+    <script type="text/javascript" src="../MyFolder/Scripts/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="../MyFolder/Scripts/bootstrap-datetimepicker.min.js"></script>
     <script>
 
         $(function () {
-            $("body").find(".datetime").appendDtpicker();
-            $('body').delegate('.datetime').appendDtpicker();
-
             $("body").on("mousemove", function () {
-
-                $("body").find(".datetime").appendDtpicker();
-                $('body').delegate('.datetime').appendDtpicker();
+                $("body").find(".date").datepicker({
+                    daysOfWeekDisabled: "0",
+                    format: "dd/mm/yyyy",
+                    daysOfWeekDisabled: "0",
+                    autoclose: true,
+                    todayHighlight: true,
+                    datesDisabled: ['07/06/2015', '07/21/2015'],
+                    toggleActive: true
+                });
 
             });
         });
-
 
     </script>
 </asp:Content>

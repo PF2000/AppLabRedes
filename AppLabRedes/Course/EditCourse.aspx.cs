@@ -222,7 +222,7 @@ namespace AppLabRedes.Course
         private void initUsersList()
         {
             //data from Users
-            DataTable dt2 = SqlCode.PullDataToDataTable("select usr as Name, pass as Pass from tblCourse c,tblUsers as u where u.course=c.id and c.id='" + idCourse + "'");
+            DataTable dt2 = SqlCode.PullDataToDataTable("select usr as Name, pass as Pass, email  from tblCourse c,tblUsers as u where u.course=c.id and c.id='" + idCourse + "'");
 
             lstUsers.DataSource = dt2;
             lstUsers.DataBind();

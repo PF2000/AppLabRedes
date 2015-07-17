@@ -27,6 +27,8 @@
     <link href="/Content/css/font-awesome.min.css" rel="stylesheet" />
     <link href="/Content/jquery.simple-dtpicker.css" rel="stylesheet" />
     <link href="/Content/jquery.datetimepicker.css" rel="stylesheet" />
+    <link href="Content/bootstrap-datepicker3.standalone.min.css" rel="stylesheet" />
+    <link href="Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <link href="MyFolder/CSS/MyStyles.css" rel="stylesheet" />
 
 
@@ -124,7 +126,7 @@
                             <a runat="server" href="~/Admin/Logger.aspx"><i class="fa fa-bell fa-fw"></i>Event Logs</a>
                         </li>
                         <li>
-                            <a runat="server" href="~/Lab/Labs.aspx"><i class="fa fa-cog fa-fw"></i>Labs</a>
+                            <a runat="server" href="~/Lab/Labs.aspx"><i class="fa fa-cog fa-fw"></i>Manage Labs</a>
                         </li>
                         <li>
                             <a runat="server" href="~/Course/Courses.aspx"><i class="fa fa-cog fa-fw"></i>Courses</a>

@@ -20,21 +20,24 @@ namespace AppLabRedes.Course
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            DataTable dtLabs = SqlCode.PullDataToDataTable("select * from tblLabs");
-
-            //default Item
-            ListItem lst1 = new ListItem("Labs", "-1");
-            ddlLabs.Items.Add(lst1);
-            foreach (DataRow row in dtLabs.Rows) // Loop over the items.
+            if (ddlLabs.Items.Count == 0)
             {
-                String tp = Convert.ToString(row["name"]);
-                String tId = Convert.ToString(row["id"]);
+                DataTable dtLabs = SqlCode.PullDataToDataTable("select * from tblLabs");
+                //default Item
 
-                ListItem lst = new ListItem(tp, tId);
+                ListItem lst1 = new ListItem("Labs", "-1");
 
-                ddlLabs.Items.Add(lst);
+                ddlLabs.Items.Add(lst1);
+                foreach (DataRow row in dtLabs.Rows) // Loop over the items.
+                {
+                    String tp = Convert.ToString(row["name"]);
+                    String tId = Convert.ToString(row["id"]);
+
+                    ListItem lst = new ListItem(tp, tId);
+
+                    ddlLabs.Items.Add(lst);
+                }
             }
-
             DataTable dt = SqlCode.PullDataToDataTable("select DISTINCT c.id,c.description,c.numUsers,c.cName from tblcourse c ,tblLOginTimes lt where lt.course=c.id and (select MONTH(lt.tBegin)) = (SELECT MONTH(GETDATE())) ;");
 
             lstCourses.DataSource = dt;
@@ -45,7 +48,7 @@ namespace AppLabRedes.Course
         protected void btnRemoveCourse_Command(object sender, CommandEventArgs e)
         {
             int idCourse = Convert.ToInt16(e.CommandArgument.ToString());
-            
+
             //adds the labTypes to database
             RemoveUsers(idCourse);
             //adds the labTypes to database
@@ -54,7 +57,7 @@ namespace AppLabRedes.Course
             RemoveCourse(idCourse);
             //PostBack
             Response.Redirect(Request.RawUrl);
-             
+
         }
 
         private void RemoveCourse(int idCourse)
@@ -170,33 +173,34 @@ namespace AppLabRedes.Course
         protected void btnSearch_Click(object sender, EventArgs e)
         {
 
-            DateTime dBegin = Convert.ToDateTime(txtBegin.Text);
-            DateTime dEnd = Convert.ToDateTime(txtEnd.Text);
+            cphErrorMessage.Visible = false;
             int idLab = Convert.ToInt16(ddlLabs.SelectedValue);
-
-            //int count = SqlCode.SelectForINT("select count(*) from tblcourse c ,tblLOginTimes lt where lt.course=c.id and lt.tBegin > '" + dBegin + "' and lt.tEnd < '" + dEnd + "' ");
-            //if (count != 0)
-            //{
-
-            DataTable dt = SqlCode.PullDataToDataTable("select * from tblcourse c ,tblLOginTimes lt where lt.course=c.id and c.Lab = '" + idLab + "' ");
-
-
-            IEnumerable<DataRow> query = (from DataRow dr in dt.Rows
-                                          where ((DateTime)dr["tBegin"] > dBegin && (DateTime)dr["tBegin"] < dEnd) || ((DateTime)dr["tEnd"] < dBegin && (DateTime)dr["tEnd"] > dEnd)
-                                          select dr);
-
-            if (query.Count() != 0)
+            if (idLab >= 0 && txtBegin.Text != "" && txtEnd.Text != "")
             {
-                DataTable dtFinal = query.CopyToDataTable<DataRow>();
 
-                lstCourses.DataSource = dtFinal;
-                lstCourses.DataBind();
+                DateTime dBegin = Convert.ToDateTime(txtBegin.Text);
+                DateTime dEnd = Convert.ToDateTime(txtEnd.Text);
+
+                DataTable dt = SqlCode.PullDataToDataTable("select distinct c.id,c.description,c.numUsers,c.cName from tblcourse c ,tblLOginTimes lt where lt.course=c.id and c.Lab = 0 and (lt.tBegin >= '" + dBegin.ToString("yyyyMMdd") + "' and lt.tBegin <= '" + dEnd.ToString("yyyyMMdd") + "' ) or (lt.tEnd <=  '" + dBegin.ToString("yyyyMMdd") + "' and  lt.tEnd >= '" + dEnd.ToString("yyyyMMdd") + "' );");
+
+                if (dt.Rows.Count != 0)
+                {
+                    lstCourses.DataSource = dt;
+                    lstCourses.DataBind();
+                }
+                else
+                {
+                    DataTable dtFinall = new DataTable();
+                    lstCourses.DataSource = dtFinall;
+                    lstCourses.DataBind();
+                }
+
             }
             else
             {
-                DataTable dtFinall = new DataTable();
-                lstCourses.DataSource = dtFinall;
-                lstCourses.DataBind();
+                cphErrorMessage.Visible = true;
+                txtOutput.Text = "Error!! Select a valid lab or check the dates!!";
+
             }
 
         }

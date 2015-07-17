@@ -125,7 +125,18 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="form-group">
+                                    <div class="col-xs-12">
+                                        <div class="form-inline">
+                                            <div class="col-md-12 ">
+                                                <div class="form-group">
+                                                    <label class="control-label">E-Mail</label>
+                                                    <asp:TextBox ID="txtMail" runat="server" CssClass="form-control" Text='<%# Eval("email") %>'></asp:TextBox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <hr />
                             </ItemTemplate>
                             <LayoutTemplate>
