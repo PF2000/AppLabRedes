@@ -59,13 +59,6 @@ namespace AppLabRedes.CourseDetails
             if (LabId != -1)
             {
                 initTable();
-<<<<<<< HEAD
-                //sets parameters to ddlTypes
-=======
-                // numPodsLeftTotal = numPodsFromLab;
-
-
->>>>>>> origin/master
                 ddlTypes.ID = "ddlTypes";
                 ddlTypes.AutoPostBack = true;
                 ddlTypes.CssClass = "form-control";
@@ -350,13 +343,9 @@ namespace AppLabRedes.CourseDetails
                 {
                     usr = UserType + ((i + 1) + k);
                     k++;
-<<<<<<< HEAD
                 } while (isForbiddenUser(usr,dt));
                 //Pass to user
-=======
-                } while (isForbiddenUser(usr, dt));
-                //Pass para user
->>>>>>> origin/master
+
                 String pass = (Guid.NewGuid().ToString("N").Substring(1, 8) + ".").Trim();
                 //adds todataTable
                 dt.Rows.Add(usr, pass);
@@ -373,8 +362,8 @@ namespace AppLabRedes.CourseDetails
             }
             UpdatePanel4.Update();
         }
-<<<<<<< HEAD
-        /// <summary>
+
+                /// <summary>
         /// To Convert a date time in a TimeZone to server TimeZone
         /// </summary>
         /// <param name="dt"></param>
@@ -388,19 +377,6 @@ namespace AppLabRedes.CourseDetails
             DateTime nDateTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(dt, IdNewTz, IdLocalTz);
             return nDateTime;
         }
-        /// <summary>
-        /// on button click inserts the course.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnAddCourse_Click(object sender, EventArgs e)
-        {
-            //gets the maxId(next)
-            int maxId = SqlCode.SelectForINT("Select Max(id)+1 From tblCourse");
-
-            bool valid = true;
-            //checks if users are all valid
-=======
 
         protected bool IsValidEmail(string email)
         {
@@ -415,11 +391,16 @@ namespace AppLabRedes.CourseDetails
             }
         }
 
+        /// <summary>
+        /// on button click inserts the course.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnAddCourse_Click(object sender, EventArgs e)
         {
+            //checks if users are all valid
             bool validMail = true;
             //check if emails are valid
->>>>>>> origin/master
             foreach (ListViewItem lstItem in lstUsers.Items)
             {
                 String mail = ((TextBox)lstItem.FindControl("txtMail")).Text;
@@ -429,10 +410,7 @@ namespace AppLabRedes.CourseDetails
                     break;
                 }
             }
-<<<<<<< HEAD
-            //checks if the users are really valid
-            if (valid == true)
-=======
+
             //check if the fields are all valid
             if (txtCourseName.Text != "" && validMail == true)
             {
@@ -457,7 +435,6 @@ namespace AppLabRedes.CourseDetails
                 }
             }
             else
->>>>>>> origin/master
             {
                 cphErrorMessage.Visible = true;
                 txtOutput.Text = "Error!! Select the the course name or check your E-mails!!";

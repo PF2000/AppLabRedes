@@ -50,8 +50,6 @@
     </div>
     <hr />
 
-    <asp:DropDownList ID="ddlTeste" runat="server" OnSelectedIndexChanged="ddlTeste_SelectedIndexChanged"></asp:DropDownList>
-
     <div class="row">
         <h4>Overview Courses </h4>
         <hr />
