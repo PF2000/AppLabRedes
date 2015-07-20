@@ -1,6 +1,7 @@
 ﻿using AppLabRedes.Scripts.MyScripts;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -395,14 +396,15 @@ namespace AppLabRedes.Course
         /// <param name="e"></param>
         protected void ddlType_SelectedIndexChanged(object sender, EventArgs e)
         {
+
             //gets the type id
             int typeId = Convert.ToInt16(ddlTypes.SelectedValue);
             //if not default type
             if (typeId != -1)
             {
                 //shows the time panel
-                cphTime.Visible = true;
-                UpdatePanel1.Update();
+                cphTimeZones.Visible = true;
+                UpdatePanel6.Update();
             }
             else
             {
@@ -427,6 +429,41 @@ namespace AppLabRedes.Course
                 }
 
             }
+
+            UpdatePanel1.Update();
+            UpdatePanel2.Update();
+            UpdatePanel4.Update();
+            UpdatePanel5.Update();
+        }
+        /// <summary>
+        /// Inits the dropDownList with TimeZones
+        /// </summary>
+        protected void initTimeZone()
+        {
+            ReadOnlyCollection<TimeZoneInfo> tzi;
+            tzi = TimeZoneInfo.GetSystemTimeZones();
+            foreach (TimeZoneInfo timeZone in tzi)
+            {
+                ddlTimeZone.Items.Add(new ListItem(timeZone.DisplayName, timeZone.Id));
+
+            }
+            //set selection
+            //ddlTimeZone.Items.FindByValue(TimeZoneInfo.Local.Id + "").Selected = true;
+        }
+        /// <summary>
+        /// DropDownList TimeZone
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void ddlTimeZone_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            cphTime.Visible = true;
+            UpdatePanel1.Update();
+
+            cphPods.Visible = false;
+            cphUsers.Visible = false;
+            initTable();
 
             UpdatePanel1.Update();
             UpdatePanel2.Update();
@@ -478,11 +515,11 @@ namespace AppLabRedes.Course
             if (bDate != "" && eDate != "" && bTime != "" && eTime != "")
             {
                 //Converts to dateTime
-                DateTime tBegin = Convert.ToDateTime(bDate);
-                DateTime tEnd = Convert.ToDateTime(eDate);
+                DateTime tBegin = ConvertTime(Convert.ToDateTime(bDate), ddlTimeZone.SelectedValue);
+                DateTime tEnd = ConvertTime(Convert.ToDateTime(eDate), ddlTimeZone.SelectedValue);
                 //Converts to dateTime
-                DateTime timeBegin = Convert.ToDateTime(bTime);
-                DateTime timeEnd = Convert.ToDateTime(eTime);
+                DateTime timeBegin = ConvertTime(Convert.ToDateTime(bTime), ddlTimeZone.SelectedValue);
+                DateTime timeEnd = ConvertTime(Convert.ToDateTime(eTime), ddlTimeZone.SelectedValue);
 
                 //se end time is bigger than begin time
                 if (tBegin <= tEnd)

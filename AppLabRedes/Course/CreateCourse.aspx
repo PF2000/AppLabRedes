@@ -56,6 +56,19 @@
                         </asp:PlaceHolder>
                     </ContentTemplate>
                 </asp:UpdatePanel>
+                <!-- TuimeZone -->
+                <asp:UpdatePanel ID="UpdatePanel6" runat="server" UpdateMode="Conditional">
+                    <ContentTemplate>
+                        <asp:PlaceHolder runat="server" ID="cphTimeZones" Visible="false">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Choose TimeZone</label>
+                                <div class="col-md-10 ">
+                                    <asp:DropDownList ID="ddlTimeZone" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlTimeZone_SelectedIndexChanged" CssClass="form-control"></asp:DropDownList>
+                                </div>
+                            </div>
+                        </asp:PlaceHolder>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
                 <!-- Times -->
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
@@ -63,7 +76,6 @@
                             <div class="form-group">
                                 <label class="col-md-2 control-label">Login Time</label>
                                 <div class="col-md-10 ">
-                                    <hr />
                                     <!-- to insert -->
                                     <div class="form-group">
                                         <div class="col-xs-12">

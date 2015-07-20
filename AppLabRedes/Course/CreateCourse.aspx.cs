@@ -1,10 +1,12 @@
 ﻿using AppLabRedes.Scripts.MyScripts;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -164,8 +166,10 @@ namespace AppLabRedes.CourseDetails
             //if selected option is valid
             if (typeId != -1)
             {
-                cphTime.Visible = true;
-                UpdatePanel1.Update();
+                initTimeZone();
+                cphTimeZones.Visible = true;
+                UpdatePanel6.Update();
+
             }
             else
             {
@@ -179,6 +183,52 @@ namespace AppLabRedes.CourseDetails
             UpdatePanel4.Update();
             UpdatePanel5.Update();
         }
+        /// <summary>
+        /// Inits the dropDownList with TimeZones
+        /// </summary>
+        protected void initTimeZone()
+        {
+            ReadOnlyCollection<TimeZoneInfo> tzi;
+            tzi = TimeZoneInfo.GetSystemTimeZones();
+            foreach (TimeZoneInfo timeZone in tzi)
+            {
+                ddlTimeZone.Items.Add(new ListItem(timeZone.DisplayName, timeZone.Id));
+
+            }
+            //set selection
+            //ddlTimeZone.Items.FindByValue(TimeZoneInfo.Local.Id + "").Selected = true;
+        }
+        /// <summary>
+        /// DropDownList TimeZone
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void ddlTimeZone_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            cphTime.Visible = true;
+
+
+            cphPods.Visible = false;
+            cphUsers.Visible = false;
+            initTable();
+
+            UpdatePanel1.Update();
+            UpdatePanel2.Update();
+            UpdatePanel4.Update();
+            UpdatePanel5.Update();
+            //refresh txt
+            txtBDate.Text = "";
+            txtBTime.Text = "";
+            txtEDate.Text = "";
+            txtETime.Text = "";
+            foreach (ListViewItem lstItem in lstUsers.Items)
+            {
+                ((TextBox)lstItem.FindControl("txtName")).Text = "";
+            }
+            UpdatePanel1.Update();
+        }
+
         /// <summary>
         /// Button to verify the time selected
         /// </summary>
@@ -203,14 +253,14 @@ namespace AppLabRedes.CourseDetails
             {
 
                 //Converts to dateTime
-                DateTime tBegin = Convert.ToDateTime(bDate);
-                DateTime tEnd = Convert.ToDateTime(eDate);
+                DateTime tBegin = ConvertTime(Convert.ToDateTime(bDate), ddlTimeZone.SelectedValue);
+                DateTime tEnd = ConvertTime(Convert.ToDateTime(eDate), ddlTimeZone.SelectedValue);
                 //Converts to dateTime
-                DateTime timeBegin = Convert.ToDateTime(bTime);
-                DateTime timeEnd = Convert.ToDateTime(eTime);
+                DateTime timeBegin = ConvertTime(Convert.ToDateTime(bTime), ddlTimeZone.SelectedValue);
+                DateTime timeEnd = ConvertTime(Convert.ToDateTime(eTime), ddlTimeZone.SelectedValue);
 
                 //if end time is bigger than begin time
-                if (tBegin <= tEnd && timeBegin > timeEnd)
+                if (tBegin <= tEnd && timeBegin < timeEnd)
                 {
                     //counts the number of days
                     TimeSpan ts = tEnd - tBegin;
@@ -229,12 +279,10 @@ namespace AppLabRedes.CourseDetails
                     //initializes the number of pods left by date with the max number of users
                     numPodsLeftByDate = numPodsFromLab;
 
-
                     while (dtt.AddHours(numHours) <= dtEnd)
                     {
                         DateTime tB = dtt;
                         DateTime tE = dtt.AddHours(numHours);
-
 
                         //gets the number os pods available
                         podsLeft(tB, tE, idLab);
@@ -343,7 +391,7 @@ namespace AppLabRedes.CourseDetails
                 {
                     usr = UserType + ((i + 1) + k);
                     k++;
-                } while (isForbiddenUser(usr,dt));
+                } while (isForbiddenUser(usr, dt));
                 //Pass to user
 
                 String pass = (Guid.NewGuid().ToString("N").Substring(1, 8) + ".").Trim();
@@ -362,8 +410,7 @@ namespace AppLabRedes.CourseDetails
             }
             UpdatePanel4.Update();
         }
-
-                /// <summary>
+        /// <summary>
         /// To Convert a date time in a TimeZone to server TimeZone
         /// </summary>
         /// <param name="dt"></param>
@@ -377,7 +424,11 @@ namespace AppLabRedes.CourseDetails
             DateTime nDateTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(dt, IdNewTz, IdLocalTz);
             return nDateTime;
         }
-
+        /// <summary>
+        /// Validates the email
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         protected bool IsValidEmail(string email)
         {
             try
@@ -391,6 +442,24 @@ namespace AppLabRedes.CourseDetails
             }
         }
 
+        protected bool IsPassValid(string pass)
+        {
+
+            Regex len = new Regex("^.{8,10}$");
+            Regex num = new Regex("\\d");
+            Regex alpha = new Regex("\\D");
+            Regex special = new Regex("[><%#@]."); // Put  here more special characters
+
+            if (len.IsMatch(pass) && num.IsMatch(pass) && alpha.IsMatch(pass) && special.IsMatch(pass))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// on button click inserts the course.
         /// </summary>
@@ -399,20 +468,22 @@ namespace AppLabRedes.CourseDetails
         protected void btnAddCourse_Click(object sender, EventArgs e)
         {
             //checks if users are all valid
-            bool validMail = true;
+            bool validMailPass = true;
             //check if emails are valid
             foreach (ListViewItem lstItem in lstUsers.Items)
             {
                 String mail = ((TextBox)lstItem.FindControl("txtMail")).Text;
-                if (!IsValidEmail(mail))
+                String pass = ((TextBox)lstItem.FindControl("txtPass")).Text;
+                if (!IsValidEmail(mail) && !IsPassValid(pass))
                 {
-                    validMail = false;
+                    validMailPass = false;
                     break;
                 }
+
             }
 
             //check if the fields are all valid
-            if (txtCourseName.Text != "" && validMail == true)
+            if (txtCourseName.Text != "" && validMailPass == true)
             {
                 //gets the maxId
                 int maxId = SqlCode.SelectForINT("Select Max(id)+1 From tblCourse");
@@ -452,7 +523,7 @@ namespace AppLabRedes.CourseDetails
             using (SqlConnection openCon = new SqlConnection(strConn))
             {
                 //command
-                string saveTypes_Lab = " insert into tblCourse (id,Lab,description,numUsers,cName,cType) VALUES (@id,@idLab,@description,@numUsers,@cName,@cType)"; 
+                string saveTypes_Lab = " insert into tblCourse (id,Lab,description,numUsers,cName,cType) VALUES (@id,@idLab,@description,@numUsers,@cName,@cType)";
                 using (SqlCommand command = new SqlCommand(saveTypes_Lab, openCon))
                 {
                     //all command parameters
@@ -503,7 +574,6 @@ namespace AppLabRedes.CourseDetails
                         command.Parameters.AddWithValue("@tBegin", row["begin"]);
                         command.Parameters.AddWithValue("@tEnd", row["end"]);
                         command.Parameters.AddWithValue("@course", idCourse);
-
                         try
                         {
                             //opens the connections
@@ -633,6 +703,5 @@ namespace AppLabRedes.CourseDetails
                 return true;
             }
         }
-
     }
 }

@@ -19,8 +19,8 @@
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link href="/Content/bootstrap.css" rel="stylesheet" />
     <link href="/Content/bootstrap.min.css" rel="stylesheet" />
-    <%--<link href="/Content/sb-admin-2.css" rel="stylesheet"/>--%>
-    <link href="/Content/sb-admin.css" rel="stylesheet" />
+    <link href="/Content/sb-admin-2.css" rel="stylesheet" />
+    <%--<link href="/Content/sb-admin.css" rel="stylesheet" />--%>
     <link href="/Content/Site.css" rel="stylesheet" />
     <link href="/Content/timeline.css" rel="stylesheet" />
     <link href="/Content/metisMenu.min.css" rel="stylesheet" />
@@ -69,10 +69,9 @@
                 --%>
             </Scripts>
         </asp:ScriptManager>
-
         <div id="wrapper">
             <!-- Navigation -->
-            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="sr-only">Toggle navigation</span>
@@ -82,68 +81,59 @@
                     </button>
                     <a class="navbar-brand" runat="server" href="~/">Remote Lab</a>
                 </div>
-                <!-- /.navbar-header -->
-
-
-
-                <asp:LoginView runat="server" ViewStateMode="Disabled">
-                    <AnonymousTemplate>
-
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="dropdown"><                               
+                <ul class="nav navbar-top-links navbar-right">
+                    <!-- /.navbar-header -->
+                    <asp:LoginView runat="server" ViewStateMode="Disabled">
+                        <AnonymousTemplate>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="dropdown">                               
                                 <li><a runat="server" href="~/Account/Register">Register</a></li>
-                                <li><a runat="server" href="~/Account/Login">Log in</a></li>
-                            </li>
-
-                        </ul>
-                    </AnonymousTemplate>
-                    <LoggedInTemplate>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a runat="server" href="~/Account/Manage" title="Manage your account">Hello, <%: Context.User.Identity.GetUserName()  %> !</a></li>
-                            <li>
-                                <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" />
-                            </li>
-                        </ul>
-                    </LoggedInTemplate>
-                </asp:LoginView>
-                <!-- /.dropdown LOGIN-->
-
-                <!-- /.navbar-top-links -->
-
-                <div class="collapse navbar-collapse navbar-ex1-collapse">
-                    <%--<div class="sidebar-nav navbar-collapse">--%>
-                    <ul class="nav navbar-nav side-nav">
-                        <br />
-                        <br />
-
-                        <li>
-                            <a runat="server" href="~" title="Manage your account"><i class="fa fa-dashboard fa-fw"></i>Overview</a>
-                        </li>
-                        <li>
-                            <a runat="server" href="~/Admin/UserManagement.aspx"><i class="fa fa-meh-o fa-fw"></i>Managers</a>
-                        </li>
-                        <li>
-                            <a runat="server" href="~/Admin/Logger.aspx"><i class="fa fa-bell fa-fw"></i>Event Logs</a>
-                        </li>
-                        <li>
-                            <a runat="server" href="~/Lab/Labs.aspx"><i class="fa fa-cog fa-fw"></i>Manage Labs</a>
-                        </li>
-                        <li>
-                            <a runat="server" href="~/Course/Courses.aspx"><i class="fa fa-cog fa-fw"></i>Courses</a>
-                        </li>
-                        <li>
-                            <a runat="server" href="~/Course/PdfGeneration.aspx "><i class="fa fa-cog fa-fw"></i>PDF</a>
-                        </li>
-                        <li>
-                            <a runat="server" href="~/Settings/Settings.aspx"><i class="fa fa-wrench fa-fw"></i>Settings</a>
-                        </li>
+                                    <li><a runat="server" href="~/Account/Login">Log in</a></li>
+                                </li>
+                            </ul>
+                        </AnonymousTemplate>
+                        <LoggedInTemplate>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a runat="server" href="~/Account/Manage" title="Manage your account">Hello, <%: Context.User.Identity.GetUserName()  %> !</a></li>
+                                <li>
+                                    <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" />
+                                </li>
+                            </ul>
+                        </LoggedInTemplate>
+                    </asp:LoginView>
+                    <!-- /.dropdown LOGIN-->
                     </ul>
-                </div>
-                <!-- /.sidebar-collapse -->
-                <%--</div>--%>
-                <!-- /.navbar-static-side -->
-                <i class="fa fa comments fa-5x"></i>
-                <i class="fa fa gear pull-left fa-2x"></i>
+                    <div class="navbar-default sidebar" role="navigation">
+                        <div class="sidebar-nav navbar-collapse">
+                            <!-- /.navbar-top-links -->
+                            <ul class="nav navbar-top-links navbar-right">
+                                <br />
+                                <br />
+                                <li>
+                                    <a runat="server" href="~" title="Manage your account"><i class="fa fa-dashboard fa-fw"></i>Overview</a>
+                                </li>
+                                <li>
+                                    <a runat="server" href="~/Admin/UserManagement.aspx"><i class="fa fa-meh-o fa-fw"></i>Managers</a>
+                                </li>
+                                <li>
+                                    <a runat="server" href="~/Admin/Logger.aspx"><i class="fa fa-bell fa-fw"></i>Event Logs</a>
+                                </li>
+                                <li>
+                                    <a runat="server" href="~/Lab/Labs.aspx"><i class="fa fa-cog fa-fw"></i>Manage Labs</a>
+                                </li>
+                                <li>
+                                    <a runat="server" href="~/Course/Courses.aspx"><i class="fa fa-cog fa-fw"></i>Courses</a>
+                                </li>
+                                <li>
+                                    <a runat="server" href="~/Settings/Settings.aspx"><i class="fa fa-wrench fa-fw"></i>Settings</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /.sidebar-collapse -->
+                    </div>
+                    <!-- /.navbar-static-side -->
+                    <i class="fa fa comments fa-5x"></i>
+                    <i class="fa fa gear pull-left fa-2x"></i>
             </nav>
 
             <div id="page-wrapper">

@@ -2,10 +2,15 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-
-
     <h2><%: Title %></h2>
-    <!-- /.row -->
+    <hr />
+    <asp:PlaceHolder runat="server" ID="cphErrorMessage" Visible="false">
+        <div class="form-group">
+            <asp:Label runat="server" CssClass="text-danger col-lg-12 control-label" ID="Label1"></asp:Label>
+        </div>
+        <br />
+        <hr />
+    </asp:PlaceHolder>
 
 
     <div class="row">
@@ -121,10 +126,10 @@
                     </table>
                 </LayoutTemplate>
             </asp:ListView>
-            <asp:SqlDataSource runat="server" ID="SqlDSTypes" ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=AspNet.AppLabRedes.mdf;User ID=WebApp;Password=Labredes." 
-                DeleteCommand="DELETE FROM [tblTypes_Labss] WHERE [IdType] = @Id; DELETE FROM [tblLabType] WHERE [Id] = @Id" 
+            <asp:SqlDataSource runat="server" ID="SqlDSTypes" ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=AspNet.AppLabRedes.mdf;User ID=WebApp;Password=Labredes."
+                DeleteCommand="DELETE FROM [tblTypes_Labss] WHERE [IdType] = @Id; DELETE FROM [tblLabType] WHERE [Id] = @Id"
                 InsertCommand="INSERT INTO [tblLabType] ([type]) VALUES (@type)" ProviderName="System.Data.SqlClient"
-                 SelectCommand="SELECT * FROM [tblLabType]" UpdateCommand="UPDATE [tblLabType] SET [type] = @type WHERE [Id] = @Id">
+                SelectCommand="SELECT * FROM [tblLabType]" UpdateCommand="UPDATE [tblLabType] SET [type] = @type WHERE [Id] = @Id">
                 <DeleteParameters>
                     <asp:Parameter Name="Id" Type="Int32"></asp:Parameter>
                 </DeleteParameters>

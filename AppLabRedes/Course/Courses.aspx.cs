@@ -1,5 +1,7 @@
 ﻿using ActiveDirectoryHelper;
 using AppLabRedes.Scripts.MyScripts;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +9,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -24,14 +27,14 @@ namespace AppLabRedes.Course
                 //get allLabs
                 DataTable dtLabs = SqlCode.PullDataToDataTable("select * from tblLabs");
                 //default Item
-                ListItem lst1 = new ListItem("Labs", "-1");
+                System.Web.UI.WebControls.ListItem lst1 = new System.Web.UI.WebControls.ListItem("Labs", "-1");
                 ddlLabs.Items.Add(lst1);
                 //db Items
                 foreach (DataRow row in dtLabs.Rows) // Loop over the items.
                 {
                     String tp = Convert.ToString(row["name"]);
                     String tId = Convert.ToString(row["id"]);
-                    ListItem lst = new ListItem(tp, tId);
+                    System.Web.UI.WebControls.ListItem lst = new System.Web.UI.WebControls.ListItem(tp, tId);
                     ddlLabs.Items.Add(lst);
                 }
             }
@@ -219,6 +222,125 @@ namespace AppLabRedes.Course
                 cphErrorMessage.Visible = true;
                 txtOutput.Text = "Error!! Select a valid lab or check the dates!!";
             }
+        }
+
+        protected void btnGenPdf_Command(object sender, CommandEventArgs e)
+        {
+            //gets the id from button parameters
+            int idCourse = Convert.ToInt16(e.CommandArgument.ToString());
+
+            //string appRootDir = new DirectoryInfo(Environment.CurrentDirectory).Parent.Parent.FullName;
+            string appRootDir = Server.MapPath("~/PDFs/");
+            String pdfNameFile = "Course.pdf";
+            try
+            {
+                // Step 1: Creating System.IO.FileStream object
+                using (FileStream fs = new FileStream(appRootDir + pdfNameFile + "", FileMode.Create, FileAccess.Write, FileShare.None))
+                // Step 2: Creating iTextSharp.text.Document object
+                using (Document doc = new Document())
+                // Step 3: Creating iTextSharp.text.pdf.PdfWriter object
+                // It helps to write the Document to the Specified FileStream
+                using (PdfWriter writer = PdfWriter.GetInstance(doc, fs))
+                {
+                    // Step 4: Openning the Document
+                    doc.Open();
+
+
+
+                    ////---------------------------------------------------------
+                    DataTable dt = SqlCode.PullDataToDataTable("select * from tblCourse c,tblLabs l, tblLabType t where c.lab=l.id and c.cType=t.id and c.id='" + idCourse + "'");
+                    DataRow row = dt.Rows[0];
+
+                    String name = Convert.ToString(row["cName"]);
+                    String numUsers = Convert.ToString(row["numUsers"]);
+                    String description = Convert.ToString(row["description"]);
+                    String lab = Convert.ToString(row["name"]);
+                    String type = Convert.ToString(row["type"]);
+
+
+                    doc.Add(new Paragraph("Course: " + name));
+                    doc.Add(new Paragraph(" "));
+                    doc.Add(new Paragraph(" "));
+                    doc.Add(new Paragraph(lab));
+                    doc.Add(new Paragraph("Num Users: " + numUsers));
+                    doc.Add(new Paragraph("Description: " + description));
+                    doc.Add(new Paragraph("Type: " + type));
+
+                    //data from LoginTimes
+                    String begin = SqlCode.SelectForString("select min(tBegin) from tblCourse c,tblLOginTimes as lt where lt.course=c.id and c.id='" + idCourse + "'");
+                    String end = SqlCode.SelectForString("select max(tBegin) from tblCourse c,tblLOginTimes as lt where lt.course=c.id and c.id='" + idCourse + "'");
+                    //to get time
+                    String endTime = SqlCode.SelectForString("select max(tEnd) from tblCourse c,tblLOginTimes as lt where lt.course=c.id and c.id='" + idCourse + "'");
+
+                    //Converts to dateTime
+                    DateTime tBegin = Convert.ToDateTime(begin);
+                    DateTime tEnd = Convert.ToDateTime(end);
+                    DateTime tEndTime = Convert.ToDateTime(endTime);
+
+                    doc.Add(new Paragraph("Permited Login Times "));
+                    doc.Add(new Paragraph(" "));
+                    //begin
+                    doc.Add(new Paragraph("Bagin Date: " + tBegin.Date.ToString("d")));
+                    doc.Add(new Paragraph("Begin Time: " + tBegin.TimeOfDay + ""));
+                    //end
+                    doc.Add(new Paragraph("End Date: " + tEnd.Date.ToString("d")));
+                    doc.Add(new Paragraph("End Date: " + tEndTime.TimeOfDay + ""));
+
+
+                    //data from Users
+                    DataTable dt2 = SqlCode.PullDataToDataTable("select * from tblCourse c,tblUsers as u where u.course=c.id and c.id='" + idCourse + "'");
+
+
+                    foreach (DataRow roww in dt2.Rows) // Loop over the items.
+                    {
+                        doc.Add(new Paragraph(" Users "));
+                        doc.Add(new Paragraph(" "));
+                        doc.Add(new Paragraph("UserName; " + roww["usr"]));
+                        doc.Add(new Paragraph("Pass: " + roww["pass"]));
+                    }
+
+
+                    // Step 6: Closing the Document
+                    doc.Close();
+                }
+            }
+            // Catching iTextSharp.text.DocumentException if any
+            catch (DocumentException de)
+            {
+                throw de;
+            }
+            // Catching System.IO.IOException if any
+            catch (IOException ioe)
+            {
+                throw ioe;
+            }
+
+
+            //http://stackoverflow.com/questions/8897458/asp-net-download-file-to-client-browser#comment46624340_8897675
+            string filePath = appRootDir + pdfNameFile + "";
+            FileInfo file = new FileInfo(filePath);
+            if (file.Exists)
+            {
+                Response.Clear();
+
+                Response.ClearHeaders();
+
+                Response.ClearContent();
+
+                Response.AddHeader("Content-Disposition", "attachment; filename=" + file.Name);
+
+                Response.AddHeader("Content-Length", file.Length.ToString());
+
+                Response.ContentType = "text/plain";
+
+                Response.Flush();
+
+                Response.TransmitFile(file.FullName);
+
+                Response.End();
+            }
+
+
         }
     }
 }

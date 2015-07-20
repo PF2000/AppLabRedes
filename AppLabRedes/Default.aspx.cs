@@ -29,8 +29,11 @@ namespace AppLabRedes
             {
                 //gets and sets the information: news, active users,sheduled users
                 lblNotifications.Text = SqlCode.SelectForINT("select count(*) from EventLogger where NotSeen='true'") + "";
-                lblActiveUsers.Text = SqlCode.SelectForINT("select count(*) from VPNUsers where active='true'") + "";
-                lblScheduleUsers.Text = SqlCode.SelectForINT("select count(*) from VPNUsers where active is null") + "";
+                lblActiveUsers.Text = SqlCode.SelectForINT("select Count(distinct c.id) from tblCourse c, tblLOginTimes lt where c.Id=lt.course and lt.active=1") + "";
+                lblScheduleUsers.Text = SqlCode.SelectForINT("select Count(distinct c.id) from tblCourse c, tblLOginTimes lt where c.Id=lt.course and lt.active=0") + "";
+
+                int idActiveCourse = SqlCode.SelectForINT("select distinct c.id from tblCourse c, tblLOginTimes lt where c.Id=lt.course and lt.active=1");
+                btnActiveCourse.PostBackUrl = "~/Course/CourseDetails?idCourse=" + idActiveCourse + "";
             }
             catch (Exception ex)
             {

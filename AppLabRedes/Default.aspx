@@ -46,17 +46,17 @@
                             </div>
                             <div class="col-xs-9 text-right">
                                 <asp:Label ID="lblActiveUsers" runat="server" CssClass="huge"></asp:Label>
-                                <div>Active VPN Users!</div>
+                                <div>Active Courses!</div>
                             </div>
                         </div>
                     </div>
-                    <a runat="server" href="~/VPNUsers/ManageVPNUsers/ActiveUsers.aspx">
+                    <asp:LinkButton ID="btnActiveCourse" runat="server">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                             <div class="clearfix"></div>
                         </div>
-                    </a>
+                        </asp:LinkButton>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6">
@@ -68,11 +68,11 @@
                             </div>
                             <div class="col-xs-9 text-right">
                                 <asp:Label ID="lblScheduleUsers" runat="server" CssClass="huge"></asp:Label>
-                                <div>Shedule VPN Users!</div>
+                                <div>Shedule Courses!</div>
                             </div>
                         </div>
                     </div>
-                    <a runat="server" href="~/VPNUsers/ManageVPNUsers/ScheduleUsers.aspx">
+                    <a runat="server" href="~/Course/Courses.aspx">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>

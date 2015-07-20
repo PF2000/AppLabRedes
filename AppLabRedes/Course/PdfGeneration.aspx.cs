@@ -24,9 +24,10 @@ namespace AppLabRedes.VPNUsers.ManageVPNUsers
 
             var initDate = txtbeginDate.Text;
             var endDate = txtEndDate.Text;
+            DateTime dBegin = Convert.ToDateTime(initDate);
+            DateTime dEnd = Convert.ToDateTime(endDate);
 
-
-            DataTable dt = SqlCode.PullDataToDataTable("select id,usr,pwd,initDate,endDate,groupp from VpnUsers where initDate >= initDate and endDate <= endDate");
+            DataTable dt = SqlCode.PullDataToDataTable("select distinct c.id,c.description,c.numUsers,c.cName from tblcourse c ,tblLOginTimes lt where lt.course=c.id and c.Lab = 0 and (lt.tBegin >= '" + dBegin.ToString("yyyyMMdd") + "' and lt.tBegin <= '" + dEnd.ToString("yyyyMMdd") + "' ) or (lt.tEnd <=  '" + dBegin.ToString("yyyyMMdd") + "' and  lt.tEnd >= '" + dEnd.ToString("yyyyMMdd") + "' );");
 
             tbl.Visible = true;
             rptUsersTopdf.DataSource = dt;

@@ -152,6 +152,6 @@ C:\Users\Administrador.WIN-BCVGNT6ISQR\Documents\Visual Studio 2013\Projects\App
 C:\Users\Administrador.WIN-BCVGNT6ISQR\Documents\Visual Studio 2013\Projects\AppLabRedes\AppLabRedes\bin\Microsoft.Owin.Security.Twitter.xml
 C:\Users\Administrador.WIN-BCVGNT6ISQR\Documents\Visual Studio 2013\Projects\AppLabRedes\AppLabRedes\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\Administrador.WIN-BCVGNT6ISQR\Documents\Visual Studio 2013\Projects\AppLabRedes\AppLabRedes\bin\Microsoft.Owin.Security.OAuth.xml
-C:\Users\Administrador.WIN-BCVGNT6ISQR\Documents\Visual Studio 2013\Projects\AppLabRedes\AppLabRedes\obj\Debug\AppLabRedes.csprojResolveAssemblyReference.cache
 C:\Users\Administrador.WIN-BCVGNT6ISQR\Documents\Visual Studio 2013\Projects\AppLabRedes\AppLabRedes\obj\Debug\AppLabRedes.dll
 C:\Users\Administrador.WIN-BCVGNT6ISQR\Documents\Visual Studio 2013\Projects\AppLabRedes\AppLabRedes\obj\Debug\AppLabRedes.pdb
+C:\Users\Administrador.WIN-BCVGNT6ISQR\Documents\Visual Studio 2013\Projects\AppLabRedes\AppLabRedes\obj\Debug\AppLabRedes.csprojResolveAssemblyReference.cache

@@ -83,15 +83,19 @@ namespace AppLabRedes.Lab
             string labName = txtLabName.Text;
             int numPods = Convert.ToInt16(txtNumPods.Text);
             string description = txtDescription.Text;
-            //removes the dependencies
-            RemoveType_Lab(IDToEdit);
-            //add new dependencie
-            addType_Lab(IDToEdit);
-            //updates the table
-            UpdateLab(IDToEdit, labName, numPods, description);
-            //redirects
-            System.Threading.Thread.Sleep(3000);
-            Response.Redirect("~/Lab/Labs.aspx");
+                        //if all fields are filled
+            if (txtLabName.Text != "" && txtNumPods.Text != "" && txtDescription.Text != "")
+            {
+                //removes the dependencies
+                RemoveType_Lab(IDToEdit);
+                //add new dependencie
+                addType_Lab(IDToEdit);
+                //updates the table
+                UpdateLab(IDToEdit, labName, numPods, description);
+                //redirects
+                System.Threading.Thread.Sleep(3000);
+                Response.Redirect("~/Lab/Labs.aspx");
+            }
         }
         /// <summary>
         /// updates the table Lab

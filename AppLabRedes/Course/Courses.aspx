@@ -68,7 +68,8 @@
                             <hr />
                             <h5>Number of Pods - <strong><%#Eval("numUsers")%></strong></h5>
                             <a href='<%# "EditCourse.aspx?idCourse="+Eval ("id") %>' class="btn btn-primary">Edit</a>
-                            <asp:LinkButton ID="btnRemoveCourse" runat="server" CssClass="btn btn-primary" OnCommand="btnRemoveCourse_Command" CommandArgument='<%# Eval ("id") %>' OnClientClick="return confirm('Are you sure you want to remove this course ?')">Remove</asp:LinkButton>
+                            <asp:LinkButton ID="btnRemoveCourse" runat="server" CssClass="btn btn-primary" OnCommand="btnRemoveCourse_Command" CommandArgument='<%# Eval ("id") %>' OnClientClick="return confirm('Are you sure you want to remove this course ?')">Remove</asp:LinkButton>                       
+                            <asp:LinkButton ID="btnGenPdf" runat="server" CssClass="btn btn-primary" OnCommand="btnGenPdf_Command" CommandArgument='<%# Eval ("id") %>' >PDF</asp:LinkButton>               
                         </div>
                     </div>
                 </div>

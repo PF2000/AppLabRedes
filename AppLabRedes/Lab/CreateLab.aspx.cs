@@ -44,6 +44,7 @@ namespace AppLabRedes.Lab
             }
             else
             {
+                cphErrorMessage.Visible = true;
                 txtOutput.Text = "Please complete all required text fields ";
             }
         }
