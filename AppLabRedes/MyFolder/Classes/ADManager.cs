@@ -111,7 +111,7 @@ namespace ActiveDirectoryHelper
 
             // Check if user object already exists in the store
             UserPrincipal usr = UserPrincipal.FindByIdentity(principalContext, userLogonName);
-            if (usr == null)
+            if (usr != null)
             {
                 usr.Delete();
                 sb.AppendLine(userLogonName + " Deleted.");

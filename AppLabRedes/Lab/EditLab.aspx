@@ -48,7 +48,7 @@
                 <div class="form-group">
                     <div class="col-md-offset-8 col-md-10">
                         <!-- http://forums.asp.net/t/1508094.aspx?How+to+pop+up+a+confirmation+dialog+box+OnClientClick="return confirm('Are you sure you want to submit ?')" -->
-                        <asp:Button ID="btnUpdateLab" runat="server" OnClick="btnUpdateLab_Click" Text="Update Lab" CssClass="btn btn-default" OnClientClick="confirm('Are you sure you want to submit ?')" />
+                        <asp:Button ID="btnUpdateLab" runat="server" OnClick="btnUpdateLab_Click" Text="Update Lab" CssClass="btn btn-default" OnClientClick="return confirm('Are you sure you want to submit ?')" />
                         <br />
                     </div>
                 </div>

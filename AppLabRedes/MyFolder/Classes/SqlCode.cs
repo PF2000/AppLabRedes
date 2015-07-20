@@ -102,7 +102,6 @@ namespace AppLabRedes.Scripts.MyScripts
             }
         }
 
-
         // http://stackoverflow.com/questions/6073382/read-sql-table-into-c-sharp-datatable
         // your method to pull data from database to datatable   
         public static DataTable PullDataToDataTable(String SelectCommand)

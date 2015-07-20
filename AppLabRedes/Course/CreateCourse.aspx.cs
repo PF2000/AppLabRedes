@@ -59,7 +59,13 @@ namespace AppLabRedes.CourseDetails
             if (LabId != -1)
             {
                 initTable();
+<<<<<<< HEAD
                 //sets parameters to ddlTypes
+=======
+                // numPodsLeftTotal = numPodsFromLab;
+
+
+>>>>>>> origin/master
                 ddlTypes.ID = "ddlTypes";
                 ddlTypes.AutoPostBack = true;
                 ddlTypes.CssClass = "form-control";
@@ -202,6 +208,7 @@ namespace AppLabRedes.CourseDetails
             //id fields are not empty
             if (bDate != "" && eDate != "" && bTime != "" && eTime != "")
             {
+
                 //Converts to dateTime
                 DateTime tBegin = Convert.ToDateTime(bDate);
                 DateTime tEnd = Convert.ToDateTime(eDate);
@@ -210,7 +217,7 @@ namespace AppLabRedes.CourseDetails
                 DateTime timeEnd = Convert.ToDateTime(eTime);
 
                 //if end time is bigger than begin time
-                if (tBegin <= tEnd)
+                if (tBegin <= tEnd && timeBegin > timeEnd)
                 {
                     //counts the number of days
                     TimeSpan ts = tEnd - tBegin;
@@ -343,8 +350,13 @@ namespace AppLabRedes.CourseDetails
                 {
                     usr = UserType + ((i + 1) + k);
                     k++;
+<<<<<<< HEAD
                 } while (isForbiddenUser(usr,dt));
                 //Pass to user
+=======
+                } while (isForbiddenUser(usr, dt));
+                //Pass para user
+>>>>>>> origin/master
                 String pass = (Guid.NewGuid().ToString("N").Substring(1, 8) + ".").Trim();
                 //adds todataTable
                 dt.Rows.Add(usr, pass);
@@ -361,6 +373,7 @@ namespace AppLabRedes.CourseDetails
             }
             UpdatePanel4.Update();
         }
+<<<<<<< HEAD
         /// <summary>
         /// To Convert a date time in a TimeZone to server TimeZone
         /// </summary>
@@ -387,22 +400,68 @@ namespace AppLabRedes.CourseDetails
 
             bool valid = true;
             //checks if users are all valid
+=======
+
+        protected bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        protected void btnAddCourse_Click(object sender, EventArgs e)
+        {
+            bool validMail = true;
+            //check if emails are valid
+>>>>>>> origin/master
             foreach (ListViewItem lstItem in lstUsers.Items)
             {
-                String usr = ((TextBox)lstItem.FindControl("txtName")).Text;
-                if (isForbiddenUserBeforeInsert(usr))
+                String mail = ((TextBox)lstItem.FindControl("txtMail")).Text;
+                if (!IsValidEmail(mail))
                 {
-                    valid = false;
+                    validMail = false;
+                    break;
                 }
             }
+<<<<<<< HEAD
             //checks if the users are really valid
             if (valid == true)
+=======
+            //check if the fields are all valid
+            if (txtCourseName.Text != "" && validMail == true)
             {
-                insertCourse(maxId);
-                insertLoginTimes(maxId);
-                insertUsers(maxId);
-                System.Threading.Thread.Sleep(3000);
-                Response.Redirect("~/Course/Courses.aspx");
+                //gets the maxId
+                int maxId = SqlCode.SelectForINT("Select Max(id)+1 From tblCourse");
+
+                bool valid = true;
+                foreach (ListViewItem lstItem in lstUsers.Items)
+                {
+                    String usr = ((TextBox)lstItem.FindControl("txtName")).Text;
+                    if (isForbiddenUserBeforeInsert(usr))
+                    {
+                        valid = false;
+                    }
+                }
+                if (valid == true)
+                {
+                    insertCourse(maxId);
+                    insertLoginTimes(maxId);
+                    insertUsers(maxId);
+                    Response.Redirect("~/Course/Courses.aspx");
+                }
+            }
+            else
+>>>>>>> origin/master
+            {
+                cphErrorMessage.Visible = true;
+                txtOutput.Text = "Error!! Select the the course name or check your E-mails!!";
+                upUsers.Update();
             }
         }
         /// <summary>
@@ -436,7 +495,6 @@ namespace AppLabRedes.CourseDetails
                     {
                         //output error
                         txtOutput.Text = ex.Message + "@InsertData";
-
                     }
                     finally
                     {

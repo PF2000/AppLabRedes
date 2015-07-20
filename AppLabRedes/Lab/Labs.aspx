@@ -30,7 +30,7 @@
                             <h5>Number of Pods - <strong><%#Eval("numPods")%></strong></h5>
                             <a href='<%# "EditLab.aspx?idLab="+Eval ("id") %>' class="btn btn-primary">Edit</a>
                             <%--<asp:Button ID="btnRemoveLab" runat="server" Text="Remove" class="btn btn-primary" OnClick= />--%>
-                            <asp:LinkButton ID="btnRemoveLab" runat="server" CssClass="btn btn-primary" OnCommand="btnRemoveLab_Command" CommandArgument='<%# Eval ("id") %>'>Remove</asp:LinkButton>
+                            <asp:LinkButton ID="btnRemoveLab" runat="server" CssClass="btn btn-primary" OnCommand="btnRemoveLab_Command" CommandArgument='<%# Eval ("id") %>' OnClientClick="return confirm('Are you sure you want to add this course ?')">Remove</asp:LinkButton>
                         </div>
                     </div>
                 </div>

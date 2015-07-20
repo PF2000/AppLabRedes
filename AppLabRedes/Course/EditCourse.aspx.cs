@@ -193,8 +193,14 @@ namespace AppLabRedes.Course
                 DateTime tB = dtt;
                 DateTime tE = dtt.AddHours(numHours);
                 //gets the number os pods available
+<<<<<<< HEAD
                 podsLeftOnInit(dateeBegin, dateeEnd, idLab,idCourse);
                 //number of next line
+=======
+                podsLeftOnInit(dateeBegin, dateeEnd, idLab, idCourse);
+
+                //numero da proxima linha
+>>>>>>> origin/master
                 int rCount = dtTimes.Rows.Count + 1;
                 dtTimes.Rows.Add(tB, tE, numPodsLeftByDate, numPodsFromLab, rCount);
                 //update datasource
@@ -573,6 +579,46 @@ namespace AppLabRedes.Course
                         }
                     }
                 }
+<<<<<<< HEAD
+=======
+
+            }
+        }
+
+        private void podsLeftOnInit(DateTime tB, DateTime tE, int idLab, int idCourse)
+        {
+
+            DataTable dt = SqlCode.PullDataToDataTable(
+               " select lt.tBegin , lt.tEnd, c.numUsers" +
+               " from tblLabs as l , tblCourse as c , tblLOginTimes as lt, tblUsers as u " +
+               " where l.Id=" + idLab + " and c.id != '" + idCourse + "' and l.id=c.Lab and lt.course=c.id and u.course=c.id");
+            int podsAvl = 50;
+
+            //verificações
+            foreach (DataRow row in dt.Rows)
+            {
+                DateTime dBegin = Convert.ToDateTime(row["tBegin"]);
+                DateTime dEnd = Convert.ToDateTime(row["tEnd"]);
+                podsAvl = Convert.ToInt16(row["numUsers"]);
+
+                //ifThereUsers
+                if ((dBegin > tB && dBegin < tE) || (dEnd < tB && dEnd > tE))
+                {
+                    //updates the number minimum number of pod by date
+                    if (podsAvl < numPodsLeftByDate)
+                    {
+                        numPodsLeftByDate = podsAvl;
+                        //updates the number minimum number of pod total
+                        if (numPodsLeftByDate < numPodsLeftTotal)
+                        {
+                            numPodsLeftTotal = numPodsLeftByDate;
+                        }
+                    }
+
+
+                }
+
+>>>>>>> origin/master
             }
         }
         /// <summary>
@@ -683,16 +729,45 @@ namespace AppLabRedes.Course
                 Response.Redirect("~/Course/Courses.aspx");
             }
         }
+<<<<<<< HEAD
         /// <summary>
         /// Updates the course.
         /// </summary>
         /// <param name="idCourse"></param>
+=======
+
+        protected bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+>>>>>>> origin/master
         private void updateCourse(int idCourse)
         {
 
-            String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            using (SqlConnection openCon = new SqlConnection(strConn))
+            bool validMail = true;
+            //check if emails are valid
+            foreach (ListViewItem lstItem in lstUsers.Items)
             {
+                String mail = ((TextBox)lstItem.FindControl("txtMail")).Text;
+                if (!IsValidEmail(mail))
+                {
+                    validMail = false;
+                    break;
+                }
+            }
+            //check if the fields are all valid
+            if (txtCourseName.Text != "" && validMail == true)
+            {
+<<<<<<< HEAD
                 //command
                 string strr = " update tblCourse set Lab=@idLab,description=@description,numUsers=@numUsers,cName=@cName,cType=@cType where id=@id"; 
                 using (SqlCommand command = new SqlCommand(strr, openCon))
@@ -714,15 +789,52 @@ namespace AppLabRedes.Course
                     {
                         //error message
                         txtOutput.Text = ex.Message + "@updateData";
+=======
 
+
+                String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                using (SqlConnection openCon = new SqlConnection(strConn))
+                {
+                    string strr = " update tblCourse set Lab=@idLab,description=@description,numUsers=@numUsers,cName=@cName,cType=@cType where id=@id";
+
+                    using (SqlCommand command = new SqlCommand(strr, openCon))
+                    {
+>>>>>>> origin/master
+
+                        command.Parameters.AddWithValue("@id", idCourse);
+                        command.Parameters.AddWithValue("@idLab", ddlLabs.SelectedValue);
+                        command.Parameters.AddWithValue("@description", txtDescription.Text);
+                        command.Parameters.AddWithValue("@numUsers", ddlNumPods.SelectedValue);
+                        command.Parameters.AddWithValue("@cName", txtCourseName.Text);
+                        command.Parameters.AddWithValue("@cType", ddlTypes.SelectedValue);
+                        try
+                        {
+                            openCon.Open();
+                            int recordsAffected = command.ExecuteNonQuery();
+                        }
+                        catch (SqlException ex)
+                        {
+                            txtOutput.Text = ex.Message + "@updateData";
+                            cphErrorMessage.Visible = true;
+                            upUsers.Update();
+                        }
+                        finally
+                        {
+                            openCon.Close();
+                        }
+                        command.Parameters.Clear();
                     }
+<<<<<<< HEAD
                     finally
                     {
                         //closes the connection
                         openCon.Close();
                     }
                     command.Parameters.Clear();
+=======
+>>>>>>> origin/master
                 }
+                txtOutput.Text = "";
             }
         }
         /// <summary>
@@ -737,6 +849,10 @@ namespace AppLabRedes.Course
             {
                 //command
                 string strr = " delete from tblLOginTimes where course = @idCourse"; ;
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
                 using (SqlCommand command = new SqlCommand(strr, openCon))
                 {
                     //command parameters
@@ -942,5 +1058,6 @@ namespace AppLabRedes.Course
                 return true;
             }
         }
+
     }
 }
