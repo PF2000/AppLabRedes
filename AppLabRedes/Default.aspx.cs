@@ -19,13 +19,15 @@ namespace AppLabRedes
         List<DateTime> listDateTime = null;
         DataTable dt = null;
 
-
         protected void Page_Load(object sender, EventArgs e)
         {
+            //creates the list
             listDateTime = new List<DateTime>();
+            //gets all the courses and respective information
             dt = SqlCode.PullDataToDataTable("select * from tblCourse as c, tblLOginTimes as lt where c.id = lt.course");
             try
             {
+                //gets and sets the information: news, active users,sheduled users
                 lblNotifications.Text = SqlCode.SelectForINT("select count(*) from EventLogger where NotSeen='true'") + "";
                 lblActiveUsers.Text = SqlCode.SelectForINT("select count(*) from VPNUsers where active='true'") + "";
                 lblScheduleUsers.Text = SqlCode.SelectForINT("select count(*) from VPNUsers where active is null") + "";
@@ -34,9 +36,12 @@ namespace AppLabRedes
             {
 
             }
+            //updates the router status
             updateRouterStatus();
         }
-
+        /// <summary>
+        /// Check and updated the router status
+        /// </summary>
         private void updateRouterStatus()
         {
 
@@ -57,6 +62,11 @@ namespace AppLabRedes
             }
         }
 
+        /// <summary>
+        /// btn for pinging the router and update the information
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnPing_Click(object sender, EventArgs e)
         {
             try
@@ -78,10 +88,8 @@ namespace AppLabRedes
                     if (itPings)
                     {
                         //updates the ping status 
-
                         Application["RouterStatus"] = itPings;
                         Application["PingTime"] = Network.PingTimeAverage(RouterIP, 8);
-
                     }
                     else
                     {
@@ -98,13 +106,17 @@ namespace AppLabRedes
             }
             updateRouterStatus();
         }
-
+        /// <summary>
+        /// For calendar rendering. All days execute this code
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void Calendar1_DayRender(object sender, DayRenderEventArgs e)
         {
-
+            //create a line break
             Literal lineBreak = new Literal();
             lineBreak.Text = "<br />";
-
+            //gets the row number 
             int ro = dt.Rows.Count;
             IEnumerable<int> strr;
             try
@@ -136,20 +148,22 @@ namespace AppLabRedes
 
                     for (int i = 0; i < lst.Count; i++)
                     {
+                        //adds a line break
                         e.Cell.Controls.Add(lineBreak);
-
+                        //sets the name
                         String cName = lst.ElementAt(i);
+                        //gets the course id
                         String cId = Convert.ToString(lstId.ElementAt(i));
-
+                        //creates a hyperlink
                         HyperLink link = new HyperLink();
+                        //sets the name
                         link.Text = cName;
-
+                        //sets the link
                         link.NavigateUrl =
                             Page.ClientScript.GetPostBackClientHyperlink(CalendarLinkButton,
                                 cId, true);
                         e.Cell.Controls.Add(link);
                     }
-
                 }
             }
             catch (Exception ex)
@@ -157,9 +171,14 @@ namespace AppLabRedes
                 String ex1 = ex.Message;
             }
         }
-
+        /// <summary>
+        /// Hyperlink of course
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void CalendarLinkButton_Click(object sender, EventArgs e)
         {
+            //gets the id and goes to the couse details
             int id = Convert.ToInt16(Request.Form["__EVENTARGUMENT"]);
             Response.Redirect("~/Course/CourseDetails.aspx?idCourse="+id+"");
         }

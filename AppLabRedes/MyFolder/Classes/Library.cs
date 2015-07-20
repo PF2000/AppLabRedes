@@ -46,7 +46,13 @@ namespace AppLabRedes.MyScripts
            // tc.Disconnect();
         }
 
+        protected DateTime ConvertTime(DateTime dt, String IdNewTz)
+        {
+            String IdLocalTz = TimeZoneInfo.Local.Id;
 
+            DateTime nDateTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(dt, IdNewTz, IdLocalTz);
+            return nDateTime;
+        }
 
     }
 }

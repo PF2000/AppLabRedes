@@ -16,8 +16,9 @@ namespace AppLabRedes.Course
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            //gets query string
             int idCourse = Convert.ToInt16(Request.QueryString["idCourse"]);
-
+            //gets course information
             DataTable dt = SqlCode.PullDataToDataTable("select * from tblCourse c,tblLabs l, tblLabType t where c.lab=l.id and c.cType=t.id and c.id='" + idCourse + "'");
             DataRow row = dt.Rows[0];
 
@@ -27,18 +28,14 @@ namespace AppLabRedes.Course
             String lab = Convert.ToString(row["name"]);
             String type = Convert.ToString(row["type"]);
 
-
+            //sets parameters
             txtCourseName.Text = name;
             txtLab.Text = lab;
             txtNumPods.Text = numUsers;
             txtDescription.Text = description;
             txtType.Text = type;
 
-
             //data from LoginTimes
-
-
-
             String begin = SqlCode.SelectForString("select min(tBegin) from tblCourse c,tblLOginTimes as lt where lt.course=c.id and c.id='" + idCourse + "'");
             String end = SqlCode.SelectForString("select max(tBegin) from tblCourse c,tblLOginTimes as lt where lt.course=c.id and c.id='" + idCourse + "'");
             //to get time
