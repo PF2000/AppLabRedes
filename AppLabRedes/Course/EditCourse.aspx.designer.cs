@@ -13,13 +13,31 @@ namespace AppLabRedes.Course {
     public partial class EditCourse {
         
         /// <summary>
+        /// upUsers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel upUsers;
+        
+        /// <summary>
+        /// cphErrorMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder cphErrorMessage;
+        
+        /// <summary>
         /// txtOutput control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal txtOutput;
+        protected global::System.Web.UI.WebControls.Label txtOutput;
         
         /// <summary>
         /// txtCourseName control.

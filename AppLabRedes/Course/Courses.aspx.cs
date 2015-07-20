@@ -1,10 +1,14 @@
-﻿using AppLabRedes.Scripts.MyScripts;
+﻿using ActiveDirectoryHelper;
+using AppLabRedes.Scripts.MyScripts;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -47,7 +51,17 @@ namespace AppLabRedes.Course
 
         protected void btnRemoveCourse_Command(object sender, CommandEventArgs e)
         {
+            StringBuilder sb = new StringBuilder();
+
             int idCourse = Convert.ToInt16(e.CommandArgument.ToString());
+
+            ActiveDirectory ad = new ActiveDirectory();
+            DataTable dt = SqlCode.PullDataToDataTable("select usr from tblUsers where course = '" + idCourse + "'");
+
+            foreach (DataRow row in dt.Rows) // Loop over the items.
+            {
+                ad.DeleteUser(sb, row["usr"].ToString());
+            }
 
             //adds the labTypes to database
             RemoveUsers(idCourse);
@@ -137,11 +151,10 @@ namespace AppLabRedes.Course
         {
 
             String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
             using (SqlConnection openCon = new SqlConnection(strConn))
             {
                 string strr = " delete from tblUsers where course = @idCourse"; ;
-
-
 
                 using (SqlCommand command = new SqlCommand(strr, openCon))
                 {
@@ -170,9 +183,111 @@ namespace AppLabRedes.Course
 
         }
 
+
+        public static HashTable<String, Set<TimeZone>> getAvailableTimeZones()
+
+{
+
+Map<String, Set<TimeZone>> availableTimezones = new HashMap<String, Set<TimeZone>>();
+
+ 
+
+// Loop through all available locales
+
+ 
+
+for (Locale locale : Locale.getAvailableLocales())
+
+{
+
+ String countryCode = locale.getCountry();
+
+ 
+
+// Locate the timezones added for this country so far
+// (This can be moved to inside the loop if depending
+// on whether country with no available timezones should
+// be in the result map with an empty set,
+// or not included at all)
+
+ 
+
+List<TimeZone> timezones = availableTimezones.get(countryCode);
+
+if (timezones==null)
+
+{
+
+timezones = new HashSet<TimeZone>();
+
+availableTimezones.put(countryCode, timezones);
+
+}
+
+ 
+
+// Find all timezones for that country (code) using ICU4J
+
+ 
+
+for (String id :
+
+com.ibm.icu.util.TimeZone.getAvailableIDs(countryCode))
+
+{
+
+// Add timezone to result map
+
+ 
+
+timezones.add(TimeZone.getTimeZone(id));
+
+}
+
+}
+
+return availableTimezones;
+
+}
+
+
+        private void teste()
+        {
+
+            IEnumerable col = TimeZoneInfo.GetSystemTimeZones();
+
+
+            CultureInfo[] cinfo = CultureInfo.GetCultures(CultureTypes.AllCultures);
+            foreach (CultureInfo cul in cinfo)
+            {
+                try
+                {
+                    RegionInfo ri = new RegionInfo(cul.Name);
+                    ddlTeste.Items.Add(ri.DisplayName);
+                    
+                    TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("<the time zone id>");
+// May 7, 08:04:00
+DateTime userDateTime = new DateTime(2009, 5, 7, 8, 4, 0);
+DateTime utcDateTime = userDateTime.Subtract(tzi.BaseUtcOffset);
+
+                    ri.GeoId
+
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+
+        }
+
+
+
         protected void btnSearch_Click(object sender, EventArgs e)
         {
 
+            teste();
             cphErrorMessage.Visible = false;
             int idLab = Convert.ToInt16(ddlLabs.SelectedValue);
             if (idLab >= 0 && txtBegin.Text != "" && txtEnd.Text != "")
@@ -203,6 +318,11 @@ namespace AppLabRedes.Course
 
             }
 
+        }
+
+        protected void ddlTeste_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ddl
         }
 
     }

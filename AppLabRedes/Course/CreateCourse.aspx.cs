@@ -56,7 +56,7 @@ namespace AppLabRedes.CourseDetails
             {
 
                 initTable();
-               // numPodsLeftTotal = numPodsFromLab;
+                // numPodsLeftTotal = numPodsFromLab;
 
 
                 ddlTypes.ID = "ddlTypes";
@@ -188,6 +188,7 @@ namespace AppLabRedes.CourseDetails
             //id fields are not empty
             if (bDate != "" && eDate != "" && bTime != "" && eTime != "")
             {
+
                 //Converts to dateTime
                 DateTime tBegin = Convert.ToDateTime(bDate);
                 DateTime tEnd = Convert.ToDateTime(eDate);
@@ -196,7 +197,7 @@ namespace AppLabRedes.CourseDetails
                 DateTime timeEnd = Convert.ToDateTime(eTime);
 
                 //if end time is bigger than begin time
-                if (tBegin <= tEnd)
+                if (tBegin <= tEnd && timeBegin > timeEnd)
                 {
                     //counts the number of days
                     TimeSpan ts = tEnd - tBegin;
@@ -315,7 +316,7 @@ namespace AppLabRedes.CourseDetails
                 {
                     usr = UserType + ((i + 1) + k);
                     k++;
-                } while (isForbiddenUser(usr,dt));
+                } while (isForbiddenUser(usr, dt));
                 //Pass para user
                 String pass = (Guid.NewGuid().ToString("N").Substring(1, 8) + ".").Trim();
                 dt.Rows.Add(usr, pass);
@@ -335,28 +336,60 @@ namespace AppLabRedes.CourseDetails
 
         }
 
+        protected bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         protected void btnAddCourse_Click(object sender, EventArgs e)
         {
-            //gets the maxId
-            int maxId = SqlCode.SelectForINT("Select Max(id)+1 From tblCourse");
-
-            bool valid = true;
+            bool validMail = true;
+            //check if emails are valid
             foreach (ListViewItem lstItem in lstUsers.Items)
             {
-                String usr = ((TextBox)lstItem.FindControl("txtName")).Text;
-                if (isForbiddenUserBeforeInsert(usr))
+                String mail = ((TextBox)lstItem.FindControl("txtMail")).Text;
+                if (!IsValidEmail(mail))
                 {
-                    valid = false;
+                    validMail = false;
+                    break;
                 }
             }
-
-            if (valid == true)
+            //check if the fields are all valid
+            if (txtCourseName.Text != "" && validMail == true)
             {
-                insertCourse(maxId);
-                insertLoginTimes(maxId);
-                insertUsers(maxId);
-                System.Threading.Thread.Sleep(3000);
-                Response.Redirect("~/Course/Courses.aspx");
+                //gets the maxId
+                int maxId = SqlCode.SelectForINT("Select Max(id)+1 From tblCourse");
+
+                bool valid = true;
+                foreach (ListViewItem lstItem in lstUsers.Items)
+                {
+                    String usr = ((TextBox)lstItem.FindControl("txtName")).Text;
+                    if (isForbiddenUserBeforeInsert(usr))
+                    {
+                        valid = false;
+                    }
+                }
+                if (valid == true)
+                {
+                    insertCourse(maxId);
+                    insertLoginTimes(maxId);
+                    insertUsers(maxId);
+                    Response.Redirect("~/Course/Courses.aspx");
+                }
+            }
+            else
+            {
+                cphErrorMessage.Visible = true;
+                txtOutput.Text = "Error!! Select the the course name or check your E-mails!!";
+                upUsers.Update();
             }
         }
 
@@ -386,7 +419,6 @@ namespace AppLabRedes.CourseDetails
                     catch (SqlException ex)
                     {
                         txtOutput.Text = ex.Message + "@InsertData";
-
                     }
                     finally
                     {

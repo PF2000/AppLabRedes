@@ -7,9 +7,18 @@
     <!-- /.row -->
     <div class="row">
 
-        <p class="text-danger">
-            <asp:Literal runat="server" ID="txtOutput" />
-        </p>
+        <asp:UpdatePanel ID="upUsers" runat="server" UpdateMode="Conditional">
+            <ContentTemplate>
+                <asp:PlaceHolder runat="server" ID="cphErrorMessage" Visible="false">
+                    <div class="form-group">
+                        <asp:Label runat="server" CssClass="text-danger col-lg-12 control-label" ID="txtOutput"></asp:Label>
+                    </div>
+                    <br />
+                    <hr />
+                </asp:PlaceHolder>
+            </ContentTemplate>
+        </asp:UpdatePanel>
+
         <div class="col-md-6">
 
             <h4>Edit Course</h4>
@@ -177,7 +186,6 @@
                                     </asp:ListView>
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <br />
                                 <label class="col-md-2 control-label">Description</label>
@@ -191,10 +199,9 @@
                                 <br />
                                 <div class="col-md-offset-2 col-md-10">
                                     <br />
-                                    <asp:Button ID="btnUpdateCourse" runat="server" Text="Update Course" OnClick="btnUpdateCourse_Click" CssClass="btn btn-default" />
+                                    <asp:Button ID="btnUpdateCourse" runat="server" Text="Update Course" OnClick="btnUpdateCourse_Click" CssClass="btn btn-default" OnClientClick="return confirm('Are you sure you want to remove this course ?')" />
                                 </div>
                             </div>
-
                         </asp:PlaceHolder>
                     </ContentTemplate>
                 </asp:UpdatePanel>
@@ -202,8 +209,6 @@
         </div>
     </div>
     <%--http://mugifly.github.io/jquery-simple-datetimepicker/--%>
-    <%--http://eternicode.github.io/bootstrap-datepicker/?markup=input&format=&weekStart=&startDate=&endDate=&startView=0&minViewMode=0&todayBtn=false&clearBtn=false&language=en&orientation=auto&multidate=&multidateSeparator=&keyboardNavigation=on&forceParse=on#sandbox--%>
-    <script type="text/javascript" src="../MyFolder/Scripts/jquery.simple-dtpicker.js"></script>
     <script type="text/javascript" src="../MyFolder/Scripts/bootstrap-datepicker.min.js"></script>
     <script type="text/javascript" src="../MyFolder/Scripts/bootstrap-datetimepicker.min.js"></script>
     <script>

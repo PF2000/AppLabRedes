@@ -41,7 +41,7 @@
                     </div>
                     <div class="col-xs-">
                         <div class="form-group">
-                            <asp:Button ID="btnSearch" runat="server" CssClass="btn btn-default" Text="Search" OnClick="btnSearch_Click" />
+                            <asp:Button ID="btnSearch" runat="server" CssClass="btn btn-default" Text="Search" OnClick="btnSearch_Click"  />
                         </div>
                     </div>
                 </div>
@@ -49,6 +49,9 @@
         </div>
     </div>
     <hr />
+
+    <asp:DropDownList ID="ddlTeste" runat="server" OnSelectedIndexChanged="ddlTeste_SelectedIndexChanged"></asp:DropDownList>
+
     <div class="row">
         <h4>Overview Courses </h4>
         <hr />
@@ -67,7 +70,7 @@
                             <hr />
                             <h5>Number of Pods - <strong><%#Eval("numUsers")%></strong></h5>
                             <a href='<%# "EditCourse.aspx?idCourse="+Eval ("id") %>' class="btn btn-primary">Edit</a>
-                            <asp:LinkButton ID="btnRemoveCourse" runat="server" CssClass="btn btn-primary" OnCommand="btnRemoveCourse_Command" CommandArgument='<%# Eval ("id") %>'>Remove</asp:LinkButton>
+                            <asp:LinkButton ID="btnRemoveCourse" runat="server" CssClass="btn btn-primary" OnCommand="btnRemoveCourse_Command" CommandArgument='<%# Eval ("id") %>' OnClientClick="return confirm('Are you sure you want to remove this course ?')">Remove</asp:LinkButton>
                         </div>
                     </div>
                 </div>
@@ -100,7 +103,6 @@
                     datesDisabled: ['07/06/2015', '07/21/2015'],
                     toggleActive: true
                 });
-
             });
         });
 

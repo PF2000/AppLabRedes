@@ -9,16 +9,23 @@
 
 
     <div class="row">
+        <asp:UpdatePanel ID="upUsers" runat="server" UpdateMode="Conditional">
+            <ContentTemplate>
+                <asp:PlaceHolder runat="server" ID="cphErrorMessage" Visible="false">
+                    <div class="form-group">
+                        <asp:Label runat="server" CssClass="text-danger col-lg-12 control-label" ID="txtOutput"></asp:Label>
+                    </div>
+                    <br />
+                    <hr />
+                </asp:PlaceHolder>
+            </ContentTemplate>
+        </asp:UpdatePanel>
 
-        <p class="text-danger">
-            <asp:Literal runat="server" ID="txtOutput" />
-        </p>
         <div class="col-md-6">
 
             <h4>Create Course</h4>
             <hr />
             <div class="form-horizontal">
-
                 <div class="form-group">
                     <label class="col-md-2 control-label">Course Name</label>
                     <div class="col-md-10 ">
@@ -132,7 +139,7 @@
             <hr />
 
             <div class="form-horizontal">
-                <!-- Para Utilizadores ver quantos estão disponiveis para aqueles horários -->
+                <!-- check users in that time -->
                 <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <asp:PlaceHolder runat="server" ID="cphUsers" Visible="false">
@@ -165,7 +172,7 @@
                                                         <div class="col-md-12 ">
                                                             <div class="form-group">
                                                                 <label class="control-label">E-Mail</label>
-                                                                <asp:TextBox ID="txtMail" runat="server" CssClass="form-control"  ></asp:TextBox>
+                                                                <asp:TextBox ID="txtMail" runat="server" CssClass="form-control"></asp:TextBox>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -195,7 +202,7 @@
                                 <br />
                                 <div class="col-md-offset-2 col-md-10">
                                     <br />
-                                    <asp:Button ID="btnAddCourse" runat="server" Text="Add Course" OnClick="btnAddCourse_Click" CssClass="btn btn-default" />
+                                    <asp:Button ID="btnAddCourse" runat="server" Text="Add Course" OnClick="btnAddCourse_Click" CssClass="btn btn-default" OnClientClick="return confirm('Are you sure you want to add this course ?')" />
                                 </div>
                             </div>
 
