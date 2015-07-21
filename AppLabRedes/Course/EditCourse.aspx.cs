@@ -62,6 +62,8 @@ namespace AppLabRedes.Course
             initDdlTypes();
             //data from LoginTimes
             initLoginTimes();
+            //popoulate timezone
+            initDdlTimeZone();
             //populate ddl Users
             initDdlUsers();
             //Populate UserList
@@ -101,7 +103,6 @@ namespace AppLabRedes.Course
             numPodsLeftTotal = numPodsFromLab;
 
         }
-
         /// <summary>
         /// Init the LabTypes drop down list 
         /// </summary>
@@ -131,6 +132,26 @@ namespace AppLabRedes.Course
             int TypeId = SqlCode.SelectForINT("select cType from tblCourse where id='" + idCourse + "'");
             //set selection
             ddlTypes.Items.FindByValue(TypeId + "").Selected = true;
+        }
+        /// <summary>
+        /// Init the LabTypes drop down list 
+        /// </summary>
+        private void initDdlTimeZone()
+        {
+            //sets the ddlTypes parameters
+            ddlTimeZone.ID = "ddlTimeZone";
+            ddlTimeZone.AutoPostBack = true;
+            ddlTimeZone.CssClass = "form-control";
+            //gets all the Types that matching the given Lab
+            ReadOnlyCollection<TimeZoneInfo> tzi;
+            tzi = TimeZoneInfo.GetSystemTimeZones();
+            foreach (TimeZoneInfo timeZone in tzi)
+            {
+                ddlTimeZone.Items.Add(new ListItem(timeZone.DisplayName, timeZone.Id));
+
+            }
+            //set selection
+            ddlTimeZone.Items.FindByValue(TimeZoneInfo.Local.Id + "").Selected = true;
         }
         /// <summary>
         /// Init the LoginTimes list 
@@ -202,7 +223,7 @@ namespace AppLabRedes.Course
                 dtt = dtt.AddDays(1);
             }
             //clears fields
-            lblnumAvlPods.InnerText = numPodsLeftTotal + "";
+            lblnumAvlPods.InnerText = (numPodsFromLab - numPodsLeftTotal ) + "";
             lblnumTotalPods.InnerText = numPodsFromLab + "";
         }
         /// <summary>
@@ -274,7 +295,7 @@ namespace AppLabRedes.Course
         private void initUsersList()
         {
             //data from Users by course
-            DataTable dt2 = SqlCode.PullDataToDataTable("select usr as Name, pass as Pass, email  from tblCourse c,tblUsers as u where u.course=c.id and c.id='" + idCourse + "'");
+            DataTable dt2 = SqlCode.PullDataToDataTable("select u.usr as Name, u.pass as Pass, u.email as email  from tblCourse c,tblUsers as u where u.course=c.id and c.id='" + idCourse + "'");
 
             lstUsers.DataSource = dt2;
             lstUsers.DataBind();
@@ -388,6 +409,7 @@ namespace AppLabRedes.Course
             UpdatePanel2.Update();
             UpdatePanel4.Update();
             UpdatePanel5.Update();
+            UpdatePanel6.Update();
         }
         /// <summary>
         /// to validate the type selection
@@ -643,6 +665,7 @@ namespace AppLabRedes.Course
             DataTable dt = new DataTable();
             dt.Columns.Add("Name", typeof(string));
             dt.Columns.Add("Pass", typeof(string));
+            dt.Columns.Add("email", typeof(string));
             //to generate the userNames
             for (int i = 0; i < numCreatePods; i++)
             {

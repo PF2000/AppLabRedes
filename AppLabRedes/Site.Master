@@ -116,7 +116,7 @@
                                     <a runat="server" href="~/Admin/UserManagement.aspx"><i class="fa fa-meh-o fa-fw"></i>Managers</a>
                                 </li>
                                 <li>
-                                    <a runat="server" href="~/Admin/Logger.aspx"><i class="fa fa-bell fa-fw"></i>Event Logs</a>
+                                    <a runat="server" href="~/Logger/Logger.aspx"><i class="fa fa-bell fa-fw"></i>Event Logs</a>
                                 </li>
                                 <li>
                                     <a runat="server" href="~/Lab/Labs.aspx"><i class="fa fa-cog fa-fw"></i>Manage Labs</a>

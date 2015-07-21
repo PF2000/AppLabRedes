@@ -32,7 +32,7 @@ namespace AppLabRedes.MyScripts{
                     //gets the values
                     email = row["email"].ToString();
                     user = row["usr"].ToString();
-                    pass = row["pwd"].ToString();
+                    pass = row["pass"].ToString();
                     //build the message
                     sb1.AppendLine("");
                     sb1.AppendLine("Username: " + user);

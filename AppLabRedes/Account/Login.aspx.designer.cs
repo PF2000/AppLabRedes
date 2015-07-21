@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AspNet.Identity.Manager.Account {
+namespace AppLabRedes.Account {
     
     
     public partial class Login {
@@ -31,13 +31,13 @@ namespace AspNet.Identity.Manager.Account {
         protected global::System.Web.UI.WebControls.Literal FailureText;
         
         /// <summary>
-        /// UserName control.
+        /// User control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox UserName;
+        protected global::System.Web.UI.WebControls.TextBox User;
         
         /// <summary>
         /// Password control.

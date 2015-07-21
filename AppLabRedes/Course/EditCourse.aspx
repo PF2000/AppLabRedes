@@ -57,7 +57,7 @@
                 <!-- TuimeZone -->
                 <asp:UpdatePanel ID="UpdatePanel6" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <asp:PlaceHolder runat="server" ID="cphTimeZones" Visible="false">
+                        <asp:PlaceHolder runat="server" ID="cphTimeZones" Visible="true">
                             <div class="form-group">
                                 <label class="col-md-2 control-label">Choose TimeZone</label>
                                 <div class="col-md-10 ">

@@ -1,21 +1,21 @@
-﻿using AppLabRedes;
-using AppLabRedes.Models;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using System;
-using System.Linq;
+﻿using System;
 using System.Web;
 using System.Web.UI;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Owin;
+using AppLabRedes.Models;
+using AppLabRedes;
 
-namespace AspNet.Identity.Manager.Account
+namespace AppLabRedes.Account
 {
     public partial class Login : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             //RegisterHyperLink.NavigateUrl = "Register";
+            //// Enable this once you have account confirmation enabled for password reset functionality
+            ////ForgotPasswordHyperLink.NavigateUrl = "Forgot";
             //OpenAuthLogin.ReturnUrl = Request.QueryString["ReturnUrl"];
             //var returnUrl = HttpUtility.UrlEncode(Request.QueryString["ReturnUrl"]);
             //if (!String.IsNullOrEmpty(returnUrl))
@@ -28,19 +28,34 @@ namespace AspNet.Identity.Manager.Account
         {
             if (IsValid)
             {
-                // Benutzerkennwort überprüfen
-                var manager = new UserManager();
-                ApplicationUser user = manager.Find(UserName.Text, Password.Text);
-                if (user != null)
+                // Validate the user password
+                var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                var signinManager = Context.GetOwinContext().GetUserManager<ApplicationSignInManager>();
+
+                // This doen't count login failures towards account lockout
+                // To enable password failures to trigger lockout, change to shouldLockout: true
+                var result = signinManager.PasswordSignIn(User.Text, Password.Text, RememberMe.Checked, shouldLockout: false);
+
+                switch (result)
                 {
-                    IdentityHelper.SignIn(manager, user, RememberMe.Checked);
-                    //IdentityHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
-                    Response.Redirect("~/Overview/Overview.aspx");
-                }
-                else
-                {
-                    FailureText.Text = "Username does not match with the password.";
-                    ErrorMessage.Visible = true;
+                    case SignInStatus.Success:
+                        Response.Redirect("~/Overview/Overview.aspx");
+                       // IdentityHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
+                        break;
+                    case SignInStatus.LockedOut:
+                        //Response.Redirect("/Account/Lockout");
+                        break;
+                    case SignInStatus.RequiresVerification:
+                        Response.Redirect(String.Format("/Account/TwoFactorAuthenticationSignIn?ReturnUrl={0}&RememberMe={1}", 
+                                                        Request.QueryString["ReturnUrl"],
+                                                        RememberMe.Checked),
+                                          true);
+                        break;
+                    case SignInStatus.Failure:
+                    default:
+                        FailureText.Text = "Invalid login attempt";
+                        ErrorMessage.Visible = true;
+                        break;
                 }
             }
         }

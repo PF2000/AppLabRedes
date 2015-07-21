@@ -231,8 +231,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
-    <Content Include="Account\Forgot.aspx" />
+    <Content Include="AccountMP.Master" />
     <Content Include="Account\Login.aspx" />
+    <Content Include="Account\Manage.aspx" />
+    <Content Include="Account\OpenAuthProviders.ascx" />
     <Content Include="Account\Register.aspx" />
     <Content Include="Admin\UserManagement.aspx" />
     <Content Include="App_Data\AspNet.AppLabRedes.ldf">
@@ -342,8 +344,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Admin\Web.config" />
     <Content Include="Logger\Web.config" />
-    <Content Include="Account\Account.Master" />
-    <Content Include="Account\Web.config" />
+    <Content Include="Lab\Web.config" />
+    <Content Include="Course\Web.config" />
+    <Content Include="Overview\Web.config" />
     <None Include="Properties\PublishProfiles\LabRedes.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
@@ -409,19 +412,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Account\Account.Master.cs">
-      <DependentUpon>Account.Master</DependentUpon>
+    <Compile Include="AccountMP.Master.cs">
+      <DependentUpon>AccountMP.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Account\Account.Master.designer.cs">
-      <DependentUpon>Account.Master</DependentUpon>
-    </Compile>
-    <Compile Include="Account\Forgot.aspx.cs">
-      <DependentUpon>Forgot.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\Forgot.aspx.designer.cs">
-      <DependentUpon>Forgot.aspx</DependentUpon>
+    <Compile Include="AccountMP.Master.designer.cs">
+      <DependentUpon>AccountMP.Master</DependentUpon>
     </Compile>
     <Compile Include="Account\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
@@ -429,6 +425,20 @@
     </Compile>
     <Compile Include="Account\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Manage.aspx.cs">
+      <DependentUpon>Manage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Manage.aspx.designer.cs">
+      <DependentUpon>Manage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\OpenAuthProviders.ascx.cs">
+      <DependentUpon>OpenAuthProviders.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\OpenAuthProviders.ascx.designer.cs">
+      <DependentUpon>OpenAuthProviders.ascx</DependentUpon>
     </Compile>
     <Compile Include="Account\Register.aspx.cs">
       <DependentUpon>Register.aspx</DependentUpon>

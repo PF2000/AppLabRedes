@@ -1,5 +1,6 @@
 ﻿using ActiveDirectoryHelper;
 using AppLabRedes.MyFolder.Classes;
+using AppLabRedes.MyScripts;
 using AppLabRedes.Scripts.MyScripts;
 using System;
 using System.Data;
@@ -80,14 +81,14 @@ namespace AppLabRedes
             //SqlCode.copyData("Check the Users - begin or end","info");
 
             //Gets the users to Remove
-            DataTable dt = SqlCode.PullDataToDataTable("select distinct usr,pass, tl.id as id  from tblLOginTimes tl, tblUsers u where tl.course = u.course and GETDATE() > tl.tEnd and tl.active = '1'");
+            DataTable dt = SqlCode.PullDataToDataTable("select distinct usr,pass, tl.id as id, u.email as email  from tblLOginTimes tl, tblUsers u where tl.course = u.course and GETDATE() > tl.tEnd and tl.active = '1'");
             if (dt.Rows.Count != 0)
             {
                 RemoveUsers(dt);
             }
 
             //Gets the users to Add
-            dt = SqlCode.PullDataToDataTable("select distinct usr,pass, tl.id as id from tblLOginTimes tl, tblUsers u where tl.course = u.course and GETDATE() > tl.tBegin and tl.active = '0'");
+            dt = SqlCode.PullDataToDataTable("select distinct usr,pass, tl.id as id, u.email as email from tblLOginTimes tl, tblUsers u where tl.course = u.course and GETDATE() > tl.tBegin and tl.active = '0'");
             if (dt.Rows.Count != 0)
             {
                 SaveUsers(dt);
@@ -140,7 +141,7 @@ namespace AppLabRedes
                     ad.AddUserToGroup(userName, "RadiusUsers");
                 }
                 SqlCode.UpdateDB(dt, 1);
-                //Email.SendEmails(dt);
+                Email.SendEmails(dt);
                 SqlCode.copyDataEventLogger("Successfully created users", "success", sb.ToString());
                 errorAdd = false;
             }
