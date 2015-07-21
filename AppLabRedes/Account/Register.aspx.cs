@@ -25,7 +25,8 @@ namespace AspNet.Identity.Manager.Account
             }
             else 
             {
-                ErrorMessage.Text = result.Errors.FirstOrDefault();
+                PlaceHolder1.Visible = true;
+                FailureText.Text = result.Errors.FirstOrDefault();
             }
         }
     }

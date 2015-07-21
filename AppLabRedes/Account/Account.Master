@@ -1,0 +1,78 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Account.master.cs" Inherits="AppLabRedes.Account" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title><%: Page.Title %> - Remote Lab</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="/Content/bootstrap.css" rel="stylesheet" />
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/sb-admin-2.css" rel="stylesheet" />
+    <%--<link href="/Content/sb-admin.css" rel="stylesheet" />--%>
+    <link href="/Content/Site.css" rel="stylesheet" />
+    <link href="/Content/timeline.css" rel="stylesheet" />
+    <link href="/Content/metisMenu.min.css" rel="stylesheet" />
+    <link href="/Content/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/Content/jquery.simple-dtpicker.css" rel="stylesheet" />
+    <link href="/Content/jquery.datetimepicker.css" rel="stylesheet" />
+    <link href="Content/bootstrap-datepicker3.standalone.min.css" rel="stylesheet" />
+    <link href="Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="MyFolder/CSS/MyStyles.css" rel="stylesheet" />
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+
+    <form id="form1" runat="server">
+        <asp:ScriptManager runat="server">
+            <Scripts>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="bootstrap" />
+                <asp:ScriptReference Name="respond" />
+            </Scripts>
+        </asp:ScriptManager>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="login-panel panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Please Sign In</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form role="form">
+                                <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                                </asp:ContentPlaceHolder>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <%--<script type="text/javascript" src="/MyFolder/Scripts/jquery.simple-dtpicker.js" ></script>--%>
+
+        <script type="text/javascript" src="/MyFolder/Scripts/jquery-1.11.3.js"></script>
+        <script type="text/javascript" src="/MyFolder/Scripts/jquery.datetimepicker.js"></script>
+        <script type="text/javascript" src="/MyFolder/Scripts/bootstrap-datetimepicker.js"></script>
+        <script type="text/javascript" src="/MyFolder/Scripts/bootstrap.js"></script>
+        <script type="text/javascript" src="/MyFolder/Scripts/metisMenu.js"></script>
+        <script type="text/javascript" src="/MyFolder/Scripts/sb-admin-2.js"></script>
+    </form>
+</body>
+</html>
