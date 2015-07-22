@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -25,6 +26,20 @@ namespace AppLabRedes.Lab
         {
             //gets the lab id
             int idLab = Convert.ToInt16(e.CommandArgument.ToString());
+
+            DataTable dt = SqlCode.PullDataToDataTable("select c.id from tblCourse c, tblLabs l where c.Lab=l.Id and c.Lab='" + idLab + "'");
+
+            foreach (DataRow row in dt.Rows)
+            {
+                int idCourse = Convert.ToInt16(row["id"]);
+                //adds the labTypes to database
+                RemoveUsers(idCourse);
+                //adds the labTypes to database
+                RemoveLogTimes(idCourse);
+                //remove lab
+                RemoveCourse(idCourse);
+            }
+
             //adds the labTypes to database
             RemoveType_Lab(idLab);
             //remove lab
@@ -32,6 +47,8 @@ namespace AppLabRedes.Lab
             //PostBack
             Response.Redirect(Request.RawUrl);
         }
+
+
 
 
         /// <summary>
@@ -104,6 +121,117 @@ namespace AppLabRedes.Lab
                     command.Parameters.Clear();
                 }
             }
+        }
+
+
+
+        /// <summary>
+        /// Remove the course
+        /// </summary>
+        /// <param name="idCourse">Id for course removal</param>
+        private void RemoveCourse(int idCourse)
+        {
+            String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            using (SqlConnection openCon = new SqlConnection(strConn))
+            {   //command
+                string saveLab = " delete tblCourse where id = @idCourse "; ;
+
+                using (SqlCommand command = new SqlCommand(saveLab, openCon))
+                {
+                    //comand parameters
+                    command.Parameters.AddWithValue("@idCourse", idCourse);
+                    try
+                    {
+                        //open connection
+                        openCon.Open();
+                        int recordsAffected = command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        //error message
+                        txtOutput.Text = ex.Message + "@DeleteData";
+                    }
+                    finally
+                    {
+                        //closes que connection
+                        openCon.Close();
+                    }
+                    command.Parameters.Clear();
+                }
+            }
+        }
+        /// <summary>
+        /// Remove timeLogs from course
+        /// </summary>
+        /// <param name="idCourse">Id for course removal</param>
+        private void RemoveLogTimes(int idCourse)
+        {
+            String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            using (SqlConnection openCon = new SqlConnection(strConn))
+            {
+                //comand
+                string strr = " delete from tblLOginTimes where course = @idCourse"; ;
+                using (SqlCommand command = new SqlCommand(strr, openCon))
+                {
+                    //comand parameters
+                    command.Parameters.AddWithValue("@idCourse", idCourse);
+                    try
+                    {
+                        //open connection
+                        openCon.Open();
+                        int recordsAffected = command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        //error message
+                        txtOutput.Text = ex.Message + "@DeleteData";
+                    }
+                    finally
+                    {
+                        //closes conection
+                        openCon.Close();
+                    }
+                    command.Parameters.Clear();
+                }
+            }
+
+        }
+        /// <summary>
+        /// Removes Users.
+        /// </summary>
+        /// <param name="idCourse">Id for Users removal</param>
+        private void RemoveUsers(int idCourse)
+        {
+            String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            using (SqlConnection openCon = new SqlConnection(strConn))
+            {
+                //command
+                string strr = " delete from tblUsers where course = @idCourse"; ;
+                using (SqlCommand command = new SqlCommand(strr, openCon))
+                {
+                    //command parameters
+                    command.Parameters.AddWithValue("@idCourse", idCourse);
+                    try
+                    {
+                        //open connection
+                        openCon.Open();
+                        int recordsAffected = command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        //error message
+                        txtOutput.Text = ex.Message + "@DeleteData";
+                    }
+                    finally
+                    {
+                        //closes connection
+                        openCon.Close();
+                    }
+                    command.Parameters.Clear();
+                }
+            }
+
         }
 
     }

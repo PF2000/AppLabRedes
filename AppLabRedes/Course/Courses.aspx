@@ -83,8 +83,10 @@
                 </div>
             </LayoutTemplate>
         </asp:ListView>
+        <div class="row">
         <asp:LinkButton runat="server" PostBackUrl="~/Course/CreateCourse.aspx" ToolTip="Create Course">&nbsp;<span class="glyphicon glyphicon-plus fa-4x" /></asp:LinkButton>
     </div>
+        </div>
 
     <%--http://mugifly.github.io/jquery-simple-datetimepicker/--%>
     <script type="text/javascript" src="../MyFolder/Scripts/bootstrap-datepicker.min.js"></script>

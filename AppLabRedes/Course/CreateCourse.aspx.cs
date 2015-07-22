@@ -236,6 +236,8 @@ namespace AppLabRedes.CourseDetails
         /// <param name="e"></param>
         protected void btnTime_Click(object sender, EventArgs e)
         {
+            initTable();
+
             int LabId = Convert.ToInt16(ddlLabs.SelectedValue);
             //gets pods from lab
             numPodsFromLab = SqlCode.SelectForINT("select numPods from tblLabs where id='" + LabId + "';");

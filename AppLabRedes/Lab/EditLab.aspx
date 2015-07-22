@@ -120,7 +120,7 @@
                     </table>
                 </LayoutTemplate>
             </asp:ListView>
-            <asp:SqlDataSource runat="server" ID="SqlDSTypes" ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=AspNet.AppLabRedes.mdf;User ID=WebApp;Password=Labredes." 
+            <asp:SqlDataSource runat="server" ID="SqlDSTypes" ConnectionString='<%$ ConnectionStrings:DefaultConnection %>'
                 DeleteCommand="DELETE FROM [tblTypes_Labss] WHERE [IdType] = @Id; DELETE FROM [tblLabType] WHERE [Id] = @Id" 
                 InsertCommand="INSERT INTO [tblLabType] ([type]) VALUES (@type)" ProviderName="System.Data.SqlClient"
                  SelectCommand="SELECT * FROM [tblLabType]" UpdateCommand="UPDATE [tblLabType] SET [type] = @type WHERE [Id] = @Id">

@@ -177,7 +177,7 @@ namespace AppLabRedes
             //Check router status
             //Network.checkRouterStatus();
             //make a log
-            SqlCode.copyDataEventLogger("The Ping thread has been started", "success", "");
+            //SqlCode.copyDataEventLogger("The Ping thread has been started", "success", "");
         }
 
 
