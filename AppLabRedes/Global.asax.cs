@@ -45,7 +45,7 @@ namespace AppLabRedes
 
             //starts the Thread
             //StartMainThread(5000);
-            StartPingThread(4000);
+            //StartPingThread(4000);
 
         }
 

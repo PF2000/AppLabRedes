@@ -27,6 +27,12 @@ namespace AppLabRedes.Course
             String description = Convert.ToString(row["description"]);
             String lab = Convert.ToString(row["name"]);
             String type = Convert.ToString(row["type"]);
+            //TimeZone
+            //gets the id
+            String idTimeZone = Convert.ToString(row["timeZone"]);
+            //gets the name of timezone
+            String timeZone = Convert.ToString( TimeZoneInfo.FindSystemTimeZoneById(idTimeZone) );
+             
 
             //sets parameters
             txtCourseName.Text = name;
@@ -34,6 +40,7 @@ namespace AppLabRedes.Course
             txtNumPods.Text = numUsers;
             txtDescription.Text = description;
             txtType.Text = type;
+            txtTimeZone.Text = timeZone;
 
             //data from LoginTimes
             String begin = SqlCode.SelectForString("select min(tBegin) from tblCourse c,tblLOginTimes as lt where lt.course=c.id and c.id='" + idCourse + "'");
@@ -41,10 +48,18 @@ namespace AppLabRedes.Course
             //to get time
             String endTime = SqlCode.SelectForString("select max(tEnd) from tblCourse c,tblLOginTimes as lt where lt.course=c.id and c.id='" + idCourse + "'");
 
+            //gets the localTimeZone
+            String IdLocalTz = TimeZoneInfo.Local.Id;
+            //data converted
+            DateTime tBegin = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(Convert.ToDateTime(begin), IdLocalTz, idTimeZone);
+            DateTime tEnd = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(Convert.ToDateTime(end), IdLocalTz, idTimeZone);
+            DateTime tEndTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(Convert.ToDateTime(endTime), IdLocalTz, idTimeZone);
+
             //Converts to dateTime
-            DateTime tBegin = Convert.ToDateTime(begin);
-            DateTime tEnd = Convert.ToDateTime(end);
-            DateTime tEndTime = Convert.ToDateTime(endTime);
+            // = Convert.ToDateTime(begin);
+            //DateTime tEnd = Convert.ToDateTime(end);
+           // DateTime tEndTime = Convert.ToDateTime(endTime);
+
             //begin
             txtnBDate.Text = tBegin.Date.ToString("d");
             txtnBTime.Text = tBegin.TimeOfDay+"";

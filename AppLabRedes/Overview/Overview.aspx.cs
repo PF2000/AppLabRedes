@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -18,6 +20,11 @@ namespace AppLabRedes.Overview
 
         protected void Page_Load(object sender, EventArgs e)
         {
+
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-GB");
+            Thread.CurrentThread.CurrentCulture =
+                                 CultureInfo.CreateSpecificCulture("en-GB");  
+
             //creates the list
             listDateTime = new List<DateTime>();
             //gets all the courses and respective information
@@ -29,83 +36,14 @@ namespace AppLabRedes.Overview
                 lblActiveUsers.Text = SqlCode.SelectForINT("select Count(distinct c.id) from tblCourse c, tblLOginTimes lt where c.Id=lt.course and lt.active=1") + "";
                 lblScheduleUsers.Text = SqlCode.SelectForINT("select Count(distinct c.id) from tblCourse c, tblLOginTimes lt where c.Id=lt.course and lt.active=0") + "";
 
-                int idActiveCourse = SqlCode.SelectForINT("select distinct c.id from tblCourse c, tblLOginTimes lt where c.Id=lt.course and lt.active=1");
-                btnActiveCourse.PostBackUrl = "~/Course/CourseDetails?idCourse=" + idActiveCourse + "";
+               // int idActiveCourse = SqlCode.SelectForINT("select distinct c.id from tblCourse c, tblLOginTimes lt where c.Id=lt.course and lt.active=1");
             }
             catch (Exception ex)
             {
 
             }
-            //updates the router status
-            updateRouterStatus();
-        }
-        /// <summary>
-        /// Check and updated the router status
-        /// </summary>
-        private void updateRouterStatus()
-        {
-
-            String str = Convert.ToString(Application["RouterStatus"]);
-            String ping = Convert.ToString(Application["PingTime"]);
-
-            if (str.Equals("True"))
-            {
-                divRouterPing.Attributes["class"] = "alert alert-success";
-                lblRouterStatus.Text = "ON";
-                lblPingAvegare.Text = ping;
-            }
-            else
-            {
-                divRouterPing.Attributes["class"] = "alert alert-danger";
-                lblRouterStatus.Text = "OFF";
-                lblPingAvegare.Text = "0";
-            }
         }
 
-        /// <summary>
-        /// btn for pinging the router and update the information
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnPing_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                //get the Router ip settings
-                String RouterIP = System.Web.Configuration.WebConfigurationManager.AppSettings.Get("RouterIP");
-                //check if it pings
-                Boolean itPings = Network.itPings(RouterIP);
-                //get the previous status 
-                Boolean StatusRouter = Convert.ToBoolean(Application["RouterStatus"]);
-                //check ping time
-                double pingAverage = Network.PingTimeAverage(RouterIP, 8);
-                //get the old ping time
-                double StatuspingAverage = Convert.ToDouble(Application["PingTime"]);
-
-                if (itPings != StatusRouter || pingAverage != StatuspingAverage)
-                {
-                    Application.Lock();
-                    if (itPings)
-                    {
-                        //updates the ping status 
-                        Application["RouterStatus"] = itPings;
-                        Application["PingTime"] = Network.PingTimeAverage(RouterIP, 8);
-                    }
-                    else
-                    {
-                        //updates the ping status 
-                        Application["RouterStatus"] = itPings;
-                        Application["PingTime"] = 0;
-                    }
-                    Application.UnLock();
-                }
-            }
-            catch (Exception ex)
-            {
-                SqlCode.copyDataEventLogger("Error Pingging router", "danger", ex.Message);
-            }
-            updateRouterStatus();
-        }
         /// <summary>
         /// For calendar rendering. All days execute this code
         /// </summary>
@@ -128,10 +66,10 @@ namespace AppLabRedes.Overview
                 {
                     //gets all the users active in the day
                     courses = (from DataRow dr in dt.Rows
-                               where (DateTime)dr["tbegin"] <= e.Day.Date && (DateTime)dr["tEnd"] >= e.Day.Date
+                               where ((DateTime)dr["tbegin"]).Date == e.Day.Date || ((DateTime)dr["tEnd"]).Date == e.Day.Date
                                select (String)dr["cName"]);
                     strr = (from DataRow dr in dt.Rows
-                            where (DateTime)dr["tbegin"] <= e.Day.Date && (DateTime)dr["tEnd"] >= e.Day.Date
+                            where ((DateTime)dr["tbegin"]).Date == e.Day.Date || ((DateTime)dr["tEnd"]).Date == e.Day.Date
                             select (int)dr["id"]);
                     lstId = strr.ToList();
                     lst = courses.ToList();
@@ -157,7 +95,7 @@ namespace AppLabRedes.Overview
                         //creates a hyperlink
                         HyperLink link = new HyperLink();
                         //sets the name
-                        link.Text = cName;
+                        link.Text = cName + " ";
                         //sets the link
                         link.NavigateUrl =
                             Page.ClientScript.GetPostBackClientHyperlink(CalendarLinkButton,

@@ -40,8 +40,6 @@ namespace AppLabRedes.Settings
             String pass = txtEmailPass.Text;
             String message = txtEmailMessage.Text;
 
-
-
             insertMail(host, port, email, pass, message);
 
             Response.Redirect(Request.RawUrl);
@@ -72,7 +70,7 @@ namespace AppLabRedes.Settings
                     }
                     catch (SqlException ex)
                     {
-     
+                        String txt = "";
                     }
                     finally
                     {

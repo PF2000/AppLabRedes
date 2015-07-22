@@ -118,44 +118,44 @@ namespace AspNet.Identity.Manager.Account.Admin
             return context.Roles.OrderBy(r => r.Name).AsEnumerable();
         }
 
-        protected void addRoleButton_Click(object sender, EventArgs e)
-        {
-            RoleManager manager = new RoleManager();
-            ApplicationRole role = new ApplicationRole() { Name = newRoleTextbox.Text };
-            IdentityResult roleResult = manager.Create(role);
-            SuccessMessageRole = "Role added";
-            successMessageRole.Visible = true;
+        //protected void addRoleButton_Click(object sender, EventArgs e)
+        //{
+        //    RoleManager manager = new RoleManager();
+        //    ApplicationRole role = new ApplicationRole() { Name = newRoleTextbox.Text };
+        //    IdentityResult roleResult = manager.Create(role);
+        //    SuccessMessageRole = "Role added";
+        //    successMessageRole.Visible = true;
 
-            rolesListview.DataBind();
-            newRoleTextbox.Text = string.Empty;
+        //    rolesListview.DataBind();
+        //    newRoleTextbox.Text = string.Empty;
 
-            usersListview.DataBind();
-            //usersUpdatePanel.Update();
-        }
+        //    usersListview.DataBind();
+        //    //usersUpdatePanel.Update();
+        //}
 
-        public void UpdateRole(string Id)
-        {
-            ApplicationDbContext context = new ApplicationDbContext();
-            IdentityRole role = context.Roles.Find(Id);
-            if (role.IsNotNull())
-            {
-                TryUpdateModel(role);
-                if (ModelState.IsValid)
-                {
-                    context.SaveChanges();
-                    SuccessMessageRole = "Role updated";
-                    successMessageRole.Visible = true;
+        //public void UpdateRole(string Id)
+        //{
+        //    ApplicationDbContext context = new ApplicationDbContext();
+        //    IdentityRole role = context.Roles.Find(Id);
+        //    if (role.IsNotNull())
+        //    {
+        //        TryUpdateModel(role);
+        //        if (ModelState.IsValid)
+        //        {
+        //            context.SaveChanges();
+        //            SuccessMessageRole = "Role updated";
+        //            successMessageRole.Visible = true;
 
-                    usersListview.DataBind();
-                    usersUpdatePanel.Update();
-                }
-            }
-            else
-            {
-                AddErrors(new IdentityResult(new string[] { string.Format("element with id {0} not found.", Id) }));
-                return;
-            }
-        }
+        //            usersListview.DataBind();
+        //            usersUpdatePanel.Update();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        AddErrors(new IdentityResult(new string[] { string.Format("element with id {0} not found.", Id) }));
+        //        return;
+        //    }
+        //}
 
         public void removeRole(string Id)
         {
@@ -199,8 +199,7 @@ namespace AspNet.Identity.Manager.Account.Admin
                 TextBox passwordTextBox = e.Item.FindFirstControl<TextBox>("NewPassword");
                 TextBox confirmPasswordTextBox = e.Item.FindFirstControl<TextBox>("ConfirmNewPassword");
 
-                if (passwordTextBox.IsNotNull() && confirmPasswordTextBox.IsNotNull() &&
-                    passwordTextBox.IsNotEmpty() && confirmPasswordTextBox.IsNotEmpty() &&
+                if (!passwordTextBox.Equals("") && !confirmPasswordTextBox.Equals("") &&
                     passwordTextBox.Text == confirmPasswordTextBox.Text)
                 {
                     string userId = e.CommandArgument.ConvertTo<string>();

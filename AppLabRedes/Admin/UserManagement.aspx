@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="User management" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="UserManagement.aspx.cs" Inherits="AspNet.Identity.Manager.Account.Admin.UserManagement" %>
 
 <asp:Content ContentPlaceHolderID="MainContent" runat="server">
-    <h2><%: Title %>.</h2>
+    <h2><%: Title %></h2>
 
     <%--https://aspnetidentitymanager.codeplex.com/--%>
 
@@ -11,7 +11,6 @@
                 <asp:UpdatePanel ID="usersUpdatePanel" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
                 <div class="form-horizontal">
-                    <h4>User management</h4>
                     <asp:ValidationSummary runat="server" ShowModelStateErrors="true" CssClass="text-danger" />
                     <asp:PlaceHolder runat="server" ID="successMessageUser" Visible="false" ViewStateMode="Disabled">
                         <p class="text-success"><%: SuccessMessageUser %></p>
@@ -153,7 +152,7 @@
                 <asp:UpdatePanel ID="rolesUpdatePanel" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
                 <div class="form-horizontal">
-                    <h4>Role management</h4>
+ 
                     <asp:ValidationSummary runat="server" ShowModelStateErrors="true" CssClass="text-danger" />
                     <asp:PlaceHolder runat="server" ID="successMessageRole" Visible="false" ViewStateMode="Disabled">
                         <p class="text-success"><%: SuccessMessageRole %></p>
@@ -173,13 +172,14 @@
                             </LayoutTemplate>
                             <ItemTemplate>
                                 <tr>
-                                    <td><asp:LinkButton ID="EditRoleButton" runat="server" OnClientClick="return confirm('Are you sure you want to submit ?')" CommandName="Edit" CommandArgument='<%#: Item.Id %>'
+                                    <td><!--<asp:LinkButton ID="EditRoleButton" runat="server" OnClientClick="return confirm('Are you sure you want to submit ?')" CommandName="Edit" CommandArgument='<%#: Item.Id %>'
                                             ToolTip="Edit" Text='<span class="glyphicon glyphicon-edit" />' style="margin-right:10px;"/><%#: Item.Name %>
-                                    </td>
-                                    <td>
+                                 --> <%#: Item.Name %>
+                                          </td>
+                                  <!--  <td>
                                         <asp:LinkButton runat="server" CommandName="Delete" CausesValidation="false" OnClientClick="return confirm('Are you sure you want to submit ?')"
                                             ToolTip='<%# "Remove the role " + Item.Name %>' Text='<span class="glyphicon glyphicon-remove" />'/>
-                                    </td>
+                                    </td>-->
                                 </tr>
                             </ItemTemplate>
                             <EditItemTemplate>
@@ -196,11 +196,11 @@
                         </asp:ListView>
                     </div>
 
-                    <div class="form-inline">
+<%--                    <div class="form-inline">
                         <asp:Label runat="server" AssociatedControlID="newRoleTextbox" CssClass="control-label" Text="Add role: " />
                         <asp:TextBox runat="server" ID="newRoleTextbox" CssClass="form-control" />
                         <asp:LinkButton runat="server" OnClientClick="return confirm('Are you sure you want to submit ?')" OnClick="addRoleButton_Click" ToolTip="Add role" Text=' <span class="glyphicon glyphicon-plus" />' />
-                    </div>
+                    </div>--%>
                 </div>
                 </ContentTemplate>
                 </asp:UpdatePanel>

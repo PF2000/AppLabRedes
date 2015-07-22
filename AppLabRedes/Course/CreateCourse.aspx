@@ -227,19 +227,19 @@
         $(function () {
             $("body").on("mousemove", function () {
                 $("body").find(".date").datepicker({
-                    daysOfWeekDisabled: "0",
+                    // daysOfWeekDisabled: "0",
                     format: "dd/mm/yyyy",
-                    daysOfWeekDisabled: "0",
+                    //daysOfWeekDisabled: "0",
                     autoclose: true,
                     todayHighlight: true,
-                    datesDisabled: ['07/06/2015', '07/21/2015'],
+                    //datesDisabled: ['07/06/2015', '07/21/2015'],
                     toggleActive: true
                 });
 
                 $("body").find('.time').datetimepicker({
                     language: 'en',
                     weekStart: 1,
-                    todayBtn: 1,
+                    todayBtn: 0,
                     autoclose: 1,
                     todayHighlight: 1,
                     startView: 1,
@@ -247,6 +247,11 @@
                     maxView: 1,
                     forceParse: 0
                 });
+                $("body").find(".switch").parent().find('*').each(function () {
+                    $(this).css("visibility", " hidden")
+
+                });
+
             });
         });
     </script>

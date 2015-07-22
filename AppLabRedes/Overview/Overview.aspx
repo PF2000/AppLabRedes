@@ -28,7 +28,7 @@
                             </div>
                         </div>
                     </div>
-                    <a runat="server" href="~/Admin/Logger.aspx">
+                    <a runat="server" href="~/Logger/Logger.aspx">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -50,7 +50,7 @@
                             </div>
                         </div>
                     </div>
-                    <asp:LinkButton ID="btnActiveCourse" runat="server">
+                    <asp:LinkButton ID="btnActiveCourse" runat="server" PostBackUrl="~/Course/Courses?View=active">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -72,7 +72,7 @@
                             </div>
                         </div>
                     </div>
-                    <a runat="server" href="~/Course/Courses.aspx">
+                    <a runat="server" href="~/Course/Courses.aspx?View=scheduled">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -87,7 +87,7 @@
         <!-- /.row -->
         <div class="row">
             <div class="col-lg-8">
-                <div class="panel panel-default">
+<%--                <div class="panel panel-default">
                     <div class="panel-heading">
                         <i class="fa fa-desktop fa-fw"></i>Router Status
                            
@@ -111,7 +111,7 @@
                         </ContentTemplate>
                     </asp:UpdatePanel>
                     <!-- /.panel-body -->
-                </div>
+                </div>--%>
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -125,7 +125,7 @@
                                 <div class="col-lg-12 ">
                                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                                         <ContentTemplate>
-                                            <asp:Calendar ID="Calendar1" runat="server" Width="100%" SelectionMode="None" OnDayRender="Calendar1_DayRender" BackColor="White" BorderColor="#3366CC" CellPadding="2" DayNameFormat="Short" Font-Names="Verdana" Font-Size="8pt" ForeColor="#003399" CssClass="col-lg-12">
+                                            <asp:Calendar ID="Calendar1" runat="server" Width="100%" SelectionMode="None" OnDayRender="Calendar1_DayRender" BackColor="White" BorderColor="#3366CC" CellPadding="2" DayNameFormat="Short" Font-Names="Verdana" Font-Size="8pt" ForeColor="#003399" CssClass="col-lg-12" >
                                                 <SelectedDayStyle BackColor="#009999" Font-Bold="True" ForeColor="#CCFF99" />
                                                 <TodayDayStyle BackColor="#99CCCC" ForeColor="White" />
                                                 <SelectorStyle BackColor="#99CCCC" ForeColor="#336666" />
@@ -166,7 +166,7 @@
                                 </EmptyDataTemplate>
                                 <ItemTemplate>
                                     <asp:HiddenField Value='<%# Eval("id") %>' runat="server" />
-                                    <asp:LinkButton ID="btnNote" runat="server" PostBackUrl="~/Admin/Logger.aspx" CssClass="list-group-item">
+                                    <asp:LinkButton ID="btnNote" runat="server" PostBackUrl="~/Logger/Logger.aspx" CssClass="list-group-item">
                                 <i class="fa fa-comment fa-fw"></i><%# Eval("text") %>                                                        
                                     </asp:LinkButton>
                                 </ItemTemplate>
@@ -179,7 +179,7 @@
                     </div>
                 </div>
                 <!-- /.list-group -->
-                <asp:LinkButton ID="LinkButton1" runat="server" PostBackUrl="~/Admin/Logger.aspx" CssClass="btn btn-default btn-block">View All Notifications</asp:LinkButton>
+                <asp:LinkButton ID="LinkButton1" runat="server" PostBackUrl="~/Logger/Logger.aspx" CssClass="btn btn-default btn-block">View All Notifications</asp:LinkButton>
             </div>
             <!-- /.panel-body -->
         </div>

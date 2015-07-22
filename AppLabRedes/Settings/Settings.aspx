@@ -50,7 +50,7 @@
                         <div class="form-group">
                             <label class="col-md-2 control-label">Message</label>
                             <div class="col-md-8">
-                                <asp:TextBox ID="txtEmailMessage" runat="server" CssClass="form-control" Width="400px" Height="200px" TextMode="MultiLine" ></asp:TextBox>
+                                <asp:TextBox ID="txtEmailMessage" runat="server" CssClass="form-control"  Height="200px" TextMode="MultiLine" ></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="txtEmailMessage"
                                     CssClass="text-danger" ErrorMessage="The E-Mail field is required." />
                             </div>

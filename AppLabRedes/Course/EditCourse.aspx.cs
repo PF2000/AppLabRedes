@@ -223,7 +223,7 @@ namespace AppLabRedes.Course
                 dtt = dtt.AddDays(1);
             }
             //clears fields
-            lblnumAvlPods.InnerText = (numPodsFromLab - numPodsLeftTotal ) + "";
+            lblnumAvlPods.InnerText = ( numPodsLeftTotal ) + "";
             lblnumTotalPods.InnerText = numPodsFromLab + "";
         }
         /// <summary>
@@ -255,17 +255,13 @@ namespace AppLabRedes.Course
                     //updates the number minimum number of pod by date
                     if (podsAvl < numPodsLeftByDate)
                     {
-                        numPodsLeftByDate = podsAvl;
                         //updates the number minimum number of pod total
                         if (numPodsLeftByDate < numPodsLeftTotal)
                         {
                             numPodsLeftTotal = numPodsLeftByDate;
                         }
                     }
-
-
                 }
-
             }
         }
         /// <summary>
@@ -287,7 +283,7 @@ namespace AppLabRedes.Course
             }
             int numUsersPods = SqlCode.SelectForINT("select numUsers from tblCourse where id='" + idCourse + "'");
             //set selection
-            ddlNumPods.Items.FindByValue(numUsersPods + "").Selected = true;
+            ddlNumPods.Items.FindByValue( numUsersPods  + "").Selected = true;
         }
         /// <summary>
         /// The users List

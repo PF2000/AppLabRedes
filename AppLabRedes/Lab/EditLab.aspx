@@ -121,7 +121,10 @@
             <asp:SqlDataSource runat="server" ID="SqlDSTypes" ConnectionString='<%$ ConnectionStrings:DefaultConnection %>'
                 DeleteCommand="DELETE FROM [tblTypes_Labss] WHERE [IdType] = @Id; DELETE FROM [tblLabType] WHERE [Id] = @Id" 
                 InsertCommand="INSERT INTO [tblLabType] ([type]) VALUES (@type)" ProviderName="System.Data.SqlClient"
-                 SelectCommand="SELECT * FROM [tblLabType]" UpdateCommand="UPDATE [tblLabType] SET [type] = @type WHERE [Id] = @Id">
+                 SelectCommand="SELECT * FROM [tblLabType]" UpdateCommand="UPDATE [tblLabType] SET [type] = @type WHERE [Id] = @Id"
+                OnInserted="SqlDSTypes_Inserted"
+                OnDeleted="SqlDSTypes_Inserted"
+                OnUpdated="SqlDSTypes_Inserted">
                 <DeleteParameters>
                     <asp:Parameter Name="Id" Type="Int32"></asp:Parameter>
                 </DeleteParameters>

@@ -37,7 +37,10 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <asp:Button runat="server" Text="Set Password" ValidationGroup="SetPassword" OnClick="SetPassword_Click" CssClass="btn btn-default" />
+                <asp:Button runat="server" Text="Set Password" CssClass="btn btn-lg btn-success btn-block" ValidationGroup="SetPassword" OnClick="SetPassword_Click"  />
+
+                <asp:Button runat="server" Text="Cancel" CssClass="btn btn-lg btn-success btn-block" OnClick="Cancel_Click"  />
+
             </div>
         </div>
 
@@ -78,7 +81,7 @@
                 ValidationGroup="ChangePassword" />
 
         </div>
-        <asp:Button runat="server"  OnClick="ChangePassword_Click"  ValidationGroup="ChangePassword" Text="Change Password" CssClass="btn btn-lg btn-success btn-block" />
+        <asp:Button runat="server" OnClick="ChangePassword_Click" ValidationGroup="ChangePassword" Text="Change Password" CssClass="btn btn-lg btn-success btn-block" />
 
     </asp:PlaceHolder>
 

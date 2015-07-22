@@ -38,7 +38,12 @@
                         <asp:TextBox ID="txtType" runat="server" CssClass="form-control"></asp:TextBox>
                     </div>
                 </div>
-
+                <div class="form-group">
+                    <label class="col-md-2 control-label"> TimeZone</label>
+                    <div class="col-md-10 ">
+                        <asp:TextBox ID="txtTimeZone" runat="server" CssClass="form-control"></asp:TextBox>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label class="col-md-2 control-label">Login Time</label>
                     <div class="col-md-10 ">

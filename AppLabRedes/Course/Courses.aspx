@@ -23,7 +23,8 @@
                     <div class="col-xs-3">
                         <div class="form-group">
                             <label>Lab </label>
-                            <asp:DropDownList ID="ddlLabs" runat="server" AutoPostBack="true" CssClass="form-control" DataTextField="name" DataValueField="Id"></asp:DropDownList>
+                            <asp:DropDownList ID="ddlLabs" runat="server" AutoPostBack="true" CssClass="form-control" DataTextField="name" DataValueField="Id">
+                            </asp:DropDownList>
                         </div>
                     </div>
                     <div class="col-xs-4">
@@ -95,14 +96,19 @@
         $(function () {
             $("body").on("mousemove", function () {
                 $("body").find(".date").datepicker({
-                    daysOfWeekDisabled: "0",
+                   // daysOfWeekDisabled: "0",
                     format: "dd/mm/yyyy",
-                    daysOfWeekDisabled: "0",
+                    //daysOfWeekDisabled: "0",
                     autoclose: true,
                     todayHighlight: true,
-                    datesDisabled: ['07/06/2015', '07/21/2015'],
+                    //datesDisabled: ['07/06/2015', '07/21/2015'],
                     toggleActive: true
                 });
+
+                $("body").find(".switch").parent().find('*').each(function () {
+                    $(this).css("visibility", " hidden")
+                });
+
             });
         });
 

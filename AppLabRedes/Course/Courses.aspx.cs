@@ -27,7 +27,7 @@ namespace AppLabRedes.Course
                 //get allLabs
                 DataTable dtLabs = SqlCode.PullDataToDataTable("select * from tblLabs");
                 //default Item
-                System.Web.UI.WebControls.ListItem lst1 = new System.Web.UI.WebControls.ListItem("Labs", "-1");
+                System.Web.UI.WebControls.ListItem lst1 = new System.Web.UI.WebControls.ListItem(" ", "-1");
                 ddlLabs.Items.Add(lst1);
                 //db Items
                 foreach (DataRow row in dtLabs.Rows) // Loop over the items.
@@ -38,8 +38,25 @@ namespace AppLabRedes.Course
                     ddlLabs.Items.Add(lst);
                 }
             }
-            //pulls courses for the mounth
-            DataTable dt = SqlCode.PullDataToDataTable("select DISTINCT c.id,c.description,c.numUsers,c.cName from tblcourse c ,tblLOginTimes lt where lt.course=c.id and (select MONTH(lt.tBegin)) = (SELECT MONTH(GETDATE())) ;");
+            //gets course string from query string
+            String view = Convert.ToString(Request.QueryString["View"]);
+            DataTable dt;
+            if (view != null)
+            {
+                //decides what view to show
+                if (view.Equals("active"))
+                {
+                    dt = SqlCode.PullDataToDataTable("select DISTINCT c.id,c.description,c.numUsers,c.cName from tblcourse c ,tblLOginTimes lt where lt.course=c.id and (select MONTH(lt.tBegin)) = (SELECT MONTH(GETDATE())) and lt.active = 1;");
+                }
+                else 
+                {
+                    dt = SqlCode.PullDataToDataTable("select DISTINCT c.id,c.description,c.numUsers,c.cName from tblcourse c ,tblLOginTimes lt where lt.course=c.id and (select MONTH(lt.tBegin)) = (SELECT MONTH(GETDATE())) and lt.active = 0;");
+                }
+            }
+            else
+            {
+                dt = SqlCode.PullDataToDataTable("select DISTINCT c.id,c.description,c.numUsers,c.cName from tblcourse c ,tblLOginTimes lt where lt.course=c.id and (select MONTH(lt.tBegin)) = (SELECT MONTH(GETDATE())) and lt.active != 2;");
+            }
 
             lstCourses.DataSource = dt;
             lstCourses.DataBind();
@@ -199,8 +216,12 @@ namespace AppLabRedes.Course
                 //converts the dates selected
                 DateTime dBegin = Convert.ToDateTime(txtBegin.Text);
                 DateTime dEnd = Convert.ToDateTime(txtEnd.Text);
+                //
+                dEnd = dEnd.AddHours(23);
+                dEnd = dEnd.AddMinutes(59);
+
                 //pulls data for courses in the selected dates
-                DataTable dt = SqlCode.PullDataToDataTable("select distinct c.id,c.description,c.numUsers,c.cName from tblcourse c ,tblLOginTimes lt where lt.course=c.id and c.Lab = 0 and (lt.tBegin >= '" + dBegin.ToString("yyyyMMdd") + "' and lt.tBegin <= '" + dEnd.ToString("yyyyMMdd") + "' ) or (lt.tEnd <=  '" + dBegin.ToString("yyyyMMdd") + "' and  lt.tEnd >= '" + dEnd.ToString("yyyyMMdd") + "' );");
+                DataTable dt = SqlCode.PullDataToDataTable("select distinct c.id,c.description,c.numUsers,c.cName from tblcourse c ,tblLOginTimes lt where lt.course=c.id and c.Lab = '" + ddlLabs.SelectedValue + "' and (lt.tBegin >= '" + dBegin.ToString("yyyy-MM-dd HH:mm") + "' and lt.tBegin <= '" + dEnd.ToString("yyyy-MM-dd HH:mm") + "' ) or (lt.tEnd <=  '" + dBegin.ToString("yyyy-MM-dd HH:mm") + "' and  lt.tEnd >= '" + dEnd.ToString("yyyy-MM-dd HH:mm") + "' );");
                 //if exists
                 if (dt.Rows.Count != 0)
                 {

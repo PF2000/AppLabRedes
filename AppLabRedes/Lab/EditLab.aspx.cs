@@ -224,5 +224,10 @@ namespace AppLabRedes.Lab
                 }
             }
         }
+
+        protected void SqlDSTypes_Inserted(object sender, SqlDataSourceStatusEventArgs e)
+        {
+            Response.Redirect(Request.RawUrl);
+        }
     }
 }

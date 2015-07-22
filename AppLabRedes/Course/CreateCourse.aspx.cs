@@ -461,7 +461,6 @@ namespace AppLabRedes.CourseDetails
                 return false;
             }
         }
-
         /// <summary>
         /// on button click inserts the course.
         /// </summary>
@@ -525,7 +524,7 @@ namespace AppLabRedes.CourseDetails
             using (SqlConnection openCon = new SqlConnection(strConn))
             {
                 //command
-                string saveTypes_Lab = " insert into tblCourse (id,Lab,description,numUsers,cName,cType) VALUES (@id,@idLab,@description,@numUsers,@cName,@cType)";
+                string saveTypes_Lab = " insert into tblCourse (id,Lab,description,numUsers,cName,cType,timeZone) VALUES (@id,@idLab,@description,@numUsers,@cName,@cType,@timeZone)";
                 using (SqlCommand command = new SqlCommand(saveTypes_Lab, openCon))
                 {
                     //all command parameters
@@ -535,6 +534,7 @@ namespace AppLabRedes.CourseDetails
                     command.Parameters.AddWithValue("@numUsers", ddlNumPods.SelectedValue);
                     command.Parameters.AddWithValue("@cName", txtCourseName.Text);
                     command.Parameters.AddWithValue("@cType", ddlTypes.SelectedValue);
+                    command.Parameters.AddWithValue("@timeZone", ddlTimeZone.SelectedValue);
                     try
                     {
                         //open connection

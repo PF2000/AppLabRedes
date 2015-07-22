@@ -87,6 +87,12 @@ namespace AppLabRedes.Account
             }
         }
 
+        protected void Cancel_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~/Overview/Overview.aspx");
+        }
+        
+
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
