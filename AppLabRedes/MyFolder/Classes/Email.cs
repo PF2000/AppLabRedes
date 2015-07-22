@@ -8,7 +8,8 @@ using System.Net.Mail;
 using System.Text;
 using System.Web;
 
-namespace AppLabRedes.MyScripts{
+namespace AppLabRedes.MyScripts
+{
     /// <summary>
     /// 
     /// </summary>
@@ -16,7 +17,7 @@ namespace AppLabRedes.MyScripts{
     {
 
         //http://stackoverflow.com/questions/1774498/how-to-iterate-through-a-datatable
-        public static void SendEmails(DataTable dt )
+        public static void SendEmails(DataTable dt)
         {
             StringBuilder sb = new StringBuilder();
             String email = null;
@@ -57,12 +58,31 @@ namespace AppLabRedes.MyScripts{
         public static void SendEmail(String recipient, String Message)
         {
 
+            String EmailHost = "";
+            String Emailport = "";
+            String EmailMail = "";
+            String EmailPass = "";
+            String EmailMessage = "";
 
-            String EmailHost = System.Web.Configuration.WebConfigurationManager.AppSettings.Get("EmailHost");
-            String Emailport = System.Web.Configuration.WebConfigurationManager.AppSettings.Get("EmailPort");
-            String EmailMail = System.Web.Configuration.WebConfigurationManager.AppSettings.Get("Emailmail");
-            String EmailPass = System.Web.Configuration.WebConfigurationManager.AppSettings.Get("EmailPass");
-            String EmailMessage = System.Web.Configuration.WebConfigurationManager.AppSettings.Get("EmailMessage");
+            try
+            {
+
+                DataTable dt = SqlCode.PullDataToDataTable("Select * from tblEmail");
+
+                DataRow dr = dt.Rows[0];
+
+                EmailHost = Convert.ToString(dr["host"]);
+                Emailport = Convert.ToString(dr["port"]);
+                EmailMail = Convert.ToString(dr["email"]);
+                EmailPass = Convert.ToString(dr["pass"]);
+                EmailMessage = Convert.ToString(dr["message"]);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+
 
             var client = new SmtpClient(EmailHost, Int16.Parse(Emailport))
             {
