@@ -237,10 +237,6 @@
     <Content Include="Account\OpenAuthProviders.ascx" />
     <Content Include="Account\Register.aspx" />
     <Content Include="Admin\UserManagement.aspx" />
-    <Content Include="App_Data\AspNet.AppLabRedes.ldf">
-      <DependentUpon>AspNet.AppLabRedes.mdf</DependentUpon>
-    </Content>
-    <Content Include="App_Data\AspNet.AppLabRedes.mdf" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -263,7 +259,6 @@
     <Content Include="Course\EditCourse.aspx" />
     <Content Include="ErrorPage.aspx" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Image\avatar_user.png" />
     <Content Include="Lab\CreateLab.aspx" />
     <Content Include="Lab\EditLab.aspx" />
     <Content Include="Lab\LabDetails.aspx" />
@@ -395,7 +390,6 @@
     <Content Include="Settings\Settings.aspx" />
     <Content Include="Site.Master" />
     <Content Include="ViewSwitcher.ascx" />
-    <Content Include="Course\PdfGeneration.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -404,6 +398,7 @@
     </Content>
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Site.Mobile.Master" />
+    <Content Include="Settings\Web.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -607,13 +602,6 @@
     </Compile>
     <Compile Include="ViewSwitcher.ascx.designer.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Course\PdfGeneration.aspx.cs">
-      <DependentUpon>PdfGeneration.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Course\PdfGeneration.aspx.designer.cs">
-      <DependentUpon>PdfGeneration.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
