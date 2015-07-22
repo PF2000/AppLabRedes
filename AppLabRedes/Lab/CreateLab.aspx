@@ -1,9 +1,8 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="CreateLab.aspx.cs" Inherits="AppLabRedes.Lab.CreateLab" %>
+﻿<%@ Page Title="Create Lab" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="CreateLab.aspx.cs" Inherits="AppLabRedes.Lab.CreateLab" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h2><%: Title %></h2>
-    <hr />
+
     <asp:PlaceHolder runat="server" ID="cphErrorMessage" Visible="false">
         <div class="form-group">
             <asp:Label runat="server" CssClass="text-danger col-lg-12 control-label" ID="Label1"></asp:Label>

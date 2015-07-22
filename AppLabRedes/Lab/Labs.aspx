@@ -1,13 +1,13 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Labs.aspx.cs" Inherits="AppLabRedes.Lab.Labs" %>
+﻿<%@ Page Title="Overview Labs" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Labs.aspx.cs" Inherits="AppLabRedes.Lab.Labs" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h2><%: Title %></h2>
+    <h3><%: Title %></h3>
     <!-- /.row -->
 
 
     <div class="row">
-        <h4>Overview Labs</h4>
+        
         <hr />
         <p class="text-danger">
             <asp:Literal runat="server" ID="txtOutput" />

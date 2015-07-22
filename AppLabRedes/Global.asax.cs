@@ -44,7 +44,7 @@ namespace AppLabRedes
             Application.UnLock();
 
             //starts the Thread
-            StartMainThread(5000);
+            //StartMainThread(5000);
             StartPingThread(4000);
 
         }

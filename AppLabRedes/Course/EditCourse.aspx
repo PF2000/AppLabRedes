@@ -1,9 +1,7 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EditCourse.aspx.cs" Inherits="AppLabRedes.Course.EditCourse" %>
+﻿<%@ Page Title="Edit Course" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EditCourse.aspx.cs" Inherits="AppLabRedes.Course.EditCourse" %>
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-
-    <h2><%: Title %></h2>
     <!-- /.row -->
     <div class="row">
 

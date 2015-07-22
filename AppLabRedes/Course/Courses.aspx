@@ -1,10 +1,9 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Courses.aspx.cs" Inherits="AppLabRedes.Course.Courses" %>
+﻿<%@ Page Title="Courses" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Courses.aspx.cs" Inherits="AppLabRedes.Course.Courses" %>
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h2><%: Title %></h2>
-    <!-- /.row -->
+
 
     <div class="row">
         <h4>Search</h4>
@@ -23,7 +22,7 @@
                 <div class="form-inline">
                     <div class="col-xs-3">
                         <div class="form-group">
-                            <label>End Date</label>
+                            <label>Lab </label>
                             <asp:DropDownList ID="ddlLabs" runat="server" AutoPostBack="true" CssClass="form-control" DataTextField="name" DataValueField="Id"></asp:DropDownList>
                         </div>
                     </div>

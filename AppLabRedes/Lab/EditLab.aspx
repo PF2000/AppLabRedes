@@ -1,10 +1,8 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EditLab.aspx.cs" Inherits="AppLabRedes.Lab.EditLab" %>
+﻿<%@ Page Title="Edit Lab" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EditLab.aspx.cs" Inherits="AppLabRedes.Lab.EditLab" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
 
-
-    <h2><%: Title %></h2>
-    <!-- /.row -->
+<br />
 
 
     <div class="row">
@@ -13,7 +11,7 @@
             <asp:Literal runat="server" ID="txtOutput" />
         </p>
         <div class="col-md-6">
-            <h4>Create Lab</h4>
+            <h4>Edit Lab</h4>
             <hr />
             <div class="form-horizontal">
 

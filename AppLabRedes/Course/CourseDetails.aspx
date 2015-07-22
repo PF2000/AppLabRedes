@@ -1,10 +1,10 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="CourseDetails.aspx.cs" Inherits="AppLabRedes.Course.CDetails" %>
+﻿<%@ Page Title="Course Details" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="CourseDetails.aspx.cs" Inherits="AppLabRedes.Course.CDetails" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
 
 
-    <h2><%: Title %></h2>
+    <h3><%: Title %></h3>
     <!-- /.row -->
 
 
@@ -15,7 +15,6 @@
         </p>
         <div class="col-md-6">
 
-            <h4>course Details</h4>
             <hr />
             <div class="form-horizontal">
 

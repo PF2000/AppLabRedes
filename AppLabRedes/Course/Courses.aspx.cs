@@ -276,23 +276,25 @@ namespace AppLabRedes.Course
                     DateTime tBegin = Convert.ToDateTime(begin);
                     DateTime tEnd = Convert.ToDateTime(end);
                     DateTime tEndTime = Convert.ToDateTime(endTime);
-
+                    doc.Add(new Paragraph(" "));
                     doc.Add(new Paragraph("Permited Login Times "));
                     doc.Add(new Paragraph(" "));
+
                     //begin
-                    doc.Add(new Paragraph("Bagin Date: " + tBegin.Date.ToString("d")));
-                    doc.Add(new Paragraph("Begin Time: " + tBegin.TimeOfDay + ""));
+                    doc.Add(new Paragraph("   Bagin Date: " + tBegin.Date.ToString("d")));
+                    doc.Add(new Paragraph("   Begin Time: " + tBegin.TimeOfDay + ""));
                     //end
-                    doc.Add(new Paragraph("End Date: " + tEnd.Date.ToString("d")));
-                    doc.Add(new Paragraph("End Date: " + tEndTime.TimeOfDay + ""));
+                    doc.Add(new Paragraph("   End Date: " + tEnd.Date.ToString("d")));
+                    doc.Add(new Paragraph("   End Date: " + tEndTime.TimeOfDay + ""));
 
-
+                    doc.Add(new Paragraph(" "));
                     //data from Users
                     DataTable dt2 = SqlCode.PullDataToDataTable("select * from tblCourse c,tblUsers as u where u.course=c.id and c.id='" + idCourse + "'");
 
 
                     foreach (DataRow roww in dt2.Rows) // Loop over the items.
                     {
+                        doc.Add(new Paragraph(" "));
                         doc.Add(new Paragraph(" Users "));
                         doc.Add(new Paragraph(" "));
                         doc.Add(new Paragraph("UserName; " + roww["usr"]));

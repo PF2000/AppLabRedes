@@ -1,10 +1,10 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="LabDetails.aspx.cs" Inherits="AppLabRedes.Lab.LabDetails" %>
+﻿<%@ Page Title="Lab Details" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="LabDetails.aspx.cs" Inherits="AppLabRedes.Lab.LabDetails" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
 
 
-    <h2><%: Title %></h2>
+    <h3><%: Title %></h3>
     <!-- /.row -->
 
 
