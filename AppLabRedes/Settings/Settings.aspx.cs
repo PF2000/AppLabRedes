@@ -35,7 +35,6 @@ namespace AppLabRedes.Settings
             conf.Save();
             String host = txtEmailHost.Text;
             String port = txtEmailport.Text;
-
             String email = txtEmailMail.Text;
             String pass = txtEmailPass.Text;
             String message = txtEmailMessage.Text;
@@ -102,7 +101,7 @@ namespace AppLabRedes.Settings
             }
             catch (Exception ex)
             {
-
+                String str;
             }
         }
 

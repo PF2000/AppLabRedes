@@ -21,14 +21,14 @@
                 <div class="form-group">
                     <label class="col-md-2 control-label">Lab Name</label>
                     <div class="col-md-10 ">
-                        <asp:TextBox ID="txtLabName" runat="server" CssClass="form-control"></asp:TextBox>
+                        <asp:TextBox ID="txtLabName" runat="server" CssClass="form-control" Enabled="false"></asp:TextBox>
 
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-2 control-label">Number Pods</label>
                     <div class="col-md-10 ">
-                        <asp:TextBox ID="txtNumPods" runat="server" CssClass="form-control"></asp:TextBox>
+                        <asp:TextBox ID="txtNumPods" runat="server" CssClass="form-control" Enabled="false"></asp:TextBox>
                     </div>
                 </div>
                 <div class="form-group">
@@ -37,7 +37,7 @@
                         <asp:ListView ID="lstTypes" runat="server" DataKeyNames="type">
                             <ItemTemplate>
 
-                                <asp:TextBox ID="txtTypes" runat="server" CssClass="form-control" Text='<%# Eval("type") %>'></asp:TextBox>
+                                <asp:TextBox ID="txtTypes" runat="server" CssClass="form-control" Text='<%# Eval("type") %>' Enabled="false"></asp:TextBox>
                                 <br />
                             </ItemTemplate>
                             <LayoutTemplate>
@@ -51,14 +51,14 @@
                 <div class="form-group">
                     <label class="col-md-2 control-label">Lab IP</label>
                     <div class="col-md-10 ">
-                        <asp:TextBox ID="txtIP" runat="server" CssClass="form-control"></asp:TextBox>
+                        <asp:TextBox ID="txtIP" runat="server" CssClass="form-control" Enabled="false"></asp:TextBox>
 
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-2 control-label">Description</label>
                     <div class="col-md-10 ">
-                        <asp:TextBox ID="txtDescription" runat="server" CssClass="form-control" TextMode="MultiLine" Width="80%" Height="130px"></asp:TextBox>
+                        <asp:TextBox ID="txtDescription" runat="server" CssClass="form-control" TextMode="MultiLine" Width="80%" Height="130px" Enabled="false"></asp:TextBox>
 
                     </div>
                 </div>
@@ -70,16 +70,13 @@
                         <br />
                     </div>
                 </div>
-
                 <asp:PlaceHolder runat="server" ID="ErrorMessage" Visible="false">
                     <p class="text-danger">
                         <asp:Literal runat="server" ID="FailureText" />
                     </p>
                 </asp:PlaceHolder>
             </div>
-
         </div>
-
         <div class="col-md-6">
         </div>
     </div>

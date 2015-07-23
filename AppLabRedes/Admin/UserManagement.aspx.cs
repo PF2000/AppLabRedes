@@ -8,6 +8,15 @@ using System.Web.UI.WebControls;
 using System.Web.ModelBinding;
 using System.Web.UI.HtmlControls;
 using AppLabRedes.Models;
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Security.Principal;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
 
 // From https://aspnetidentitymanager.codeplex.com/
 
@@ -81,6 +90,8 @@ namespace AspNet.Identity.Manager.Account.Admin
                     context.SaveChanges();
                     SuccessMessageUser = "User updated";
                     successMessageUser.Visible = true;
+                    Unnamed_LoggingOut();
+                    Response.Redirect("~/Account/Login.aspx");
                 }
             }
             else
@@ -117,45 +128,6 @@ namespace AspNet.Identity.Manager.Account.Admin
             ApplicationDbContext context = new ApplicationDbContext();
             return context.Roles.OrderBy(r => r.Name).AsEnumerable();
         }
-
-        //protected void addRoleButton_Click(object sender, EventArgs e)
-        //{
-        //    RoleManager manager = new RoleManager();
-        //    ApplicationRole role = new ApplicationRole() { Name = newRoleTextbox.Text };
-        //    IdentityResult roleResult = manager.Create(role);
-        //    SuccessMessageRole = "Role added";
-        //    successMessageRole.Visible = true;
-
-        //    rolesListview.DataBind();
-        //    newRoleTextbox.Text = string.Empty;
-
-        //    usersListview.DataBind();
-        //    //usersUpdatePanel.Update();
-        //}
-
-        //public void UpdateRole(string Id)
-        //{
-        //    ApplicationDbContext context = new ApplicationDbContext();
-        //    IdentityRole role = context.Roles.Find(Id);
-        //    if (role.IsNotNull())
-        //    {
-        //        TryUpdateModel(role);
-        //        if (ModelState.IsValid)
-        //        {
-        //            context.SaveChanges();
-        //            SuccessMessageRole = "Role updated";
-        //            successMessageRole.Visible = true;
-
-        //            usersListview.DataBind();
-        //            usersUpdatePanel.Update();
-        //        }
-        //    }
-        //    else
-        //    {
-        //        AddErrors(new IdentityResult(new string[] { string.Format("element with id {0} not found.", Id) }));
-        //        return;
-        //    }
-        //}
 
         public void removeRole(string Id)
         {
@@ -226,6 +198,11 @@ namespace AspNet.Identity.Manager.Account.Admin
                 ModelState.AddModelError("", error);
             }
         }
+        protected void Unnamed_LoggingOut()
+        {
+            Context.GetOwinContext().Authentication.SignOut();
+        }
+
     }
 
     public class UserRole : IdentityRole

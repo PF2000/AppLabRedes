@@ -21,27 +21,27 @@
                 <div class="form-group">
                     <label class="col-md-2 control-label">Course Name</label>
                     <div class="col-md-10 ">
-                        <asp:TextBox ID="txtCourseName" runat="server" CssClass="form-control"></asp:TextBox>
+                        <asp:TextBox ID="txtCourseName" runat="server" CssClass="form-control" Enabled="false"></asp:TextBox>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label">Choose Lab</label>
                     <div class="col-md-10 ">
-                        <asp:TextBox ID="txtLab" runat="server" CssClass="form-control"></asp:TextBox>
+                        <asp:TextBox ID="txtLab" runat="server" CssClass="form-control" Enabled="false"></asp:TextBox>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label">Choose Type</label>
                     <div class="col-md-10 ">
-                        <asp:TextBox ID="txtType" runat="server" CssClass="form-control"></asp:TextBox>
+                        <asp:TextBox ID="txtType" runat="server" CssClass="form-control" Enabled="false"></asp:TextBox>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-2 control-label"> TimeZone</label>
                     <div class="col-md-10 ">
-                        <asp:TextBox ID="txtTimeZone" runat="server" CssClass="form-control"></asp:TextBox>
+                        <asp:TextBox ID="txtTimeZone" runat="server" CssClass="form-control" Enabled="false"></asp:TextBox>
                     </div>
                 </div>
                 <div class="form-group">
@@ -54,13 +54,13 @@
                                     <div class="col-xs-6">
                                         <div class="form-group">
                                             <label>Begin Date</label>
-                                            <asp:TextBox ID="txtnBDate" runat="server" CssClass="form-control"></asp:TextBox>
+                                            <asp:TextBox ID="txtnBDate" runat="server" CssClass="form-control" Enabled="false"></asp:TextBox>
                                         </div>
                                     </div>
                                     <div class="col-xs-6">
                                         <div class="form-group">
                                             <label>End Date</label>
-                                            <asp:TextBox ID="txtnEDate" runat="server" CssClass="form-control datetime"></asp:TextBox>
+                                            <asp:TextBox ID="txtnEDate" runat="server" CssClass="form-control datetime" Enabled="false"></asp:TextBox>
                                         </div>
                                     </div>
                                 </div>
@@ -72,13 +72,13 @@
                                     <div class="col-xs-6">
                                         <div class="form-group">
                                             <label>Begin Time</label>
-                                            <asp:TextBox ID="txtnBTime" runat="server" CssClass="form-control datetime"></asp:TextBox>
+                                            <asp:TextBox ID="txtnBTime" runat="server" CssClass="form-control datetime" Enabled="false"></asp:TextBox>
                                         </div>
                                     </div>
                                     <div class="col-xs-6">
                                         <div class="form-group">
                                             <label>End Time</label>
-                                            <asp:TextBox ID="txtnETime" runat="server" CssClass="form-control datetime"></asp:TextBox>
+                                            <asp:TextBox ID="txtnETime" runat="server" CssClass="form-control datetime" Enabled="false"></asp:TextBox>
                                         </div>
                                     </div>
                                 </div>
@@ -91,7 +91,7 @@
                 <div class="form-group">
                     <label class="col-md-2 control-label">Pods</label>
                     <div class="col-md-10 ">
-                        <asp:TextBox ID="txtNumPods" runat="server" CssClass="form-control"></asp:TextBox>
+                        <asp:TextBox ID="txtNumPods" runat="server" CssClass="form-control" Enabled="false"></asp:TextBox>
                     </div>
                 </div>
 
@@ -117,13 +117,13 @@
                                             <div class="col-xs-6">
                                                 <div class="form-group">
                                                     <label>Name</label>
-                                                    <asp:TextBox ID="txtName" runat="server" CssClass="form-control" Text='<%# Eval("usr") %>'></asp:TextBox>
+                                                    <asp:TextBox ID="txtName" runat="server" CssClass="form-control" Text='<%# Eval("usr") %>' Enabled="false"></asp:TextBox>
                                                 </div>
                                             </div>
                                             <div class="col-xs-6">
                                                 <div class="form-group">
                                                     <label>Pass</label>
-                                                    <asp:TextBox ID="txtPass" runat="server" CssClass="form-control" Text='<%# Eval("pass") %>'></asp:TextBox>
+                                                    <asp:TextBox ID="txtPass" runat="server" CssClass="form-control" Text='<%# Eval("pass") %>' Enabled="false"></asp:TextBox>
                                                 </div>
                                             </div>
                                         </div>
@@ -135,7 +135,7 @@
                                             <div class="col-md-12 ">
                                                 <div class="form-group">
                                                     <label class="control-label">E-Mail</label>
-                                                    <asp:TextBox ID="txtMail" runat="server" CssClass="form-control" Text='<%# Eval("email") %>'></asp:TextBox>
+                                                    <asp:TextBox ID="txtMail" runat="server" CssClass="form-control" Text='<%# Eval("email") %>' Enabled="false"></asp:TextBox>
                                                 </div>
                                             </div>
                                         </div>
@@ -157,7 +157,7 @@
                     <label class="col-md-2 control-label">Description</label>
                     <div class="col-md-10 ">
                         <br />
-                        <asp:TextBox ID="txtDescription" runat="server" CssClass="form-control" TextMode="MultiLine" Width="80%" Height="130px"></asp:TextBox>
+                        <asp:TextBox ID="txtDescription" runat="server" CssClass="form-control" TextMode="MultiLine" Width="80%" Height="130px" Enabled="false"></asp:TextBox>
                     </div>
                 </div>
             </div>

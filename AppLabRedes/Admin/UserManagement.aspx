@@ -12,7 +12,7 @@
                 <ContentTemplate>
                 <div class="form-horizontal">
                     <asp:ValidationSummary runat="server" ShowModelStateErrors="true" CssClass="text-danger" />
-                    <asp:PlaceHolder runat="server" ID="successMessageUser" Visible="false" ViewStateMode="Disabled">
+                    <asp:PlaceHolder runat="server" ID="successMessageUser" Visible="true" ViewStateMode="Disabled" >
                         <p class="text-success"><%: SuccessMessageUser %></p>
                     </asp:PlaceHolder>
                     <hr />
@@ -67,7 +67,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
+<%--                                <tr>
                                     <td colspan="3">
                                         <div class="form-group">
                                             <asp:Label runat="server" ID="EMailLabel" Text="EMail" AssociatedControlID="EMail" CssClass="col-md-4 control-label"/>
@@ -99,7 +99,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                </tr>
+                                </tr>--%>
                                 <tr>
                                     <td colspan="3">
                                         <h4>Use the form below to change your password.</h4>

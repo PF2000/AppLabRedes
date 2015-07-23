@@ -86,8 +86,8 @@
                     <asp:LoginView runat="server" ViewStateMode="Disabled">
                         <AnonymousTemplate>
                             <ul class="nav navbar-nav navbar-right">
-                                <li class="dropdown">                               
-                                <li><a runat="server" href="~/Account/Register">Register</a></li>
+                                <li class="dropdown">
+                                    <li><a runat="server" href="~/Account/Register">Register</a></li>
                                     <li><a runat="server" href="~/Account/Login">Log in</a></li>
                                 </li>
                             </ul>
@@ -102,38 +102,91 @@
                         </LoggedInTemplate>
                     </asp:LoginView>
                     <!-- /.dropdown LOGIN-->
-                    </ul>
-                    <div class="navbar-default sidebar" role="navigation">
-                        <div class="sidebar-nav navbar-collapse">
-                            <!-- /.navbar-top-links -->
-                            <ul class="nav navbar-top-links navbar-right">
-                                <br />
-                                <br />
-                                <li>
-                                    <a runat="server" href="~/Overview/Overview.aspx" ><i class="fa fa-dashboard fa-fw"></i>Overview</a>
-                                </li>
-                                <li>
-                                    <a runat="server" href="~/Admin/UserManagement.aspx"><i class="fa fa-meh-o fa-fw"></i>Managers</a>
-                                </li>
-                                <li>
-                                    <a runat="server" href="~/Logger/Logger.aspx"><i class="fa fa-bell fa-fw"></i>Event Logs</a>
-                                </li>
-                                <li>
-                                    <a runat="server" href="~/Lab/Labs.aspx"><i class="fa fa-cog fa-fw"></i>Manage Labs</a>
-                                </li>
-                                <li>
-                                    <a runat="server" href="~/Course/Courses.aspx"><i class="fa fa-cog fa-fw"></i>Courses</a>
-                                </li>
-                                <li>
-                                    <a runat="server" href="~/Settings/Settings.aspx"><i class="fa fa-wrench fa-fw"></i>Settings</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- /.sidebar-collapse -->
+                </ul>
+                <div class="navbar-default sidebar" role="navigation">
+                    <div class="sidebar-nav navbar-collapse">
+                        <!-- /.navbar-top-links -->
+                        <ul class="nav navbar-top-links navbar-right">
+                            <br />
+                            <br />
+                            <asp:LoginView runat="server" ViewStateMode="Disabled">
+                                <RoleGroups>
+                                    <asp:RoleGroup Roles="Administrator,Trainer">
+                                        <ContentTemplate>
+                                            <li>
+                                                <a runat="server" href="~/Overview/Overview.aspx"><i class="fa fa-dashboard fa-fw"></i>Overview</a>
+                                            </li>
+                                        </ContentTemplate>
+                                    </asp:RoleGroup>
+                                </RoleGroups>
+                            </asp:LoginView>
+
+                            <asp:LoginView runat="server" ViewStateMode="Disabled">
+                                <RoleGroups>
+                                    <asp:RoleGroup Roles="Administrator">
+                                        <ContentTemplate>
+                                            <li>
+                                                <a runat="server" href="~/Admin/UserManagement.aspx"><i class="fa fa-meh-o fa-fw"></i>Managers</a>
+                                            </li>
+                                        </ContentTemplate>
+                                    </asp:RoleGroup>
+                                </RoleGroups>
+                            </asp:LoginView>
+
+                            <asp:LoginView runat="server" ViewStateMode="Disabled">
+                                <RoleGroups>
+                                    <asp:RoleGroup Roles="Administrator,Trainer">
+                                        <ContentTemplate>
+                                            <li>
+                                                <a runat="server" href="~/Logger/Logger.aspx"><i class="fa fa-bell fa-fw"></i>Event Logs</a>
+                                            </li>
+                                        </ContentTemplate>
+                                    </asp:RoleGroup>
+                                </RoleGroups>
+                            </asp:LoginView>
+
+                            <asp:LoginView runat="server" ViewStateMode="Disabled">
+                                <RoleGroups>
+                                    <asp:RoleGroup Roles="Administrator">
+                                        <ContentTemplate>
+                                            <li>
+                                                <a runat="server" href="~/Lab/Labs.aspx"><i class="fa fa-cog fa-fw"></i>Manage Labs</a>
+                                            </li>
+                                        </ContentTemplate>
+                                    </asp:RoleGroup>
+                                </RoleGroups>
+                            </asp:LoginView>
+
+                            <asp:LoginView runat="server" ViewStateMode="Disabled">
+                                <RoleGroups>
+                                    <asp:RoleGroup Roles="Administrator,Trainer">
+                                        <ContentTemplate>
+                                            <li>
+                                                <a runat="server" href="~/Course/Courses.aspx"><i class="fa fa-cog fa-fw"></i>Courses</a>
+                                            </li>
+                                        </ContentTemplate>
+                                    </asp:RoleGroup>
+                                </RoleGroups>
+                            </asp:LoginView>
+
+                            <asp:LoginView runat="server" ViewStateMode="Disabled">
+                                <RoleGroups>
+                                    <asp:RoleGroup Roles="Administrator">
+                                        <ContentTemplate>
+                                            <li>
+                                                <a runat="server" href="~/Settings/Settings.aspx"><i class="fa fa-wrench fa-fw"></i>Settings</a>
+                                            </li>
+                                        </ContentTemplate>
+                                    </asp:RoleGroup>
+                                </RoleGroups>
+                            </asp:LoginView>
+                        </ul>
                     </div>
-                    <!-- /.navbar-static-side -->
-                    <i class="fa fa comments fa-5x"></i>
-                    <i class="fa fa gear pull-left fa-2x"></i>
+                    <!-- /.sidebar-collapse -->
+                </div>
+                <!-- /.navbar-static-side -->
+                <i class="fa fa comments fa-5x"></i>
+                <i class="fa fa gear pull-left fa-2x"></i>
             </nav>
 
             <div id="page-wrapper">

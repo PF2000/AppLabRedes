@@ -26,30 +26,38 @@ namespace AppLabRedes.Lab
         /// <param name="e"></param>
         protected void btnaddLab_Click(object sender, EventArgs e)
         {
-            //if all fields are filled
-            if (txtLabName.Text != "" && txtNumPods.Text != "" && txtDescription.Text != "")
+            try
             {
-                //gets the parameters
-                string labName = txtLabName.Text;
                 int numPods = Convert.ToInt16(txtNumPods.Text);
-                string description = txtDescription.Text;
-                string labIP = txtIP.Text;
 
-                //adds the lab to database
-                addLab(labName, numPods, description, labIP);
-                //adds the labTypes to database
-                addType_Lab();
-                //redirects
-                System.Threading.Thread.Sleep(3000);
-                Response.Redirect("~/Lab/Labs.aspx");
+                //if all fields are filled
+                if (txtLabName.Text != "" && txtNumPods.Text != "" && txtDescription.Text != "")
+                {
+                    //gets the parameters
+                    string labName = txtLabName.Text;
+                    string description = txtDescription.Text;
+                    string labIP = txtIP.Text;
+
+                    //adds the lab to database
+                    addLab(labName, numPods, description, labIP);
+                    //adds the labTypes to database
+                    addType_Lab();
+                    //redirects
+                    System.Threading.Thread.Sleep(3000);
+                    Response.Redirect("~/Lab/Labs.aspx");
+                }
+                else
+                {
+                    cphErrorMessage.Visible = true;
+                    txtOutput.Text = "Please complete all required text fields ";
+                }
             }
-            else
+            catch (Exception ex)
             {
                 cphErrorMessage.Visible = true;
-                txtOutput.Text = "Please complete all required text fields ";
+                txtOutput.Text = ex.Message + "Only numbers are permitted";
             }
         }
-
         /// <summary>
         /// Ads the Lab to the database
         /// </summary>
