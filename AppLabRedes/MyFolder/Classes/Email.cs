@@ -23,6 +23,7 @@ namespace AppLabRedes.MyScripts
             String email = null;
             String user = null;
             String pass = null;
+            String labIP = null;
 
             try
             {
@@ -34,13 +35,14 @@ namespace AppLabRedes.MyScripts
                     email = row["email"].ToString();
                     user = row["usr"].ToString();
                     pass = row["pass"].ToString();
+                    labIP = row["labIP"].ToString();
                     //build the message
                     sb1.AppendLine("");
                     sb1.AppendLine("Username: " + user);
                     sb1.AppendLine("Password: " + pass);
                     sb1.AppendLine("");
                     //sends the email
-                    SendEmail(email, sb1.ToString());
+                    SendEmail(email, sb1.ToString(),labIP);
 
                     //builds the logMessage
                     sb.AppendLine("To:" + (row["email"].ToString()));
@@ -55,7 +57,7 @@ namespace AppLabRedes.MyScripts
         }
 
 
-        public static void SendEmail(String recipient, String Message)
+        public static void SendEmail(String recipient, String Message,String labIP)
         {
 
             String EmailHost = "";
@@ -89,7 +91,7 @@ namespace AppLabRedes.MyScripts
                 Credentials = new NetworkCredential(EmailMail, EmailPass),
                 EnableSsl = true
             };
-            client.Send(EmailMail, recipient, "Credentials", EmailMessage + " " + Message);
+            client.Send(EmailMail, recipient, "Credentials", EmailMessage + "/n Ip Lab: " + labIP + "/n " + Message);
 
 
 

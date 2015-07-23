@@ -49,6 +49,13 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="col-md-2 control-label">Lab IP</label>
+                    <div class="col-md-10 ">
+                        <asp:TextBox ID="txtIP" runat="server" CssClass="form-control"></asp:TextBox>
+
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="col-md-2 control-label">Description</label>
                     <div class="col-md-10 ">
                         <asp:TextBox ID="txtDescription" runat="server" CssClass="form-control" TextMode="MultiLine" Width="80%" Height="130px"></asp:TextBox>

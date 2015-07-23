@@ -53,6 +53,7 @@ namespace AppLabRedes.Course
             String description = Convert.ToString(row["description"]);
             String lab = Convert.ToString(row["name"]);
             String type = Convert.ToString(row["type"]);
+            String idTimeZone = Convert.ToString(row["timeZone"]);
 
             //sets the course name
             txtCourseName.Text = name;
@@ -61,9 +62,9 @@ namespace AppLabRedes.Course
             //populate ddl Types
             initDdlTypes();
             //data from LoginTimes
-            initLoginTimes();
+            initLoginTimes(idTimeZone);
             //popoulate timezone
-            initDdlTimeZone();
+            initDdlTimeZone(idTimeZone);
             //populate ddl Users
             initDdlUsers();
             //Populate UserList
@@ -84,7 +85,7 @@ namespace AppLabRedes.Course
             DataTable dt = SqlCode.PullDataToDataTable("select * from tblLabs");
 
             //default Item
-            ListItem lst1 = new ListItem("Labs", "-1");
+            ListItem lst1 = new ListItem(" ", "-1");
             ddlLabs.Items.Add(lst1);
             //Other labs
             foreach (DataRow row in dt.Rows) // Loop over the items.
@@ -119,7 +120,7 @@ namespace AppLabRedes.Course
              " where l.Id=tl.IdLab and t.Id = tl.IdType and l.id=" + ddlLabs.SelectedValue + "");
 
             //default Item
-            ListItem lst1 = new ListItem("Types", "-1");
+            ListItem lst1 = new ListItem(" ", "-1");
             ddlTypes.Items.Add(lst1);
             //sets all types
             foreach (DataRow row in dt.Rows) // Loop over the items.
@@ -136,7 +137,7 @@ namespace AppLabRedes.Course
         /// <summary>
         /// Init the LabTypes drop down list 
         /// </summary>
-        private void initDdlTimeZone()
+        private void initDdlTimeZone(String idTimeZone)
         {
             //sets the ddlTypes parameters
             ddlTimeZone.ID = "ddlTimeZone";
@@ -145,18 +146,20 @@ namespace AppLabRedes.Course
             //gets all the Types that matching the given Lab
             ReadOnlyCollection<TimeZoneInfo> tzi;
             tzi = TimeZoneInfo.GetSystemTimeZones();
+            //adds default item
+            ListItem lst1 = new ListItem(" ", "-1");
+            ddlTimeZone.Items.Add(lst1);
             foreach (TimeZoneInfo timeZone in tzi)
             {
                 ddlTimeZone.Items.Add(new ListItem(timeZone.DisplayName, timeZone.Id));
-
             }
             //set selection
-            ddlTimeZone.Items.FindByValue(TimeZoneInfo.Local.Id + "").Selected = true;
+            ddlTimeZone.Items.FindByValue(idTimeZone + "").Selected = true;
         }
         /// <summary>
         /// Init the LoginTimes list 
         /// </summary>
-        private void initLoginTimes()
+        private void initLoginTimes(String idTimeZone)
         {
             //to put in Form
             String begin = SqlCode.SelectForString("select min(tBegin) from tblCourse c,tblLOginTimes as lt where lt.course=c.id and c.id='" + idCourse + "'");
@@ -164,10 +167,16 @@ namespace AppLabRedes.Course
             //to get time
             String endTime = SqlCode.SelectForString("select max(tEnd) from tblCourse c,tblLOginTimes as lt where lt.course=c.id and c.id='" + idCourse + "'");
 
+            //gets the name of timezone
+            String timeZone = Convert.ToString(TimeZoneInfo.FindSystemTimeZoneById(idTimeZone));
+
+            //gets the localTimeZone
+            String IdLocalTz = TimeZoneInfo.Local.Id;
+
             //Converts to dateTime
-            DateTime tBegin = Convert.ToDateTime(begin);
-            DateTime tEnd = Convert.ToDateTime(end);
-            DateTime tEndTime = Convert.ToDateTime(endTime);
+            DateTime tBegin =TimeZoneInfo.ConvertTimeBySystemTimeZoneId( Convert.ToDateTime(begin), IdLocalTz, idTimeZone);
+            DateTime tEnd = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(Convert.ToDateTime(end), IdLocalTz, idTimeZone);
+            DateTime tEndTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(Convert.ToDateTime(endTime), IdLocalTz, idTimeZone);
             //begin
             txtBDate.Text = tBegin.Date.ToString("d");
             txtBTime.Text = tBegin.TimeOfDay + "";
@@ -272,7 +281,7 @@ namespace AppLabRedes.Course
             //clears the list
             ddlNumPods.Items.Clear();
             //default item
-            ListItem lst1 = new ListItem("Num Pods", "-1");
+            ListItem lst1 = new ListItem(" ", "-1");
             ddlNumPods.Items.Insert(0, lst1);
             //creates all the users left
             for (int i = 0; i < numPodsLeftTotal; i++)

@@ -46,16 +46,16 @@ namespace AppLabRedes.Course
                 //decides what view to show
                 if (view.Equals("active"))
                 {
-                    dt = SqlCode.PullDataToDataTable("select DISTINCT c.id,c.description,c.numUsers,c.cName from tblcourse c ,tblLOginTimes lt where lt.course=c.id and (select MONTH(lt.tBegin)) = (SELECT MONTH(GETDATE())) and lt.active = 1;");
+                    dt = SqlCode.PullDataToDataTable("select DISTINCT c.id,c.description,c.numUsers,c.cName, ty.type from tblcourse c ,tblLOginTimes lt, tblLabType ty where ty.id=c.cType andlt.course=c.id and (select MONTH(lt.tBegin)) = (SELECT MONTH(GETDATE())) and lt.active = 1;");
                 }
                 else 
                 {
-                    dt = SqlCode.PullDataToDataTable("select DISTINCT c.id,c.description,c.numUsers,c.cName from tblcourse c ,tblLOginTimes lt where lt.course=c.id and (select MONTH(lt.tBegin)) = (SELECT MONTH(GETDATE())) and lt.active = 0;");
+                    dt = SqlCode.PullDataToDataTable("select DISTINCT c.id,c.description,c.numUsers,c.cName, ty.type from tblcourse c ,tblLOginTimes lt, tblLabType ty where ty.id=c.cType and lt.course=c.id and (select MONTH(lt.tBegin)) = (SELECT MONTH(GETDATE())) and lt.active = 0;");
                 }
             }
             else
             {
-                dt = SqlCode.PullDataToDataTable("select DISTINCT c.id,c.description,c.numUsers,c.cName from tblcourse c ,tblLOginTimes lt where lt.course=c.id and (select MONTH(lt.tBegin)) = (SELECT MONTH(GETDATE())) and lt.active != 2;");
+                dt = SqlCode.PullDataToDataTable("select DISTINCT c.id,c.description,c.numUsers,c.cName, ty.type from tblcourse c ,tblLOginTimes lt, tblLabType ty where ty.id=c.cType and lt.course=c.id and (select MONTH(lt.tBegin)) = (SELECT MONTH(GETDATE())) and lt.active != 2;");
             }
 
             lstCourses.DataSource = dt;

@@ -33,9 +33,10 @@ namespace AppLabRedes.Lab
                 string labName = txtLabName.Text;
                 int numPods = Convert.ToInt16(txtNumPods.Text);
                 string description = txtDescription.Text;
+                string labIP = txtIP.Text;
 
                 //adds the lab to database
-                addLab(labName, numPods, description);
+                addLab(labName, numPods, description, labIP);
                 //adds the labTypes to database
                 addType_Lab();
                 //redirects
@@ -55,24 +56,25 @@ namespace AppLabRedes.Lab
         /// <param name="name"></param>
         /// <param name="numPods"></param>
         /// <param name="description"></param>
-        private void addLab(string name, int numPods, string description)
+        private void addLab(string name, int numPods, string description, string labIP)
         {
 
             String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection openCon = new SqlConnection(strConn))
             {
                 //command
-                string saveLab = " insert into tblLabs (id,name,numPods, description) VALUES (@id,@name,@numPods,@description)"; ;
+                string saveLab = " insert into tblLabs (id,name,numPods, description,labIP) VALUES (@id,@name,@numPods,@description,@labIP)"; ;
 
                 using (SqlCommand command = new SqlCommand(saveLab, openCon))
                 {
                     //id For Lab
-                    int maxId = SqlCode.SelectForINT("Select Max(id)+1 From tblLabType");
+                    int maxId = SqlCode.SelectForINT("Select Max(id)+1 From tblLabs");
                     //parameters
                     command.Parameters.AddWithValue("@id", maxId);
                     command.Parameters.AddWithValue("@name", name);
                     command.Parameters.AddWithValue("@numPods", numPods);
                     command.Parameters.AddWithValue("@description", description);
+                    command.Parameters.AddWithValue("@labIP", labIP);
                     try
                     {
                         //open the connection

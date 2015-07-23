@@ -69,5 +69,30 @@ namespace AppLabRedes.Admin
 
 
         }
+
+        protected void btnReadAll_Click(object sender, EventArgs e)
+        {
+            String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            SqlConnection con = new SqlConnection(strConn);
+            try
+            {
+                //ecommand
+                string strSqlConn = "update EventLogger set NotSeen='false' ";
+                SqlCommand MyComand = new SqlCommand(strSqlConn, con);
+                //opens the connection
+                con.Open();
+                //excutes the command
+                MyComand.ExecuteNonQuery();
+                //closes connection
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                SqlCode.copyDataEventLogger("Error updating Events", "danger", ex.Message);
+            }
+            //refresh
+            Response.Redirect(Request.RawUrl);
+
+        }
     }
 }

@@ -64,7 +64,7 @@
                         </div>
 
                         <div class="panel-body">
-                            <p><%#Eval("description")%></p>
+                            <p>Course type - <%#Eval("type")%></p>
                             <hr />
                             <h5>Number of Pods - <strong><%#Eval("numUsers")%></strong></h5>
                             <a href='<%# "EditCourse.aspx?idCourse="+Eval ("id") %>' class="btn btn-primary">Edit</a>

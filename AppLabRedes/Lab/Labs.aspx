@@ -25,7 +25,7 @@
                         </div>
 
                         <div class="panel-body">
-                            <p><%#Eval("description")%></p>
+                            <p>Lab IP - <%#Eval("labIP")%></p>
                             <hr />
                             <h5>Number of Pods - <strong><%#Eval("numPods")%></strong></h5>
                             <a href='<%# "EditLab.aspx?idLab="+Eval ("id") %>' class="btn btn-primary">Edit</a>

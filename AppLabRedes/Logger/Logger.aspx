@@ -29,7 +29,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             Logger
-                       
+                        <asp:Button ID="btnReadAll" runat="server" Text="Read All" CssClass="btn btn-primary btn-xs pull-right" OnClick="btnReadAll_Click"/>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -47,8 +47,8 @@
                                             <div class='<%# Eval("class") %> + inline'>
                                                 <%# Eval("text") %>
                                                 <asp:LinkButton ID="btnNote" runat="server" Visible='<%# Eval("hasNote") %>' PostBackUrl='<%# "EventDetails.aspx?idEvent="+Eval ("id") %>'>Note</asp:LinkButton>
-                                                <asp:Button ID="btnSeen" runat="server" Text="Read" Visible='<%# Eval("NotSeen") %>' CommandArgument='<%# Eval("id") %>' CommandName="chkid" OnClick="btnSeen_Click" CssClass="pull-right  btn btn-info"  />
-                                                <span class="pull-right text-muted small"><em><%# Eval("datetime") %>   &nbsp&nbsp&nbsp </em>
+                                                <asp:Button ID="btnSeen" runat="server" Text="Read" Visible='<%# Eval("NotSeen") %>' CommandArgument='<%# Eval("id") %>' CommandName="chkid" OnClick="btnSeen_Click" CssClass="pull-right  btn btn-info" />
+                                                <span class="pull-right text-muted small"><em><%# Eval("datetime") %> (Server Time)  &nbsp&nbsp&nbsp </em>
                                                 </span>
                                             </div>
                                         </ContentTemplate>
@@ -62,7 +62,7 @@
                                             <asp:TemplatePagerField>
                                                 <PagerTemplate>
                                                     <b>Page
-            <asp:Label runat="server" ID="CurrentPageLabel" Text="<%# Container.TotalRowCount>0 ? (Container.StartRowIndex / Container.PageSize) + 1 : 0 %>  " />
+            <asp:Label runat="server" ID="CurrentPageLabel" Text="<%# Container.TotalRowCount>0 ? (Container.StartRowIndex / Container.PageSize) + 1 : 0 %>  "  />
 
                                                         <asp:Label runat="server" ID="TotalPagesLabel" Text="<%# Math.Ceiling ((double)Container.TotalRowCount / Container.PageSize) %>" />
                                                         (
@@ -72,9 +72,9 @@
                                                     </b>
                                                 </PagerTemplate>
                                             </asp:TemplatePagerField>
-                                            <asp:NextPreviousPagerField ButtonType="Button" FirstPageText="First" ShowFirstPageButton="true" ShowNextPageButton="false" ShowPreviousPageButton="false" />
+                                            <asp:NextPreviousPagerField ButtonType="Button" FirstPageText="First" ShowFirstPageButton="true" ShowNextPageButton="false" ShowPreviousPageButton="false"  ButtonCssClass="btn btn-default"/>
                                             <asp:NumericPagerField PreviousPageText="&lt; Prev 10" NextPageText="Next 10 &gt;" ButtonCount="10" />
-                                            <asp:NextPreviousPagerField ButtonType="Button" LastPageText="Last" ShowLastPageButton="true" ShowNextPageButton="false" ShowPreviousPageButton="false" />
+                                            <asp:NextPreviousPagerField ButtonType="Button" LastPageText="Last" ShowLastPageButton="true" ShowNextPageButton="false" ShowPreviousPageButton="false" ButtonCssClass="btn btn-default" />
                                         </Fields>
                                     </asp:DataPager>
 

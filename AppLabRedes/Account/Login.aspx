@@ -13,15 +13,11 @@
         <asp:Label runat="server" AssociatedControlID="User" CssClass="col-md-2 control-label">User</asp:Label>
 
         <asp:TextBox runat="server" ID="User" CssClass="form-control" />
-        <asp:RequiredFieldValidator runat="server" ControlToValidate="User"
-            CssClass="text-danger" ErrorMessage="The User field is required." />
     </div>
     <div class="form-group">
         <asp:Label runat="server" AssociatedControlID="Password" CssClass="col-md-2 control-label">Password</asp:Label>
 
-        <asp:TextBox runat="server" ID="Password" TextMode="Password" CssClass="form-control" />
-        <asp:RequiredFieldValidator runat="server" ControlToValidate="Password" CssClass="text-danger" ErrorMessage="The password field is required." />
-    </div>
+        <asp:TextBox runat="server" ID="Password" TextMode="Password" CssClass="form-control" /> </div>
     <div class="checkbox">
         <label>
             <asp:CheckBox runat="server" ID="RememberMe" />

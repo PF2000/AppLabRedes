@@ -67,6 +67,15 @@ namespace AppLabRedes.Lab {
         protected global::System.Web.UI.WebControls.CheckBoxList ckbTypes;
         
         /// <summary>
+        /// txtIP control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtIP;
+        
+        /// <summary>
         /// txtDescription control.
         /// </summary>
         /// <remarks>

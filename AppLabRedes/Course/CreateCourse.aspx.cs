@@ -70,7 +70,7 @@ namespace AppLabRedes.CourseDetails
                  " from tblLabs as l , tblLabType as t , tblTypes_Labss as tl " +
                  " where l.Id=tl.IdLab and t.Id = tl.IdType and l.id=" + LabId + "");
                 //default Item
-                ListItem lst1 = new ListItem("Types", "-1");
+                ListItem lst1 = new ListItem(" ", "-1");
                 ddlTypes.Items.Add(lst1);
 
                 //adds the types to list
@@ -142,7 +142,7 @@ namespace AppLabRedes.CourseDetails
         protected void ddlLabs_DataBound(object sender, EventArgs e)
         {
 
-            ListItem lst1 = new ListItem("Labs", "-1");
+            ListItem lst1 = new ListItem(" ", "-1");
             ddlLabs.Items.Insert(0, lst1);
         }
         /// <summary>
@@ -152,7 +152,7 @@ namespace AppLabRedes.CourseDetails
         /// <param name="e"></param>
         protected void ddlType_DataBound(object sender, EventArgs e)
         {
-            ListItem lst1 = new ListItem("Types", "-1");
+            ListItem lst1 = new ListItem(" ", "-1");
             ddlTypes.Items.Insert(0, lst1);
         }
         /// <summary>
@@ -190,6 +190,9 @@ namespace AppLabRedes.CourseDetails
         {
             ReadOnlyCollection<TimeZoneInfo> tzi;
             tzi = TimeZoneInfo.GetSystemTimeZones();
+            //adds default item
+            ListItem lst1 = new ListItem(" ", "-1");
+            ddlTimeZone.Items.Add(lst1);
             foreach (TimeZoneInfo timeZone in tzi)
             {
                 ddlTimeZone.Items.Add(new ListItem(timeZone.DisplayName, timeZone.Id));
@@ -358,7 +361,7 @@ namespace AppLabRedes.CourseDetails
         protected void bindDdl()
         {
             ddlNumPods.Items.Clear();
-            ListItem lst1 = new ListItem("Num Pods", "-1");
+            ListItem lst1 = new ListItem(" ", "-1");
             ddlNumPods.Items.Insert(0, lst1);
             for (int i = 0; i < numPodsLeftTotal; i++)
             {

@@ -1,8 +1,9 @@
 ﻿<%@ Page Title="Edit Lab" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EditLab.aspx.cs" Inherits="AppLabRedes.Lab.EditLab" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
 
-<br />
+    <br />
 
 
     <div class="row">
@@ -32,7 +33,13 @@
                 <div class="form-group">
                     <label class="col-md-2 control-label">Types</label>
                     <div class="col-md-10 ">
-                        <asp:CheckBoxList  ID="ckbTypes" runat="server" DataTextField="type" DataValueField="Id"></asp:CheckBoxList>
+                        <asp:CheckBoxList ID="ckbTypes" runat="server" DataTextField="type" DataValueField="Id"></asp:CheckBoxList>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Lab IP</label>
+                    <div class="col-md-10 ">
+                        <asp:TextBox ID="txtIP" runat="server" CssClass="form-control"></asp:TextBox>
                     </div>
                 </div>
                 <div class="form-group">
@@ -119,9 +126,9 @@
                 </LayoutTemplate>
             </asp:ListView>
             <asp:SqlDataSource runat="server" ID="SqlDSTypes" ConnectionString='<%$ ConnectionStrings:DefaultConnection %>'
-                DeleteCommand="DELETE FROM [tblTypes_Labss] WHERE [IdType] = @Id; DELETE FROM [tblLabType] WHERE [Id] = @Id" 
+                DeleteCommand="DELETE FROM [tblTypes_Labss] WHERE [IdType] = @Id; DELETE FROM [tblLabType] WHERE [Id] = @Id"
                 InsertCommand="INSERT INTO [tblLabType] ([type]) VALUES (@type)" ProviderName="System.Data.SqlClient"
-                 SelectCommand="SELECT * FROM [tblLabType]" UpdateCommand="UPDATE [tblLabType] SET [type] = @type WHERE [Id] = @Id"
+                SelectCommand="SELECT * FROM [tblLabType]" UpdateCommand="UPDATE [tblLabType] SET [type] = @type WHERE [Id] = @Id"
                 OnInserted="SqlDSTypes_Inserted"
                 OnDeleted="SqlDSTypes_Inserted"
                 OnUpdated="SqlDSTypes_Inserted">

@@ -50,6 +50,7 @@ namespace AppLabRedes.Lab
             txtLabName.Text = Convert.ToString(dt1.Rows[0]["name"]);
             txtNumPods.Text = Convert.ToString(dt1.Rows[0]["numPods"]);
             txtDescription.Text = Convert.ToString(dt1.Rows[0]["description"]);
+            txtIP.Text = Convert.ToString(dt1.Rows[0]["labIP"]);
 
             //creates the types field
             foreach (DataRow row in dt2.Rows) // Loop over the items.
@@ -83,15 +84,16 @@ namespace AppLabRedes.Lab
             string labName = txtLabName.Text;
             int numPods = Convert.ToInt16(txtNumPods.Text);
             string description = txtDescription.Text;
+            string labIp = txtIP.Text;
                         //if all fields are filled
-            if (txtLabName.Text != "" && txtNumPods.Text != "" && txtDescription.Text != "")
+            if (txtLabName.Text != "" && txtNumPods.Text != "" && txtDescription.Text != "" && txtIP.Text != "")
             {
                 //removes the dependencies
                 RemoveType_Lab(IDToEdit);
                 //add new dependencie
                 addType_Lab(IDToEdit);
                 //updates the table
-                UpdateLab(IDToEdit, labName, numPods, description);
+                UpdateLab(IDToEdit, labName, numPods, description, labIp);
                 //redirects
                 System.Threading.Thread.Sleep(3000);
                 Response.Redirect("~/Lab/Labs.aspx");
@@ -104,23 +106,24 @@ namespace AppLabRedes.Lab
         /// <param name="name"></param>
         /// <param name="numPods"></param>
         /// <param name="description"></param>
-        private void UpdateLab(int id, string name, int numPods, string description)
+        private void UpdateLab(int id, string name, int numPods, string description, string labIP)
         {
 
             String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection openCon = new SqlConnection(strConn))
             {
                 //command
-                string saveLab = " update tblLabs set name =@name,numPods = @numPods, description = @description where id=@id"; ;
+                string saveLab = " update tblLabs set name =@name,numPods = @numPods, description = @description, labIP = @labIP where id=@id"; ;
                 using (SqlCommand command = new SqlCommand(saveLab, openCon))
                 {
                     //new id
-                    int maxId = SqlCode.SelectForINT("Select Max(id)+1 From tblLabType");
+                    int maxId = SqlCode.SelectForINT("Select Max(id)+1 From tblLabs");
                     //parameters
                     command.Parameters.AddWithValue("@id", id);
                     command.Parameters.AddWithValue("@name", name);
                     command.Parameters.AddWithValue("@numPods", numPods);
                     command.Parameters.AddWithValue("@description", description);
+                    command.Parameters.AddWithValue("@labIP", labIP);
                     try
                     {
                         //opens the connection
