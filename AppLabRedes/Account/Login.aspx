@@ -25,6 +25,5 @@
         </label>
     </div>
     <asp:Button runat="server" OnClick="LogIn" Text="Login" CssClass="btn btn-lg btn-success btn-block" />
-    <asp:LinkButton ID="LinkButton1" runat="server" CssClass="btn btn-lg btn-success btn-block" PostBackUrl="~/Account/Register.aspx">Register</asp:LinkButton>
 
 </asp:Content>

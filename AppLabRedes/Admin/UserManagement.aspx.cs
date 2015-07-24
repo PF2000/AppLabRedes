@@ -105,12 +105,22 @@ namespace AspNet.Identity.Manager.Account.Admin
         {
             ApplicationDbContext context = new ApplicationDbContext();
             ApplicationUser user = context.Users.Find(Id);
+            var roles = new List<string> { "Administrator" };
+
             if (user.IsNotNull())
             {
-                context.Users.Remove(user);
-                context.SaveChanges();
-                SuccessMessageUser = "User removed";
-                successMessageUser.Visible = true;
+                if (!user.Roles.Any(u => roles.Contains("Administrator")))
+                {
+                    context.Users.Remove(user);
+                    context.SaveChanges();
+                    SuccessMessageUser = "User removed";
+                    successMessageUser.Visible = true;
+                }
+                else
+                {
+                    SuccessMessageUser = "User is Administrator cant be removed";
+                    successMessageUser.Visible = true;
+                }
             }
         }
 
@@ -180,10 +190,12 @@ namespace AspNet.Identity.Manager.Account.Admin
                     result = manager.AddPassword(userId, passwordTextBox.Text);
                     if (result.Succeeded)
                     {
+                        successMessageUser.Visible = true;
                         SuccessMessageUser = "Password of user changed";
                     }
                     else
                     {
+                        successMessageUser.Visible = true;
                         AddErrors(result);
                         return;
                     }
@@ -198,6 +210,7 @@ namespace AspNet.Identity.Manager.Account.Admin
                 ModelState.AddModelError("", error);
             }
         }
+
         protected void Unnamed_LoggingOut()
         {
             Context.GetOwinContext().Authentication.SignOut();

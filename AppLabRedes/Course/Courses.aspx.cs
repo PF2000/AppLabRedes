@@ -216,25 +216,34 @@ namespace AppLabRedes.Course
                 //converts the dates selected
                 DateTime dBegin = Convert.ToDateTime(txtBegin.Text);
                 DateTime dEnd = Convert.ToDateTime(txtEnd.Text);
-                //
-                dEnd = dEnd.AddHours(23);
-                dEnd = dEnd.AddMinutes(59);
-
-                //pulls data for courses in the selected dates
-                DataTable dt = SqlCode.PullDataToDataTable("select DISTINCT c.id,c.description,c.numUsers,c.cName, ty.type  as typee  from tblcourse c ,tblLOginTimes lt, tblLabType ty where ty.id=c.cType and lt.course=c.id and c.Lab = '" + ddlLabs.SelectedValue + "' and (lt.tBegin >= '" + dBegin.ToString("yyyy-MM-dd HH:mm") + "' and lt.tBegin <= '" + dEnd.ToString("yyyy-MM-dd HH:mm") + "' ) or (lt.tEnd <=  '" + dBegin.ToString("yyyy-MM-dd HH:mm") + "' and  lt.tEnd >= '" + dEnd.ToString("yyyy-MM-dd HH:mm") + "' );");
-                //if exists
-                if (dt.Rows.Count != 0)
+                if (dBegin < dEnd)
                 {
-                    //binds the data table
-                    lstCourses.DataSource = dt;
-                    lstCourses.DataBind();
+                    //
+                    dEnd = dEnd.AddHours(23);
+                    dEnd = dEnd.AddMinutes(59);
+
+                    //pulls data for courses in the selected dates
+                    DataTable dt = SqlCode.PullDataToDataTable("select DISTINCT c.id,c.description,c.numUsers,c.cName, ty.type  as typee  from tblcourse c ,tblLOginTimes lt, tblLabType ty where ty.id=c.cType and lt.course=c.id and c.Lab = '" + ddlLabs.SelectedValue + "' and (lt.tBegin >= '" + dBegin.ToString("yyyy-MM-dd HH:mm") + "' and lt.tBegin <= '" + dEnd.ToString("yyyy-MM-dd HH:mm") + "' ) or (lt.tEnd <=  '" + dBegin.ToString("yyyy-MM-dd HH:mm") + "' and  lt.tEnd >= '" + dEnd.ToString("yyyy-MM-dd HH:mm") + "' );");
+                    //if exists
+                    if (dt.Rows.Count != 0)
+                    {
+                        //binds the data table
+                        lstCourses.DataSource = dt;
+                        lstCourses.DataBind();
+                    }
+                    else
+                    {
+                        //if no courses exists creates and binds an empty datatable
+                        DataTable dtFinall = new DataTable();
+                        lstCourses.DataSource = dtFinall;
+                        lstCourses.DataBind();
+                    }
                 }
                 else
                 {
-                    //if no courses exists creates and binds an empty datatable
-                    DataTable dtFinall = new DataTable();
-                    lstCourses.DataSource = dtFinall;
-                    lstCourses.DataBind();
+                    //error for search
+                    cphErrorMessage.Visible = true;
+                    txtOutput.Text = "Error!! Begin data is bigger than End date!!";
                 }
             }
             else

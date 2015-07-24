@@ -61,7 +61,7 @@
                 <div class="form-group">
                     <div class="col-md-offset-8 col-md-10">
                         <!-- http://forums.asp.net/t/1508094.aspx?How+to+pop+up+a+confirmation+dialog+box+OnClientClick="return confirm('Are you sure you want to submit ?')" -->
-                        <asp:Button ID="btnaddLab" runat="server" OnClick="btnaddLab_Click" Text="Add Lab" CssClass="btn btn-default" OnClientClick="confirm('Are you sure you want to submit ?')" />
+                        <asp:Button ID="btnaddLab" runat="server" OnClick="btnaddLab_Click" Text="Add Lab" CssClass="btn btn-default" OnClientClick=" return confirm('Are you sure you want to submit ?')" />
                         <br />
                     </div>
                 </div>
@@ -113,7 +113,7 @@
                         <td>
                             <asp:Label Text='<%# Eval("type") %>' runat="server" ID="typeLabel" /></td>
                         <td>
-                            <asp:Button runat="server" CssClass="btn btn-default" CommandName="Delete" Text="Delete" ID="DeleteButton" />
+                            <asp:LinkButton runat="server" CssClass="btn btn-default" OnCommand="btnRemoveType_Command" CommandArgument='<%# Eval ("id") %>' ID="DeleteButton" OnClientClick=" return confirm('Are you sure you want to delete this type ? This action will delete all courses associated with this Type.')">Delete</asp:LinkButton>
                             <asp:Button runat="server" CssClass="btn btn-default" CommandName="Edit" Text="Edit" ID="EditButton" />
                         </td>
                     </tr>

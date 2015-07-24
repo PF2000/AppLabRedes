@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -150,5 +151,208 @@ namespace AppLabRedes.Lab
             }
         }
 
+        protected void btnRemoveType_Command(object sender, CommandEventArgs e)
+        {
+            //gets the lab id
+            int idType = Convert.ToInt16(e.CommandArgument.ToString());
+            //removes from association with lab
+            RemoveType_Lab(idType);
+            //gets all courses with this type
+            DataTable dt = SqlCode.PullDataToDataTable("select id from tblCourse where cType = '" + idType + "'");
+            //REmoves all courses and dependencies
+
+            foreach (DataRow row in dt.Rows)
+            {
+
+                int idCourse = Convert.ToInt16(row["id"]);
+                RemoveLogTimes(idCourse);
+                RemoveCourse(idCourse);
+                RemoveUsers(idCourse);
+
+            }
+            //removes the type
+            RemoveType(idType);
+            //refresh
+            Response.Redirect(Request.RawUrl);
+
+        }
+        /// <summary>
+        /// Removes the dependencies from database
+        /// </summary>
+        /// <param name="idLabb"></param>
+        private void RemoveType_Lab(int idType)
+        {
+            String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            using (SqlConnection openCon = new SqlConnection(strConn))
+            {
+                //command
+                string saveTypes_Lab = " delete from tblTypes_Labss where idType= @idType"; ;
+                using (SqlCommand command = new SqlCommand(saveTypes_Lab, openCon))
+                {
+                    //parametrs
+                    command.Parameters.AddWithValue("@idType", idType);
+                    try
+                    {
+                        //opens the connection
+                        openCon.Open();
+                        int recordsAffected = command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        //error message
+                        txtOutput.Text = ex.Message + "@DeleteData";
+                    }
+                    finally
+                    {
+                        //closes the connection
+                        openCon.Close();
+                    }
+                    command.Parameters.Clear();
+                }
+            }
+        }
+        /// <summary>
+        /// Remove the course
+        /// </summary>
+        /// <param name="idCourse">Id for course removal</param>
+        private void RemoveCourse(int idCourse)
+        {
+            String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            using (SqlConnection openCon = new SqlConnection(strConn))
+            {   //command
+                string saveLab = " delete tblCourse where id = @idCourse "; ;
+
+                using (SqlCommand command = new SqlCommand(saveLab, openCon))
+                {
+                    //comand parameters
+                    command.Parameters.AddWithValue("@idCourse", idCourse);
+                    try
+                    {
+                        //open connection
+                        openCon.Open();
+                        int recordsAffected = command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        //error message
+                        txtOutput.Text = ex.Message + "@DeleteData";
+                    }
+                    finally
+                    {
+                        //closes que connection
+                        openCon.Close();
+                    }
+                    command.Parameters.Clear();
+                }
+            }
+        }
+        /// <summary>
+        /// Remove timeLogs from course
+        /// </summary>
+        /// <param name="idCourse">Id for course removal</param>
+        private void RemoveLogTimes(int idCourse)
+        {
+            String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            using (SqlConnection openCon = new SqlConnection(strConn))
+            {
+                //comand
+                string strr = " delete from tblLOginTimes where course = @idCourse"; ;
+                using (SqlCommand command = new SqlCommand(strr, openCon))
+                {
+                    //comand parameters
+                    command.Parameters.AddWithValue("@idCourse", idCourse);
+                    try
+                    {
+                        //open connection
+                        openCon.Open();
+                        int recordsAffected = command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        //error message
+                        txtOutput.Text = ex.Message + "@DeleteData";
+                    }
+                    finally
+                    {
+                        //closes conection
+                        openCon.Close();
+                    }
+                    command.Parameters.Clear();
+                }
+            }
+
+        }
+        /// <summary>
+        /// Removes Users.
+        /// </summary>
+        /// <param name="idCourse">Id for Users removal</param>
+        private void RemoveUsers(int idCourse)
+        {
+            String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            using (SqlConnection openCon = new SqlConnection(strConn))
+            {
+                //command
+                string strr = " delete from tblUsers where course = @idCourse"; ;
+                using (SqlCommand command = new SqlCommand(strr, openCon))
+                {
+                    //command parameters
+                    command.Parameters.AddWithValue("@idCourse", idCourse);
+                    try
+                    {
+                        //open connection
+                        openCon.Open();
+                        int recordsAffected = command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        //error message
+                        txtOutput.Text = ex.Message + "@DeleteData";
+                    }
+                    finally
+                    {
+                        //closes connection
+                        openCon.Close();
+                    }
+                    command.Parameters.Clear();
+                }
+            }
+
+        }
+        /// <summary>
+        /// Remove the Type
+        /// </summary>
+        /// <param name="idCourse">Id for course removal</param>
+        private void RemoveType(int idType)
+        {
+            String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            using (SqlConnection openCon = new SqlConnection(strConn))
+            {   //command
+                string saveLab = " delete tblLabType where id = @idType "; ;
+
+                using (SqlCommand command = new SqlCommand(saveLab, openCon))
+                {
+                    //comand parameters
+                    command.Parameters.AddWithValue("@idType", idType);
+                    try
+                    {
+                        //open connection
+                        openCon.Open();
+                        int recordsAffected = command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        //error message
+                        txtOutput.Text = ex.Message + "@DeleteData";
+                    }
+                    finally
+                    {
+                        //closes que connection
+                        openCon.Close();
+                    }
+                    command.Parameters.Clear();
+                }
+            }
+        }
     }
 }

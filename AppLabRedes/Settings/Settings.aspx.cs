@@ -17,22 +17,12 @@ namespace AppLabRedes.Settings
         {
             if (!IsPostBack)
             {
-                txtRouterIP.Text = System.Web.Configuration.WebConfigurationManager.AppSettings.Get("RouterIP");
-                txtRouterUser.Text = System.Web.Configuration.WebConfigurationManager.AppSettings.Get("RouterUser");
-                txtRouterPass.Attributes.Add("value", System.Web.Configuration.WebConfigurationManager.AppSettings.Get("RouterPass"));
-
                 initMail();
             }
         }
 
         protected void btnApplySettings_Click(object sender, EventArgs e)
         {
-            System.Configuration.Configuration conf = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("~");
-
-            conf.AppSettings.Settings["RouterIP"].Value = txtRouterIP.Text;
-            conf.AppSettings.Settings["RouterUser"].Value = txtRouterUser.Text;
-            conf.AppSettings.Settings["RouterPass"].Value = txtRouterPass.Text;
-            conf.Save();
             String host = txtEmailHost.Text;
             String port = txtEmailport.Text;
             String email = txtEmailMail.Text;

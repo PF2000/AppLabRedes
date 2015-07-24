@@ -35,14 +35,6 @@ namespace AppLabRedes
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            //get the Router ip settings
-            String RouterIP = System.Web.Configuration.WebConfigurationManager.AppSettings.Get("RouterIP");
-            //Change the Ping
-            Application.Lock();
-            Application["RouterStatus"] = (Boolean)Network.itPings(RouterIP);
-            Application["PingTime"] = (Double)Network.PingTimeAverage(RouterIP, 8);
-            Application.UnLock();
-
             //starts the Thread
             //StartMainThread(5000);
             //StartPingThread(4000);
@@ -141,7 +133,7 @@ namespace AppLabRedes
                     ad.AddUserToGroup(userName, "RadiusUsers");
                 }
                 SqlCode.UpdateDB(dt, 1);
-                Email.SendEmails(dt);
+                EmailClass.SendEmails(dt);
                 SqlCode.copyDataEventLogger("Successfully created users", "success", sb.ToString());
                 errorAdd = false;
             }

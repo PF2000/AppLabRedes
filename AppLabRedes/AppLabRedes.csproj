@@ -232,10 +232,10 @@
   <ItemGroup>
     <Content Include="About.aspx" />
     <Content Include="AccountMP.Master" />
+    <Content Include="Account\Forgot.aspx" />
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Manage.aspx" />
     <Content Include="Account\OpenAuthProviders.ascx" />
-    <Content Include="Account\Register.aspx" />
     <Content Include="Admin\UserManagement.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
@@ -414,6 +414,13 @@
     <Compile Include="AccountMP.Master.designer.cs">
       <DependentUpon>AccountMP.Master</DependentUpon>
     </Compile>
+    <Compile Include="Account\Forgot.aspx.cs">
+      <DependentUpon>Forgot.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Forgot.aspx.designer.cs">
+      <DependentUpon>Forgot.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Account\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -434,13 +441,6 @@
     </Compile>
     <Compile Include="Account\OpenAuthProviders.ascx.designer.cs">
       <DependentUpon>OpenAuthProviders.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Account\Register.aspx.cs">
-      <DependentUpon>Register.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\Register.aspx.designer.cs">
-      <DependentUpon>Register.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\UserManagement.aspx.cs">
       <DependentUpon>UserManagement.aspx</DependentUpon>
@@ -558,7 +558,7 @@
     <Compile Include="MyFolder\Classes\ADManager.cs" />
     <Compile Include="MyFolder\Classes\ADProperties.cs" />
     <Compile Include="MyFolder\Classes\ADUserDetail.cs" />
-    <Compile Include="MyFolder\Classes\Email.cs" />
+    <Compile Include="MyFolder\Classes\EmailClass.cs" />
     <Compile Include="MyFolder\Classes\Library.cs" />
     <Compile Include="MyFolder\Classes\Network.cs" />
     <Compile Include="MyFolder\Classes\SqlCode.cs" />

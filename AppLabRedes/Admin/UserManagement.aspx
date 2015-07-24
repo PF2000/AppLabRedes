@@ -67,7 +67,7 @@
                                         </div>
                                     </td>
                                 </tr>
-<%--                                <tr>
+                             <tr>
                                     <td colspan="3">
                                         <div class="form-group">
                                             <asp:Label runat="server" ID="EMailLabel" Text="EMail" AssociatedControlID="EMail" CssClass="col-md-4 control-label"/>
@@ -80,7 +80,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
+  <%--                           <tr>
                                     <td colspan="3">
                                         <div class="form-group">
                                             <asp:Label runat="server" ID="PhoneNumberLabel" Text="Phone number" AssociatedControlID="PhoneNumber" CssClass="col-md-4 control-label"/>
