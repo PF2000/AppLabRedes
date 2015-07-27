@@ -109,18 +109,18 @@ namespace AspNet.Identity.Manager.Account.Admin
 
             if (user.IsNotNull())
             {
-                if (!user.Roles.Any(u => roles.Contains("Administrator")))
-                {
+                //if (!user.Roles.Any(u => roles.Contains("Administrator")))
+                //{
                     context.Users.Remove(user);
                     context.SaveChanges();
                     SuccessMessageUser = "User removed";
                     successMessageUser.Visible = true;
-                }
-                else
-                {
-                    SuccessMessageUser = "User is Administrator cant be removed";
-                    successMessageUser.Visible = true;
-                }
+                //}
+                //else
+                //{
+                //    SuccessMessageUser = "User is Administrator cant be removed";
+                //    successMessageUser.Visible = true;
+                //}
             }
         }
 

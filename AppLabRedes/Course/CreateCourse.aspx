@@ -160,14 +160,22 @@
                                                     <div class="form-inline">
                                                         <div class="col-xs-6">
                                                             <div class="form-group">
-                                                                <label>Name</label>
-                                                                <asp:TextBox ID="txtName" runat="server" CssClass="form-control" Text='<%# Eval("Name") %>'></asp:TextBox>
+                                                                <div class="col-xs-3">
+                                                                    <div class="form-group">
+                                                                        <label>Name</label>
+                                                                        <asp:TextBox ID="txtName" runat="server" CssClass="form-control" Text='<%# Eval("Name") %>'></asp:TextBox>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-xs-6">
                                                             <div class="form-group">
-                                                                <label>Pass</label>
-                                                                <asp:TextBox ID="txtPass" runat="server" CssClass="form-control" Text='<%# Eval("Pass") %>'></asp:TextBox>
+                                                                <div class="col-xs-3">
+                                                                    <div class="form-group">
+                                                                        <label>Pass</label>
+                                                                        <asp:TextBox ID="txtPass" runat="server" CssClass="form-control" Text='<%# Eval("Pass") %>'></asp:TextBox>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -13,7 +13,6 @@
     </div>
     <!-- /.row -->
     <div class="row">
-
         <div class="row">
             <div class="col-lg-4 col-md-6">
                 <div class="panel panel-green">
@@ -87,35 +86,9 @@
         <!-- /.row -->
         <div class="row">
             <div class="col-lg-8">
-<%--                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa fa-desktop fa-fw"></i>Router Status
-                           
-                    </div>
-                    <!-- /.panel-heading -->
-                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                        <ContentTemplate>
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div runat="server" id="divRouterPing">
-                                        <label>Router Status: </label>
-                                        <asp:Label runat="server" ID="lblRouterStatus"></asp:Label>
-                                        <br />
-                                        <label>Average Time: </label>
-                                        <asp:Label runat="server" ID="lblPingAvegare"></asp:Label>
-                                        <br />
-                                        <asp:Button runat="server" OnClick="btnPing_Click" ID="btnPing" Text=" Ping " CssClass="btn btn-prymary" />
-                                    </div>
-                                </div>
-                            </div>
-                        </ContentTemplate>
-                    </asp:UpdatePanel>
-                    <!-- /.panel-body -->
-                </div>--%>
-
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <i class="fa fa-users fa-fw"></i>VPN Users
+                        <i class="fa fa-users fa-fw"></i>  Courses Calendar 
                            
                     </div>
                     <!-- /.panel-heading -->

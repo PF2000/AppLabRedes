@@ -6,15 +6,8 @@
 <head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%: Page.Title %> - Remote Lab</title>
+    <title><%: Page.Title %> - Remote Lab System</title>
 
-
-
-    <%--    <asp:PlaceHolder runat="server">
-        <%: Scripts.Render("~/Content") %>
-    </asp:PlaceHolder>
-
-    <webopt:BundleReference runat="server" Path="~/Content/css" />--%>
 
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link href="/Content/bootstrap.css" rel="stylesheet" />
@@ -52,21 +45,6 @@
                 <asp:ScriptReference Name="jquery" />
                 <asp:ScriptReference Name="bootstrap" />
                 <asp:ScriptReference Name="respond" />
-                <%--                 <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
-                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
-                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
-                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
-                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
-                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
-                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
-                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
-                <asp:ScriptReference Name="WebFormsBundle" />
-                                <asp:ScriptReference Name="jquery-1.11.3.js" Assembly="System.Web" Path="~/MyFolder/Scripts/jquery-1.11.3.js" />
-                 <asp:ScriptReference Name="jquery.simple-dtpicker.js" Assembly="System.Web" Path="~/MyFolder/Scripts/jquery.simple-dtpicker.js" />
-                <asp:ScriptReference Name="jquery.datetimepicker.js" Assembly="System.Web" Path="~/MyFolder/Scripts/jquery.datetimepicker.js" />
-
-                <asp:ScriptReference Name="sb-admin-2.js" Assembly="System.Web" Path="~/MyFolder/Scripts/sb-admin-2.js" />
-                --%>
             </Scripts>
         </asp:ScriptManager>
         <div id="wrapper">
@@ -79,7 +57,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" runat="server" href="~/Overview/Overview.aspx">Remote Lab</a>
+                    <a class="navbar-brand" runat="server" href="~/Overview/Overview.aspx">Remote Lab System</a>
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
                     <!-- /.navbar-header -->
@@ -106,7 +84,7 @@
                 <div class="navbar-default sidebar" role="navigation">
                     <div class="sidebar-nav navbar-collapse">
                         <!-- /.navbar-top-links -->
-                        <ul class="nav navbar-top-links navbar-right">
+                        <ul class="nav ">
                             <br />
                             <br />
                             <asp:LoginView runat="server" ViewStateMode="Disabled">
@@ -120,7 +98,6 @@
                                     </asp:RoleGroup>
                                 </RoleGroups>
                             </asp:LoginView>
-
                             <asp:LoginView runat="server" ViewStateMode="Disabled">
                                 <RoleGroups>
                                     <asp:RoleGroup Roles="Administrator">
@@ -162,7 +139,7 @@
                                     <asp:RoleGroup Roles="Administrator,Trainer">
                                         <ContentTemplate>
                                             <li>
-                                                <a runat="server" href="~/Course/Courses.aspx"><i class="fa fa-cog fa-fw"></i>Courses</a>
+                                                <a runat="server" href="~/Course/Courses.aspx"><i class="fa fa-graduation-cap fa-fw"></i>Courses</a>
                                             </li>
                                         </ContentTemplate>
                                     </asp:RoleGroup>

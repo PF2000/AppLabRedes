@@ -10,14 +10,10 @@
         </p>
     </asp:PlaceHolder>
     <div class="form-group">
-        <asp:Label runat="server" AssociatedControlID="User" CssClass="col-md-2 control-label">User</asp:Label>
-
-        <asp:TextBox runat="server" ID="User" CssClass="form-control" />
+        <asp:TextBox runat="server" ID="User" CssClass="form-control" placeholder="Username" />
     </div>
     <div class="form-group">
-        <asp:Label runat="server" AssociatedControlID="Password" CssClass="col-md-2 control-label">Password</asp:Label>
-
-        <asp:TextBox runat="server" ID="Password" TextMode="Password" CssClass="form-control" /> </div>
+        <asp:TextBox runat="server" ID="Password" TextMode="Password" CssClass="form-control" placeholder="Password" /> </div>
     <div class="checkbox">
         <label>
             <asp:CheckBox runat="server" ID="RememberMe" />
@@ -25,5 +21,6 @@
         </label>
     </div>
     <asp:Button runat="server" OnClick="LogIn" Text="Login" CssClass="btn btn-lg btn-success btn-block" />
+    <asp:LinkButton ID="LinkButton1" runat="server" PostBackUrl="~/Account/Forgot.aspx" CssClass="btn btn-lg btn-success btn-block" >Recover Password</asp:LinkButton>
 
 </asp:Content>
