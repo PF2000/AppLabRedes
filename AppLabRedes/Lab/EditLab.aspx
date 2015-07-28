@@ -3,7 +3,13 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
 
-    <br />
+    <asp:PlaceHolder runat="server" ID="cphErrorMessage" Visible="true">
+        <div class="form-group">
+            <asp:Label runat="server" CssClass="text-danger col-lg-12 control-label" ID="Label1"></asp:Label>
+        </div>
+        <br />
+        <hr />
+    </asp:PlaceHolder>
 
 
     <div class="row">

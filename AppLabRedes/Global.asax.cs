@@ -72,19 +72,18 @@ namespace AppLabRedes
 
             //SqlCode.copyData("Check the Users - begin or end","info");
 
-            //Gets the users to Remove
-            DataTable dt = SqlCode.PullDataToDataTable("select distinct usr,pass, tl.id as id, u.email as email  from tblLOginTimes tl, tblUsers u where tl.course = u.course and GETDATE() > tl.tEnd and tl.active = '1'");
-            if (dt.Rows.Count != 0)
-            {
-                RemoveUsers(dt);
-            }
-
             //Gets the users to Add
-            dt = SqlCode.PullDataToDataTable("select distinct usr,pass, tl.id as id, u.email as email from tblLOginTimes tl, tblUsers u where tl.course = u.course and GETDATE() > tl.tBegin and tl.active = '0'");
+            DataTable dt = SqlCode.PullDataToDataTable("select distinct usr,pass, tl.id as id, u.email as email  , l.labIP from tblLOginTimes tl, tblUsers u, tblCourse c, tblLabs l where tl.course = u.course and c.Lab = l.Id and GETDATE() > tl.tEnd and tl.active = '0'");
             if (dt.Rows.Count != 0)
             {
                 SaveUsers(dt);
-
+            }
+            System.Threading.Thread.Sleep(500);
+            //Gets the users to Remove
+            dt = SqlCode.PullDataToDataTable("select distinct usr,pass, tl.id as id, u.email as email  , l.labIP from tblLOginTimes tl, tblUsers u, tblCourse c, tblLabs l where tl.course = u.course and c.Lab = l.Id and GETDATE() > tl.tEnd and tl.active = '1'");
+            if (dt.Rows.Count != 0)
+            {
+                RemoveUsers(dt);
             }
         }
 

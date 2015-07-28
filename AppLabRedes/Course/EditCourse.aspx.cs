@@ -21,7 +21,7 @@ namespace AppLabRedes.Course
         static int numPodsLeftByDate = 0;
         static int numPodsLeftTotal = 0;
         static int numPodsFromLab = 0;
-        int idCourse = 0;
+        static int idCourse = 0;
         int LabId = 0;
 
 
@@ -174,7 +174,7 @@ namespace AppLabRedes.Course
             String IdLocalTz = TimeZoneInfo.Local.Id;
 
             //Converts to dateTime
-            DateTime tBegin =TimeZoneInfo.ConvertTimeBySystemTimeZoneId( Convert.ToDateTime(begin), IdLocalTz, idTimeZone);
+            DateTime tBegin = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(Convert.ToDateTime(begin), IdLocalTz, idTimeZone);
             DateTime tEnd = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(Convert.ToDateTime(end), IdLocalTz, idTimeZone);
             DateTime tEndTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(Convert.ToDateTime(endTime), IdLocalTz, idTimeZone);
             //begin
@@ -224,7 +224,7 @@ namespace AppLabRedes.Course
                 DateTime tB = dtt;
                 DateTime tE = dtt.AddHours(numHours);
                 //gets the number os pods available
-                podsLeftOnInit(dateeBegin, dateeEnd, idLab,idCourse);
+                podsLeftOnInit(dateeBegin, dateeEnd, idLab, idCourse);
                 //number of next line
                 int rCount = dtTimes.Rows.Count + 1;
                 dtTimes.Rows.Add(tB, tE, numPodsLeftByDate, numPodsFromLab, rCount);
@@ -232,7 +232,7 @@ namespace AppLabRedes.Course
                 dtt = dtt.AddDays(1);
             }
             //clears fields
-            lblnumAvlPods.InnerText = ( numPodsLeftTotal ) + "";
+            lblnumAvlPods.InnerText = (numPodsLeftTotal) + "";
             lblnumTotalPods.InnerText = numPodsFromLab + "";
         }
         /// <summary>
@@ -246,10 +246,13 @@ namespace AppLabRedes.Course
         {
 
             DataTable dt = SqlCode.PullDataToDataTable(
-               " select lt.tBegin , lt.tEnd, c.numUsers" +
+               " select distinct lt.tBegin , lt.tEnd, c.numUsers" +
                " from tblLabs as l , tblCourse as c , tblLOginTimes as lt, tblUsers as u " +
                " where l.Id=" + idLab + " and c.id != '" + idCourse + "' and l.id=c.Lab and lt.course=c.id and u.course=c.id");
             int podsAvl = 50;
+
+            //resets the pods per day
+            numPodsLeftByDate = numPodsFromLab;
 
             //verificações
             foreach (DataRow row in dt.Rows)
@@ -258,19 +261,21 @@ namespace AppLabRedes.Course
                 DateTime dEnd = Convert.ToDateTime(row["tEnd"]);
                 podsAvl = Convert.ToInt16(row["numUsers"]);
 
-                //ifThereUsers
-                if ((dBegin > tB && dBegin < tE) || (dEnd < tB && dEnd > tE))
+                //checks if date is in the time span 
+                if ((tB >= dBegin && tB < dEnd) || (tE >= dBegin && tE < dEnd) || (tB <= dBegin && dEnd <= tE))
                 {
                     //updates the number minimum number of pod by date
-                    if (podsAvl < numPodsLeftByDate)
+                    if (podsAvl <= numPodsLeftByDate)
                     {
-                        //updates the number minimum number of pod total
-                        if (numPodsLeftByDate < numPodsLeftTotal)
-                        {
-                            numPodsLeftTotal = numPodsLeftByDate;
-                        }
+                        //subtracts the pod available to the total of pods of the date
+                        numPodsLeftByDate -= podsAvl;
                     }
                 }
+            }
+             //updates the total 
+            if (numPodsLeftByDate < numPodsLeftTotal)
+            {
+                numPodsLeftTotal = numPodsLeftByDate;
             }
         }
         /// <summary>
@@ -286,13 +291,14 @@ namespace AppLabRedes.Course
             //creates all the users left
             for (int i = 0; i < numPodsLeftTotal; i++)
             {
-                int k = numPodsLeftByDate - i;
+                int k = numPodsLeftTotal - i;
+                // int k = numPodsLeftByDate - i;
                 ListItem lst = new ListItem(k + "", k + "");
                 ddlNumPods.Items.Add(lst);
             }
             int numUsersPods = SqlCode.SelectForINT("select numUsers from tblCourse where id='" + idCourse + "'");
             //set selection
-            ddlNumPods.Items.FindByValue( numUsersPods  + "").Selected = true;
+            ddlNumPods.Items.FindByValue(numUsersPods + "").Selected = true;
         }
         /// <summary>
         /// The users List
@@ -525,8 +531,13 @@ namespace AppLabRedes.Course
         /// <param name="e"></param>
         protected void btnTime_Click(object sender, EventArgs e)
         {
-
+            //hiddes the fields
+            cphUsers.Visible = false;
+            UpdatePanel4.Update();
+            //resets the table
+            initTable();
             int LabId = Convert.ToInt16(ddlLabs.SelectedValue);
+          
             //gets pods from lab
             numPodsFromLab = SqlCode.SelectForINT("select numPods from tblLabs where id='" + LabId + "';");
             //initializes the number of pods left with the max number of users
@@ -558,6 +569,7 @@ namespace AppLabRedes.Course
                     //counts the number of days
                     TimeSpan timeHours = timeEnd - timeBegin;
                     int numHours = timeHours.Hours;
+                    int numMin = timeHours.Minutes;
 
                     DateTime dtt = new DateTime(tBegin.Year, tBegin.Month, tBegin.Day, timeBegin.Hour, timeBegin.Minute, timeBegin.Second);
                     DateTime dtEnd = new DateTime(tEnd.Year, tEnd.Month, tEnd.Day, timeEnd.Hour, timeEnd.Minute, timeEnd.Second);
@@ -572,11 +584,10 @@ namespace AppLabRedes.Course
                     while (dtt.AddHours(numHours) <= dtEnd)
                     {
                         DateTime tB = dtt;
-                        DateTime tE = dtt.AddHours(numHours);
-
+                        DateTime tE = dtt.AddHours(numHours).AddMinutes(numMin); ;
 
                         //gets the number os pods available
-                        podsLeft(tB, tE, idLab);
+                        podsLeft(tB, tE, idLab, idCourse);
 
                         //numero da proxima linha
                         int rCount = dtTimes.Rows.Count + 1;
@@ -604,40 +615,71 @@ namespace AppLabRedes.Course
         /// <param name="tB"></param>
         /// <param name="tE"></param>
         /// <param name="idLab"></param>
-        public void podsLeft(DateTime tB, DateTime tE, int idLab)
+        public void podsLeft(DateTime tB, DateTime tE, int idLab, int idCourse)
         {
             //gets the table of with the dates and users of the lab
             DataTable dt = SqlCode.PullDataToDataTable(
                " select distinct lt.tBegin , lt.tEnd, c.numUsers" +
                " from tblLabs as l , tblCourse as c , tblLOginTimes as lt, tblUsers as u " +
-               " where l.Id=" + idLab + " and l.id=c.Lab and lt.course=c.id and u.course=c.id");
+               " where l.Id=" + idLab + " and c.id != '" + idCourse + "' and l.id=c.Lab and lt.course=c.id and u.course=c.id");
             int podsAvl = 50;
 
-            //runs all the rows in the table
+            //resets the pods per day
+            numPodsLeftByDate = numPodsFromLab;
+
+            //verificações
             foreach (DataRow row in dt.Rows)
             {
-                //converts to date time
                 DateTime dBegin = Convert.ToDateTime(row["tBegin"]);
                 DateTime dEnd = Convert.ToDateTime(row["tEnd"]);
-                //gets the number of users in the courses selected
                 podsAvl = Convert.ToInt16(row["numUsers"]);
-                //substract to the number os pods in the lab
-                podsAvl = numPodsFromLab - podsAvl;
-                //if There Users in the time selected
-                if ((dBegin >= tB && dBegin <= tE) || (dEnd <= tB && dEnd >= tE))
+
+                //checks if date is in the time span 
+                if ((tB >= dBegin && tB < dEnd) || (tE >= dBegin && tE < dEnd) || (tB <= dBegin && dEnd <= tE))
                 {
                     //updates the number minimum number of pod by date
                     if (podsAvl <= numPodsLeftByDate)
                     {
-                        numPodsLeftByDate = podsAvl;
-                        //updates the number minimum number of pod total
-                        if (numPodsLeftByDate < numPodsLeftTotal)
-                        {
-                            numPodsLeftTotal = numPodsLeftByDate;
-                        }
+                        //subtracts the pod available to the total of pods of the date
+                        numPodsLeftByDate -= podsAvl;
                     }
                 }
             }
+            //updates the total 
+            if (numPodsLeftByDate < numPodsLeftTotal)
+            {
+                numPodsLeftTotal = numPodsLeftByDate;
+            }
+
+            //numPodsLeftByDate = 0;
+            ////runs all the rows in the table
+            //foreach (DataRow row in dt.Rows)
+            //{
+            //    //converts to date time
+            //    DateTime dBegin = Convert.ToDateTime(row["tBegin"]);
+            //    DateTime dEnd = Convert.ToDateTime(row["tEnd"]);
+            //    //gets the number of users in the courses selected
+            //    podsAvl = Convert.ToInt16(row["numUsers"]);
+            //    //substract to the number os pods in the lab
+            //    numPodsLeftByDate = numPodsFromLab - podsAvl;
+
+            //    //if There Users in the time selected
+            //    if ((tB >= dBegin && tB < dEnd) || (tE >= dBegin && tE < dEnd) || (tB <= dBegin && dEnd <= tE))
+            //    {
+            //        //updates the number minimum number of pod by date
+            //        if (podsAvl <= numPodsLeftByDate)
+            //        {
+            //            numPodsLeftByDate = podsAvl;
+            //            //updates the number minimum number of pod total
+            //            if (numPodsLeftByDate < numPodsLeftTotal)
+            //            {
+            //                numPodsLeftTotal = numPodsLeftByDate;
+            //            }
+            //        }
+            //    }
+            //}
+
+
         }
         /// <summary>
         /// to build the list with the number of pods
@@ -761,7 +803,6 @@ namespace AppLabRedes.Course
                 return false;
             }
         }
-
         /// <summary>
         /// Updates the course.
         /// </summary>
@@ -892,7 +933,6 @@ namespace AppLabRedes.Course
                 }
             }
         }
-
         /// <summary>
         /// Insert the login times
         /// </summary>

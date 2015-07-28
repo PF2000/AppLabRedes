@@ -47,10 +47,6 @@ namespace AppLabRedes.Lab
             //PostBack
             Response.Redirect(Request.RawUrl);
         }
-
-
-
-
         /// <summary>
         /// Removes the lab from the table Labs from the database
         /// </summary>
@@ -122,9 +118,6 @@ namespace AppLabRedes.Lab
                 }
             }
         }
-
-
-
         /// <summary>
         /// Remove the course
         /// </summary>

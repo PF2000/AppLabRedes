@@ -327,7 +327,7 @@ namespace AppLabRedes.Course
                         doc.Add(new Paragraph(" "));
                         doc.Add(new Paragraph(" Users "));
                         doc.Add(new Paragraph(" "));
-                        doc.Add(new Paragraph("UserName; " + roww["usr"]));
+                        doc.Add(new Paragraph("UserName: " + roww["usr"]));
                         doc.Add(new Paragraph("Pass: " + roww["pass"]));
                     }
 

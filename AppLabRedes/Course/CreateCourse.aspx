@@ -94,6 +94,15 @@
                                         <div class="col-xs-12">
                                             <div class="form-inline">
                                                 <div class="col-xs-6">
+                                                    Hours per day
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-xs-12">
+                                            <div class="form-inline">
+                                                <div class="col-xs-6">
                                                     <div class="form-group">
                                                         <label>Begin Time</label>
                                                         <asp:TextBox ID="txtBTime" runat="server" CssClass="form-control time" data-date="" data-date-format="hh:ii" data-link-field="dtp_input3" data-link-format="hh:ii"></asp:TextBox>

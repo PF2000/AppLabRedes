@@ -56,7 +56,7 @@ namespace AppLabRedes.Lab
             catch (Exception ex)
             {
                 cphErrorMessage.Visible = true;
-                txtOutput.Text = ex.Message + "Only numbers are permitted";
+                txtOutput.Text = ex.Message + "Only numbers are permitted in Number pods field";
             }
         }
         /// <summary>

@@ -217,7 +217,7 @@
                                 <br />
                                 <div class="col-md-offset-2 col-md-10">
                                     <br />
-                                    <asp:Button ID="btnUpdateCourse" runat="server" Text="Update Course" OnClick="btnUpdateCourse_Click" CssClass="btn btn-default" OnClientClick="return confirm('Are you sure you want to remove this course ?')" />
+                                    <asp:Button ID="btnUpdateCourse" runat="server" Text="Update Course" OnClick="btnUpdateCourse_Click" CssClass="btn btn-default" OnClientClick="return confirm('Are you sure you want to update this course ?')" />
                                 </div>
                             </div>
                         </asp:PlaceHolder>

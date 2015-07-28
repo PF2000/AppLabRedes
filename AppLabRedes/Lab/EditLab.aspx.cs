@@ -80,23 +80,32 @@ namespace AppLabRedes.Lab
         /// <param name="e"></param>
         protected void btnUpdateLab_Click(object sender, EventArgs e)
         {
-            //gets the new information
-            string labName = txtLabName.Text;
-            int numPods = Convert.ToInt16(txtNumPods.Text);
-            string description = txtDescription.Text;
-            string labIp = txtIP.Text;
-                        //if all fields are filled
-            if (txtLabName.Text != "" && txtNumPods.Text != "" && txtDescription.Text != "" && txtIP.Text != "")
+            try
             {
-                //removes the dependencies
-                RemoveType_Lab(IDToEdit);
-                //add new dependencie
-                addType_Lab(IDToEdit);
-                //updates the table
-                UpdateLab(IDToEdit, labName, numPods, description, labIp);
-                //redirects
-                System.Threading.Thread.Sleep(3000);
-                Response.Redirect("~/Lab/Labs.aspx");
+
+                //gets the new information
+                string labName = txtLabName.Text;
+                int numPods = Convert.ToInt16(txtNumPods.Text);
+                string description = txtDescription.Text;
+                string labIp = txtIP.Text;
+                //if all fields are filled
+                if (txtLabName.Text != "" && txtNumPods.Text != "" && txtDescription.Text != "" && txtIP.Text != "")
+                {
+                    //removes the dependencies
+                    RemoveType_Lab(IDToEdit);
+                    //add new dependencie
+                    addType_Lab(IDToEdit);
+                    //updates the table
+                    UpdateLab(IDToEdit, labName, numPods, description, labIp);
+                    //redirects
+                    System.Threading.Thread.Sleep(3000);
+                    Response.Redirect("~/Lab/Labs.aspx");
+                }
+            }            
+            catch (Exception ex)
+            {
+                cphErrorMessage.Visible = true;
+                txtOutput.Text = ex.Message + "Only numbers are permitted in Number pods field";
             }
         }
         /// <summary>
