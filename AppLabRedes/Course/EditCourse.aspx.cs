@@ -200,7 +200,6 @@ namespace AppLabRedes.Course
             DateTime timeBegin = Convert.ToDateTime(bTime);
             DateTime timeEnd = Convert.ToDateTime(eTime);
 
-
             //counts the number of days
             TimeSpan ts = dateeEnd - dateeBegin;
             int numDays = ts.Days;
@@ -208,6 +207,7 @@ namespace AppLabRedes.Course
             //counts the number of days
             TimeSpan timeHours = timeEnd - timeBegin;
             int numHours = timeHours.Hours;
+            int numMin = timeHours.Minutes;
 
             DateTime dtt = new DateTime(dateeBegin.Year, dateeBegin.Month, dateeBegin.Day, timeBegin.Hour, timeBegin.Minute, timeBegin.Second);
             DateTime dtEnd = new DateTime(dateeEnd.Year, dateeEnd.Month, dateeEnd.Day, timeEnd.Hour, timeEnd.Minute, timeEnd.Second);
@@ -219,12 +219,12 @@ namespace AppLabRedes.Course
             numPodsLeftByDate = numPodsFromLab;
 
             //given 2 diferent days and 2 diferent times, its necessary to create one by day
-            while (dtt.AddHours(numHours) <= dtEnd)
+            while (dtt.AddHours(numHours).AddMinutes(numMin) <= dtEnd)
             {
                 DateTime tB = dtt;
-                DateTime tE = dtt.AddHours(numHours);
+                DateTime tE = dtt.AddHours(numHours).AddMinutes(numMin); ;
                 //gets the number os pods available
-                podsLeftOnInit(dateeBegin, dateeEnd, idLab, idCourse);
+                podsLeftOnInit(tB, tE, idLab, idCourse);
                 //number of next line
                 int rCount = dtTimes.Rows.Count + 1;
                 dtTimes.Rows.Add(tB, tE, numPodsLeftByDate, numPodsFromLab, rCount);
@@ -246,7 +246,7 @@ namespace AppLabRedes.Course
         {
 
             DataTable dt = SqlCode.PullDataToDataTable(
-               " select distinct lt.tBegin , lt.tEnd, c.numUsers" +
+               " select distinct c.Id, lt.tBegin , lt.tEnd, c.numUsers" +
                " from tblLabs as l , tblCourse as c , tblLOginTimes as lt, tblUsers as u " +
                " where l.Id=" + idLab + " and c.id != '" + idCourse + "' and l.id=c.Lab and lt.course=c.id and u.course=c.id");
             int podsAvl = 50;
@@ -262,17 +262,17 @@ namespace AppLabRedes.Course
                 podsAvl = Convert.ToInt16(row["numUsers"]);
 
                 //checks if date is in the time span 
-                if ((tB >= dBegin && tB < dEnd) || (tE >= dBegin && tE < dEnd) || (tB <= dBegin && dEnd <= tE))
+                if ((tB >= dBegin && tB <= dEnd) || (tE >= dBegin && tE <= dEnd) || (tB <= dBegin && dEnd <= tE))
                 {
                     //updates the number minimum number of pod by date
-                    if (podsAvl <= numPodsLeftByDate)
-                    {
-                        //subtracts the pod available to the total of pods of the date
-                        numPodsLeftByDate -= podsAvl;
-                    }
+                    // if (podsAvl <= numPodsLeftByDate)
+                    // {
+                    //subtracts the pod available to the total of pods of the date
+                    numPodsLeftByDate -= podsAvl;
+                    //}
                 }
             }
-             //updates the total 
+            //updates the total 
             if (numPodsLeftByDate < numPodsLeftTotal)
             {
                 numPodsLeftTotal = numPodsLeftByDate;
@@ -531,82 +531,96 @@ namespace AppLabRedes.Course
         /// <param name="e"></param>
         protected void btnTime_Click(object sender, EventArgs e)
         {
-            //hiddes the fields
-            cphUsers.Visible = false;
-            UpdatePanel4.Update();
-            //resets the table
-            initTable();
-            int LabId = Convert.ToInt16(ddlLabs.SelectedValue);
-          
-            //gets pods from lab
-            numPodsFromLab = SqlCode.SelectForINT("select numPods from tblLabs where id='" + LabId + "';");
-            //initializes the number of pods left with the max number of users
-            numPodsLeftTotal = numPodsFromLab;
-
-            String bDate = txtBDate.Text;
-            String eDate = txtEDate.Text;
-
-            String bTime = txtBTime.Text;
-            String eTime = txtETime.Text;
-
-            //id fields are not empty
-            if (bDate != "" && eDate != "" && bTime != "" && eTime != "")
+            try
             {
-                //Converts to dateTime
-                DateTime tBegin = ConvertTime(Convert.ToDateTime(bDate), ddlTimeZone.SelectedValue);
-                DateTime tEnd = ConvertTime(Convert.ToDateTime(eDate), ddlTimeZone.SelectedValue);
-                //Converts to dateTime
-                DateTime timeBegin = ConvertTime(Convert.ToDateTime(bTime), ddlTimeZone.SelectedValue);
-                DateTime timeEnd = ConvertTime(Convert.ToDateTime(eTime), ddlTimeZone.SelectedValue);
+                //hiddes the fields
+                cphUsers.Visible = false;
+                UpdatePanel4.Update();
+                //resets the table
+                initTable();
+                int LabId = Convert.ToInt16(ddlLabs.SelectedValue);
 
-                //se end time is bigger than begin time
-                if (tBegin <= tEnd)
+                //gets pods from lab
+                numPodsFromLab = SqlCode.SelectForINT("select numPods from tblLabs where id='" + LabId + "';");
+                //initializes the number of pods left with the max number of users
+                numPodsLeftTotal = numPodsFromLab;
+
+                String bDate = txtBDate.Text;
+                String eDate = txtEDate.Text;
+
+                String bTime = txtBTime.Text;
+                String eTime = txtETime.Text;
+
+                //id fields are not empty
+                if (bDate != "" && eDate != "" && bTime != "" && eTime != "")
                 {
-                    //counts the number of days
-                    TimeSpan ts = tEnd - tBegin;
-                    int numDays = ts.Days;
+                    //Converts to dateTime
+                    DateTime tBegin = ConvertTime(Convert.ToDateTime(bDate), ddlTimeZone.SelectedValue);
+                    DateTime tEnd = ConvertTime(Convert.ToDateTime(eDate), ddlTimeZone.SelectedValue);
+                    //Converts to dateTime
+                    DateTime timeBegin = ConvertTime(Convert.ToDateTime(bTime), ddlTimeZone.SelectedValue);
+                    DateTime timeEnd = ConvertTime(Convert.ToDateTime(eTime), ddlTimeZone.SelectedValue);
 
-                    //counts the number of days
-                    TimeSpan timeHours = timeEnd - timeBegin;
-                    int numHours = timeHours.Hours;
-                    int numMin = timeHours.Minutes;
-
-                    DateTime dtt = new DateTime(tBegin.Year, tBegin.Month, tBegin.Day, timeBegin.Hour, timeBegin.Minute, timeBegin.Second);
-                    DateTime dtEnd = new DateTime(tEnd.Year, tEnd.Month, tEnd.Day, timeEnd.Hour, timeEnd.Minute, timeEnd.Second);
-
-                    //gets lab id
-                    int idLab = Convert.ToInt16(ddlLabs.SelectedValue);
-
-                    //initializes the number of pods left by date with the max number of users
-                    numPodsLeftByDate = numPodsFromLab;
-
-
-                    while (dtt.AddHours(numHours) <= dtEnd)
+                    //se end time is bigger than begin time
+                    if (tBegin <= tEnd && timeBegin < timeEnd)
                     {
-                        DateTime tB = dtt;
-                        DateTime tE = dtt.AddHours(numHours).AddMinutes(numMin); ;
+                        //counts the number of days
+                        TimeSpan ts = tEnd - tBegin;
+                        int numDays = ts.Days;
 
-                        //gets the number os pods available
-                        podsLeft(tB, tE, idLab, idCourse);
+                        //counts the number of days
+                        TimeSpan timeHours = timeEnd - timeBegin;
+                        int numHours = timeHours.Hours;
+                        int numMin = timeHours.Minutes;
 
-                        //numero da proxima linha
-                        int rCount = dtTimes.Rows.Count + 1;
+                        DateTime dtt = new DateTime(tBegin.Year, tBegin.Month, tBegin.Day, timeBegin.Hour, timeBegin.Minute, timeBegin.Second);
+                        DateTime dtEnd = new DateTime(tEnd.Year, tEnd.Month, tEnd.Day, timeEnd.Hour, timeEnd.Minute, timeEnd.Second);
 
-                        dtTimes.Rows.Add(tB, tE, numPodsLeftByDate, numPodsFromLab, rCount);
-                        //update datasource
+                        //gets lab id
+                        int idLab = Convert.ToInt16(ddlLabs.SelectedValue);
 
-                        dtt = dtt.AddDays(1);
+                        //initializes the number of pods left by date with the max number of users
+                        numPodsLeftByDate = numPodsFromLab;
+
+                        while (dtt.AddHours(numHours) <= dtEnd)
+                        {
+                            DateTime tB = dtt;
+                            DateTime tE = dtt.AddHours(numHours).AddMinutes(numMin); ;
+                            //gets the number os pods available
+                            podsLeft(tB, tE, idLab, idCourse);
+                            //numero da proxima linha
+                            int rCount = dtTimes.Rows.Count + 1;
+                            dtTimes.Rows.Add(tB, tE, numPodsLeftByDate, numPodsFromLab, rCount);
+                            //update datasource
+                            dtt = dtt.AddDays(1);
+                        }
+                        cphPodsLeft.Visible = true;
+                        cphTime.Visible = true;
+                        lblnumAvlPods.InnerText = numPodsLeftTotal + "";
+                        lblnumTotalPods.InnerText = numPodsFromLab + "";
+                        bindDdl();
+                        UpdatePanel1.Update();
                     }
-                    cphPodsLeft.Visible = true;
-                    cphTime.Visible = true;
-
-                    lblnumAvlPods.InnerText = numPodsLeftTotal + "";
-                    lblnumTotalPods.InnerText = numPodsFromLab + "";
-
-                    bindDdl();
-                    UpdatePanel1.Update();
-
+                    else
+                    {
+                        cphPods.Visible = false;
+                        UpdatePanel5.Update();
+                        cphVerify.Visible = true;
+                        lblErrorVerify.Text = "Begin time or date is bigger than End time or date!!";
+                    }
                 }
+                else
+                {
+                    cphPods.Visible = false;
+                    UpdatePanel5.Update();
+                    cphVerify.Visible = true;
+                    lblErrorVerify.Text = "One ou more fields are empty!!";
+                }
+            }            
+            catch (Exception ex)
+            {
+                cphVerify.Visible = true;
+                lblErrorVerify.Text = "Error !!" +ex.Message;
             }
         }
         /// <summary>
@@ -635,7 +649,7 @@ namespace AppLabRedes.Course
                 podsAvl = Convert.ToInt16(row["numUsers"]);
 
                 //checks if date is in the time span 
-                if ((tB >= dBegin && tB < dEnd) || (tE >= dBegin && tE < dEnd) || (tB <= dBegin && dEnd <= tE))
+                if ((tB >= dBegin && tB <= dEnd) || (tE >= dBegin && tE <= dEnd) || (tB <= dBegin && dEnd <= tE))
                 {
                     //updates the number minimum number of pod by date
                     if (podsAvl <= numPodsLeftByDate)
@@ -650,36 +664,6 @@ namespace AppLabRedes.Course
             {
                 numPodsLeftTotal = numPodsLeftByDate;
             }
-
-            //numPodsLeftByDate = 0;
-            ////runs all the rows in the table
-            //foreach (DataRow row in dt.Rows)
-            //{
-            //    //converts to date time
-            //    DateTime dBegin = Convert.ToDateTime(row["tBegin"]);
-            //    DateTime dEnd = Convert.ToDateTime(row["tEnd"]);
-            //    //gets the number of users in the courses selected
-            //    podsAvl = Convert.ToInt16(row["numUsers"]);
-            //    //substract to the number os pods in the lab
-            //    numPodsLeftByDate = numPodsFromLab - podsAvl;
-
-            //    //if There Users in the time selected
-            //    if ((tB >= dBegin && tB < dEnd) || (tE >= dBegin && tE < dEnd) || (tB <= dBegin && dEnd <= tE))
-            //    {
-            //        //updates the number minimum number of pod by date
-            //        if (podsAvl <= numPodsLeftByDate)
-            //        {
-            //            numPodsLeftByDate = podsAvl;
-            //            //updates the number minimum number of pod total
-            //            if (numPodsLeftByDate < numPodsLeftTotal)
-            //            {
-            //                numPodsLeftTotal = numPodsLeftByDate;
-            //            }
-            //        }
-            //    }
-            //}
-
-
         }
         /// <summary>
         /// to build the list with the number of pods
@@ -778,16 +762,24 @@ namespace AppLabRedes.Course
             //if true updates all
             if (valid == true)
             {
-                updateCourse(idCourse);
-                //removes 
-                RemoveLogTimes(idCourse);
-                RemoveUsers(idCourse);
-                //inserts agains
-                insertLoginTimes(idCourse);
-                insertUsers(idCourse);
-                //redirect
-                System.Threading.Thread.Sleep(3000);
-                Response.Redirect("~/Course/Courses.aspx");
+                try
+                {
+                    updateCourse(idCourse);
+                    //removes 
+                    RemoveLogTimes(idCourse);
+                    RemoveUsers(idCourse);
+                    //inserts agains
+                    insertLoginTimes(idCourse);
+                    insertUsers(idCourse);
+                    //redirect
+                    Response.Redirect("~/Course/Courses?op=deleteSuccess");
+                }
+                catch (Exception ex)
+                {
+                    //error message
+                    txtOutput.Text =  "Error updating the Course !! " + ex.Message ;
+                    cphErrorMessage.Visible = true;
+                }
             }
         }
 
@@ -838,24 +830,12 @@ namespace AppLabRedes.Course
                         command.Parameters.AddWithValue("@numUsers", ddlNumPods.SelectedValue);
                         command.Parameters.AddWithValue("@cName", txtCourseName.Text);
                         command.Parameters.AddWithValue("@cType", ddlTypes.SelectedValue);
-                        try
-                        {
-                            //opens the connections
-                            openCon.Open();
-                            int recordsAffected = command.ExecuteNonQuery();
-                        }
-                        catch (SqlException ex)
-                        {
-                            //error message
-                            txtOutput.Text = ex.Message + "@updateData";
-                            cphErrorMessage.Visible = true;
-                            upUsers.Update();
-                        }
-                        finally
-                        {
-                            //closes the connection
-                            openCon.Close();
-                        }
+
+                        //opens the connections
+                        openCon.Open();
+                        int recordsAffected = command.ExecuteNonQuery();
+                        //closes the connection
+                        openCon.Close();
                         command.Parameters.Clear();
                     }
                 }
@@ -877,22 +857,11 @@ namespace AppLabRedes.Course
                 {
                     //command parameters
                     command.Parameters.AddWithValue("@idCourse", idCourse);
-                    try
-                    {
-                        //opens the connection
-                        openCon.Open();
-                        int recordsAffected = command.ExecuteNonQuery();
-                    }
-                    catch (SqlException ex)
-                    {
-                        //error message
-                        txtOutput.Text = ex.Message + "@DeleteData";
-                    }
-                    finally
-                    {
-                        //closes the connection
-                        openCon.Close();
-                    }
+                    //opens the connection
+                    openCon.Open();
+                    int recordsAffected = command.ExecuteNonQuery();
+                    //closes the connection
+                    openCon.Close();
                     command.Parameters.Clear();
                 }
             }
@@ -913,22 +882,11 @@ namespace AppLabRedes.Course
                 {
                     //command parameters
                     command.Parameters.AddWithValue("@idCourse", idCourse);
-                    try
-                    {
-                        //opends connection
-                        openCon.Open();
-                        int recordsAffected = command.ExecuteNonQuery();
-                    }
-                    catch (SqlException ex)
-                    {
-                        //error message
-                        txtOutput.Text = ex.Message + "@DeleteData";
-                    }
-                    finally
-                    {
-                        //closes the connection
-                        openCon.Close();
-                    }
+                    //opends connection
+                    openCon.Open();
+                    int recordsAffected = command.ExecuteNonQuery();
+                    //closes the connection
+                    openCon.Close();
                     command.Parameters.Clear();
                 }
             }
@@ -953,22 +911,12 @@ namespace AppLabRedes.Course
                         command.Parameters.AddWithValue("@tBegin", row["begin"]);
                         command.Parameters.AddWithValue("@tEnd", row["end"]);
                         command.Parameters.AddWithValue("@course", idCourse);
-                        try
-                        {
-                            //opens the connection
-                            openCon.Open();
-                            int recordsAffected = command.ExecuteNonQuery();
-                        }
-                        catch (SqlException ex)
-                        {
-                            //error message
-                            txtOutput.Text = ex.Message + "@InsertData";
-                        }
-                        finally
-                        {
-                            //closes the conection
-                            openCon.Close();
-                        }
+
+                        //opens the connection
+                        openCon.Open();
+                        int recordsAffected = command.ExecuteNonQuery();
+                        //closes the conection
+                        openCon.Close();
                         command.Parameters.Clear();
                     }
                 }
@@ -1000,23 +948,11 @@ namespace AppLabRedes.Course
                         command.Parameters.AddWithValue("@mail", mail);
                         command.Parameters.AddWithValue("@course", idCourse);
 
-                        try
-                        {
-                            //opens the connection
-                            openCon.Open();
-                            int recordsAffected = command.ExecuteNonQuery();
-                        }
-                        catch (SqlException ex)
-                        {
-                            //error message 
-                            txtOutput.Text = ex.Message + "@InsertData";
-
-                        }
-                        finally
-                        {
-                            //closes the connection
-                            openCon.Close();
-                        }
+                        //opens the connection
+                        openCon.Open();
+                        int recordsAffected = command.ExecuteNonQuery();
+                        //closes the connection
+                        openCon.Close();
                         command.Parameters.Clear();
                     }
                 }

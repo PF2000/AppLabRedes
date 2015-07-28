@@ -53,8 +53,7 @@
     <div class="row">
         <h4>Overview Courses </h4>
         <hr />
-        <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
-            <ContentTemplate>
+
                 <asp:ListView ID="lstCourses" runat="server" DataKeyNames="id">
                     <ItemTemplate>
                         <div class="col-md-6 ">
@@ -85,8 +84,6 @@
                         </div>
                     </LayoutTemplate>
                 </asp:ListView>
-            </ContentTemplate>
-        </asp:UpdatePanel>
         <div class="row">
             <asp:LinkButton runat="server" PostBackUrl="~/Course/CreateCourse.aspx" ToolTip="Create Course">&nbsp;<span class="glyphicon glyphicon-plus fa-4x" /></asp:LinkButton>
         </div>

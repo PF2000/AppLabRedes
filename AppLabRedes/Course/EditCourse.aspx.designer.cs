@@ -211,6 +211,24 @@ namespace AppLabRedes.Course {
         protected global::System.Web.UI.WebControls.Button btnTime;
         
         /// <summary>
+        /// cphVerify control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder cphVerify;
+        
+        /// <summary>
+        /// lblErrorVerify control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblErrorVerify;
+        
+        /// <summary>
         /// UpdatePanel5 control.
         /// </summary>
         /// <remarks>

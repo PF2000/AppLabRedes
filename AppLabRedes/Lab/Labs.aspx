@@ -9,9 +9,13 @@
     <div class="row">
         
         <hr />
-        <p class="text-danger">
-            <asp:Literal runat="server" ID="txtOutput" />
-        </p>
+        <asp:PlaceHolder runat="server" ID="cphErrorMessage" Visible="false">
+            <div class="form-group">
+                <asp:Label runat="server" CssClass="text-danger col-lg-12 control-label" ID="txtOutput"></asp:Label>
+            </div>
+            <br />
+            <hr />
+        </asp:PlaceHolder>
 
         <asp:Repeater ID="rptNewUser" runat="server" DataSourceID="SqlDSLabs" Visible="true">
             <ItemTemplate>

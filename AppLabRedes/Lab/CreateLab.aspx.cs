@@ -45,7 +45,8 @@ namespace AppLabRedes.Lab
                     addType_Lab();
                     //redirects
                     System.Threading.Thread.Sleep(3000);
-                    Response.Redirect("~/Lab/Labs.aspx");
+                    //PostBack
+                    Response.Redirect("~/Lab/Labs?op=createSuccess");
                 }
                 else
                 {
@@ -84,25 +85,14 @@ namespace AppLabRedes.Lab
                     command.Parameters.AddWithValue("@numPods", numPods);
                     command.Parameters.AddWithValue("@description", description);
                     command.Parameters.AddWithValue("@labIP", labIP);
-                    try
-                    {
-                        //open the connection
-                        openCon.Open();
-                        int recordsAffected = command.ExecuteNonQuery();
-                        if (recordsAffected != 0)
-                            IdLab = maxId;
-                    }
-                    catch (SqlException ex)
-                    {
-                        //erros message
-                        txtOutput.Text = ex.Message + "@InsertData";
 
-                    }
-                    finally
-                    {
-                        //closes the connection
-                        openCon.Close();
-                    }
+                    //open the connection
+                    openCon.Open();
+                    int recordsAffected = command.ExecuteNonQuery();
+                    if (recordsAffected != 0)
+                        IdLab = maxId;
+                    //closes the connection
+                    openCon.Close();
                     command.Parameters.Clear();
                 }
             }
@@ -128,22 +118,12 @@ namespace AppLabRedes.Lab
                             //parameters
                             command.Parameters.AddWithValue("@idType", listItem.Value);
                             command.Parameters.AddWithValue("@idLab", IdLab);
-                            try
-                            {
-                                //opens the connection
-                                openCon.Open();
-                                int recordsAffected = command.ExecuteNonQuery();
-                            }
-                            catch (SqlException ex)
-                            {
-                                //error message
-                                txtOutput.Text = ex.Message + "@InsertData";
-                            }
-                            finally
-                            {
-                                //closes the connection
-                                openCon.Close();
-                            }
+
+                            //opens the connection
+                            openCon.Open();
+                            int recordsAffected = command.ExecuteNonQuery();
+                            //closes the connection
+                            openCon.Close();
                             command.Parameters.Clear();
                         }
                     }
@@ -153,28 +133,36 @@ namespace AppLabRedes.Lab
 
         protected void btnRemoveType_Command(object sender, CommandEventArgs e)
         {
-            //gets the lab id
-            int idType = Convert.ToInt16(e.CommandArgument.ToString());
-            //removes from association with lab
-            RemoveType_Lab(idType);
-            //gets all courses with this type
-            DataTable dt = SqlCode.PullDataToDataTable("select id from tblCourse where cType = '" + idType + "'");
-            //REmoves all courses and dependencies
-
-            foreach (DataRow row in dt.Rows)
+            try
             {
+                //gets the lab id
+                int idType = Convert.ToInt16(e.CommandArgument.ToString());
+                //removes from association with lab
+                RemoveType_Lab(idType);
+                //gets all courses with this type
+                DataTable dt = SqlCode.PullDataToDataTable("select id from tblCourse where cType = '" + idType + "'");
+                //REmoves all courses and dependencies
 
-                int idCourse = Convert.ToInt16(row["id"]);
-                RemoveLogTimes(idCourse);
-                RemoveCourse(idCourse);
-                RemoveUsers(idCourse);
+                foreach (DataRow row in dt.Rows)
+                {
+
+                    int idCourse = Convert.ToInt16(row["id"]);
+                    RemoveLogTimes(idCourse);
+                    RemoveCourse(idCourse);
+                    RemoveUsers(idCourse);
+
+                }
+                //removes the type
+                RemoveType(idType);
+                //refresh
+                Response.Redirect(Request.RawUrl);
 
             }
-            //removes the type
-            RemoveType(idType);
-            //refresh
-            Response.Redirect(Request.RawUrl);
-
+            catch (Exception ex)
+            {
+                cphErrorMessage.Visible = true;
+                txtOutput.Text = ex.Message + "Error Creating Lab Type!!";
+            }
         }
         /// <summary>
         /// Removes the dependencies from database
@@ -191,22 +179,11 @@ namespace AppLabRedes.Lab
                 {
                     //parametrs
                     command.Parameters.AddWithValue("@idType", idType);
-                    try
-                    {
-                        //opens the connection
-                        openCon.Open();
-                        int recordsAffected = command.ExecuteNonQuery();
-                    }
-                    catch (SqlException ex)
-                    {
-                        //error message
-                        txtOutput.Text = ex.Message + "@DeleteData";
-                    }
-                    finally
-                    {
-                        //closes the connection
-                        openCon.Close();
-                    }
+
+                    //opens the connection
+                    openCon.Open();
+                    int recordsAffected = command.ExecuteNonQuery();
+                    openCon.Close();
                     command.Parameters.Clear();
                 }
             }
@@ -226,22 +203,12 @@ namespace AppLabRedes.Lab
                 {
                     //comand parameters
                     command.Parameters.AddWithValue("@idCourse", idCourse);
-                    try
-                    {
-                        //open connection
-                        openCon.Open();
-                        int recordsAffected = command.ExecuteNonQuery();
-                    }
-                    catch (SqlException ex)
-                    {
-                        //error message
-                        txtOutput.Text = ex.Message + "@DeleteData";
-                    }
-                    finally
-                    {
-                        //closes que connection
-                        openCon.Close();
-                    }
+
+                    //open connection
+                    openCon.Open();
+                    int recordsAffected = command.ExecuteNonQuery();
+                    //closes que connection
+                    openCon.Close();
                     command.Parameters.Clear();
                 }
             }
@@ -261,22 +228,12 @@ namespace AppLabRedes.Lab
                 {
                     //comand parameters
                     command.Parameters.AddWithValue("@idCourse", idCourse);
-                    try
-                    {
-                        //open connection
-                        openCon.Open();
-                        int recordsAffected = command.ExecuteNonQuery();
-                    }
-                    catch (SqlException ex)
-                    {
-                        //error message
-                        txtOutput.Text = ex.Message + "@DeleteData";
-                    }
-                    finally
-                    {
-                        //closes conection
-                        openCon.Close();
-                    }
+
+                    //open connection
+                    openCon.Open();
+                    int recordsAffected = command.ExecuteNonQuery();
+                    //closes conection
+                    openCon.Close();
                     command.Parameters.Clear();
                 }
             }
@@ -298,22 +255,12 @@ namespace AppLabRedes.Lab
                 {
                     //command parameters
                     command.Parameters.AddWithValue("@idCourse", idCourse);
-                    try
-                    {
-                        //open connection
-                        openCon.Open();
-                        int recordsAffected = command.ExecuteNonQuery();
-                    }
-                    catch (SqlException ex)
-                    {
-                        //error message
-                        txtOutput.Text = ex.Message + "@DeleteData";
-                    }
-                    finally
-                    {
-                        //closes connection
-                        openCon.Close();
-                    }
+
+                    //open connection
+                    openCon.Open();
+                    int recordsAffected = command.ExecuteNonQuery();
+                    //closes connection
+                    openCon.Close();
                     command.Parameters.Clear();
                 }
             }
@@ -334,22 +281,12 @@ namespace AppLabRedes.Lab
                 {
                     //comand parameters
                     command.Parameters.AddWithValue("@idType", idType);
-                    try
-                    {
-                        //open connection
-                        openCon.Open();
-                        int recordsAffected = command.ExecuteNonQuery();
-                    }
-                    catch (SqlException ex)
-                    {
-                        //error message
-                        txtOutput.Text = ex.Message + "@DeleteData";
-                    }
-                    finally
-                    {
-                        //closes que connection
-                        openCon.Close();
-                    }
+
+                    //open connection
+                    openCon.Open();
+                    int recordsAffected = command.ExecuteNonQuery();
+                    //closes que connection
+                    openCon.Close();
                     command.Parameters.Clear();
                 }
             }

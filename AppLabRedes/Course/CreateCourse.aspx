@@ -67,6 +67,7 @@
                 <!-- Times -->
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
+
                         <asp:PlaceHolder runat="server" ID="cphTime" Visible="false">
                             <div class="form-group">
                                 <label class="col-md-2 control-label">Login Time</label>
@@ -128,6 +129,15 @@
                                         </div>
                                     </asp:PlaceHolder>
                                     <asp:Button ID="btnTime" runat="server" Text="Verify" OnClick="btnTime_Click" CssClass="btn btn-default" />
+                                    <!-- for the erros in verify -->
+                                    <asp:PlaceHolder runat="server" ID="cphVerify" Visible="false">
+                                        <div class="form-group">
+                                            <asp:Label runat="server" CssClass="text-danger col-lg-12 control-label" ID="lblErrorVerify"></asp:Label>
+                                        </div>
+                                        <br />
+                                        <hr />
+                                    </asp:PlaceHolder>
+
                                 </div>
                             </div>
                         </asp:PlaceHolder>

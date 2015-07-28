@@ -22,6 +22,22 @@ namespace AppLabRedes.Course
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            //gets course id from query string
+            String op = Convert.ToString(Request.QueryString["op"]);
+            //displays message if course edited or created
+            if (op == "createSuccess")
+            {
+                System.Web.UI.ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Message", "alert('Course created successfully');", true);
+            }
+            else if (op == "editSuccess")
+            {
+                System.Web.UI.ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Message", "alert('Course edited successfully');", true);
+            }
+            else if (op == "deleteSuccess")
+            {
+                System.Web.UI.ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Message", "alert('Course deleted successfully');", true);
+            }
+
             if (!IsPostBack)
             {
                 if (ddlLabs.Items.Count == 0)
@@ -71,28 +87,36 @@ namespace AppLabRedes.Course
         /// <param name="e"></param>
         protected void btnRemoveCourse_Command(object sender, CommandEventArgs e)
         {
-            //gets the id from button parameters
-            int idCourse = Convert.ToInt16(e.CommandArgument.ToString());
-
-            StringBuilder sb = new StringBuilder();
-
-            ActiveDirectory ad = new ActiveDirectory();
-            DataTable dt = SqlCode.PullDataToDataTable("select usr from tblUsers where course = '" + idCourse + "'");
-
-            foreach (DataRow row in dt.Rows) // Loop over the items.
+            try
             {
-                ad.DeleteUser(sb, row["usr"].ToString());
+                //gets the id from button parameters
+                int idCourse = Convert.ToInt16(e.CommandArgument.ToString());
+
+                StringBuilder sb = new StringBuilder();
+
+                ActiveDirectory ad = new ActiveDirectory();
+                DataTable dt = SqlCode.PullDataToDataTable("select usr from tblUsers where course = '" + idCourse + "'");
+
+                foreach (DataRow row in dt.Rows) // Loop over the items.
+                {
+                    ad.DeleteUser(sb, row["usr"].ToString());
+                }
+
+                //adds the labTypes to database
+                RemoveUsers(idCourse);
+                //adds the labTypes to database
+                RemoveLogTimes(idCourse);
+                //remove lab
+                RemoveCourse(idCourse);
+                //PostBack
+                Response.Redirect("~/Course/Courses?op=deleteSuccess");
             }
-
-            //adds the labTypes to database
-            RemoveUsers(idCourse);
-            //adds the labTypes to database
-            RemoveLogTimes(idCourse);
-            //remove lab
-            RemoveCourse(idCourse);
-            //PostBack
-            Response.Redirect(Request.RawUrl);
-
+            catch (Exception ex)
+            {
+                //error message
+                cphErrorMessage.Visible = true;
+                txtOutput.Text = "Error deleting user!! " + ex.Message;
+            }
         }
         /// <summary>
         /// Remove the course
@@ -109,22 +133,11 @@ namespace AppLabRedes.Course
                 {
                     //comand parameters
                     command.Parameters.AddWithValue("@idCourse", idCourse);
-                    try
-                    {
-                        //open connection
-                        openCon.Open();
-                        int recordsAffected = command.ExecuteNonQuery();
-                    }
-                    catch (SqlException ex)
-                    {
-                        //error message
-                        txtOutput.Text = ex.Message + "@DeleteData";
-                    }
-                    finally
-                    {
-                        //closes que connection
-                        openCon.Close();
-                    }
+                    //open connection
+                    openCon.Open();
+                    int recordsAffected = command.ExecuteNonQuery();
+                    //closes que connection
+                    openCon.Close();
                     command.Parameters.Clear();
                 }
             }
@@ -144,22 +157,11 @@ namespace AppLabRedes.Course
                 {
                     //comand parameters
                     command.Parameters.AddWithValue("@idCourse", idCourse);
-                    try
-                    {
-                        //open connection
-                        openCon.Open();
-                        int recordsAffected = command.ExecuteNonQuery();
-                    }
-                    catch (SqlException ex)
-                    {
-                        //error message
-                        txtOutput.Text = ex.Message + "@DeleteData";
-                    }
-                    finally
-                    {
-                        //closes conection
-                        openCon.Close();
-                    }
+                    //open connection
+                    openCon.Open();
+                    int recordsAffected = command.ExecuteNonQuery();
+                    //closes conection
+                    openCon.Close();
                     command.Parameters.Clear();
                 }
             }
@@ -181,26 +183,14 @@ namespace AppLabRedes.Course
                 {
                     //command parameters
                     command.Parameters.AddWithValue("@idCourse", idCourse);
-                    try
-                    {
-                        //open connection
-                        openCon.Open();
-                        int recordsAffected = command.ExecuteNonQuery();
-                    }
-                    catch (SqlException ex)
-                    {
-                        //error message
-                        txtOutput.Text = ex.Message + "@DeleteData";
-                    }
-                    finally
-                    {
-                        //closes connection
-                        openCon.Close();
-                    }
+                    //open connection
+                    openCon.Open();
+                    int recordsAffected = command.ExecuteNonQuery();
+                    //closes connection
+                    openCon.Close();
                     command.Parameters.Clear();
                 }
             }
-
         }
         /// <summary>
         /// Search button click
@@ -209,54 +199,65 @@ namespace AppLabRedes.Course
         /// <param name="e"></param>
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            cphErrorMessage.Visible = false;
-            //gets the lab id
-            int idLab = Convert.ToInt16(ddlLabs.SelectedValue);
-            //if all fields are selected
-            if (idLab >= 0 && txtBegin.Text != "" && txtEnd.Text != "")
+            try
             {
-                //converts the dates selected
-                DateTime dBegin = Convert.ToDateTime(txtBegin.Text);
-                DateTime dEnd = Convert.ToDateTime(txtEnd.Text);
-                if (dBegin < dEnd)
+                cphErrorMessage.Visible = false;
+                //gets the lab id
+                int idLab = Convert.ToInt16(ddlLabs.SelectedValue);
+                //if all fields are selected
+                if (idLab >= 0 && txtBegin.Text != "" && txtEnd.Text != "")
                 {
-                    //
-                    dEnd = dEnd.AddHours(23);
-                    dEnd = dEnd.AddMinutes(59);
-
-                    //pulls data for courses in the selected dates
-                    DataTable dt = SqlCode.PullDataToDataTable("select DISTINCT c.id as id,c.description,c.numUsers,c.cName, ty.type  as typee  from tblcourse c ,tblLOginTimes lt, tblLabType ty where ty.id=c.cType and lt.course=c.id and c.Lab = '" + ddlLabs.SelectedValue + "' and (lt.tBegin >= '" + dBegin.ToString("yyyy-MM-dd HH:mm") + "' and lt.tBegin <= '" + dEnd.ToString("yyyy-MM-dd HH:mm") + "' ) or (lt.tEnd <=  '" + dBegin.ToString("yyyy-MM-dd HH:mm") + "' and  lt.tEnd >= '" + dEnd.ToString("yyyy-MM-dd HH:mm") + "' );");
-                    //if exists
-                    if (dt.Rows.Count != 0)
+                    //converts the dates selected
+                    DateTime dBegin = Convert.ToDateTime(txtBegin.Text);
+                    DateTime dEnd = Convert.ToDateTime(txtEnd.Text);
+                    if (dBegin < dEnd)
                     {
-                        //binds the data table
-                        lstCourses.DataSource = dt;
-                        lstCourses.DataBind();
+                        //
+                        dEnd = dEnd.AddHours(23);
+                        dEnd = dEnd.AddMinutes(59);
+
+                        //pulls data for courses in the selected dates
+                        DataTable dt = SqlCode.PullDataToDataTable("select DISTINCT c.id as id,c.description,c.numUsers,c.cName, ty.type  as typee  from tblcourse c ,tblLOginTimes lt, tblLabType ty where ty.id=c.cType and lt.course=c.id and c.Lab = '" + ddlLabs.SelectedValue + "' and (lt.tBegin >= '" + dBegin.ToString("yyyy-MM-dd HH:mm") + "' and lt.tBegin <= '" + dEnd.ToString("yyyy-MM-dd HH:mm") + "' ) or (lt.tEnd <=  '" + dBegin.ToString("yyyy-MM-dd HH:mm") + "' and  lt.tEnd >= '" + dEnd.ToString("yyyy-MM-dd HH:mm") + "' );");
+                        //if exists
+                        if (dt.Rows.Count != 0)
+                        {
+                            //binds the data table
+                            lstCourses.DataSource = dt;
+                            lstCourses.DataBind();
+                        }
+                        else
+                        {
+                            //if no courses exists creates and binds an empty datatable
+                            DataTable dtFinall = new DataTable();
+                            lstCourses.DataSource = dtFinall;
+                            lstCourses.DataBind();
+                        }
                     }
                     else
                     {
-                        //if no courses exists creates and binds an empty datatable
-                        DataTable dtFinall = new DataTable();
-                        lstCourses.DataSource = dtFinall;
-                        lstCourses.DataBind();
+                        //error for search
+                        cphErrorMessage.Visible = true;
+                        txtOutput.Text = "Error!! Begin data is bigger than End date!!";
                     }
                 }
                 else
                 {
                     //error for search
                     cphErrorMessage.Visible = true;
-                    txtOutput.Text = "Error!! Begin data is bigger than End date!!";
+                    txtOutput.Text = "Error!! Select a valid lab or check the dates!!";
                 }
             }
-            else
+            catch (Exception ex)
             {
-                //error for search
                 cphErrorMessage.Visible = true;
-                txtOutput.Text = "Error!! Select a valid lab or check the dates!!";
+                txtOutput.Text = "Error!!!" + ex.Message;
             }
-            UpdatePanel1.Update();
         }
-
+        /// <summary>
+        /// Method that generates the PDF
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnGenPdf_Command(object sender, CommandEventArgs e)
         {
             //gets the id from button parameters
