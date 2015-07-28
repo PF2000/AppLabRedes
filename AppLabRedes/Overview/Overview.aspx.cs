@@ -23,7 +23,7 @@ namespace AppLabRedes.Overview
 
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-GB");
             Thread.CurrentThread.CurrentCulture =
-                                 CultureInfo.CreateSpecificCulture("en-GB");  
+                                 CultureInfo.CreateSpecificCulture("en-GB");
 
             //creates the list
             listDateTime = new List<DateTime>();
@@ -36,7 +36,7 @@ namespace AppLabRedes.Overview
                 lblActiveUsers.Text = SqlCode.SelectForINT("select Count(distinct c.id) from tblCourse c, tblLOginTimes lt where c.Id=lt.course and lt.active=1") + "";
                 lblScheduleUsers.Text = SqlCode.SelectForINT("select Count(distinct c.id) from tblCourse c, tblLOginTimes lt where c.Id=lt.course and lt.active=0") + "";
 
-               // int idActiveCourse = SqlCode.SelectForINT("select distinct c.id from tblCourse c, tblLOginTimes lt where c.Id=lt.course and lt.active=1");
+                // int idActiveCourse = SqlCode.SelectForINT("select distinct c.id from tblCourse c, tblLOginTimes lt where c.Id=lt.course and lt.active=1");
             }
             catch (Exception ex)
             {
@@ -57,11 +57,14 @@ namespace AppLabRedes.Overview
             //gets the row number 
             int ro = dt.Rows.Count;
             IEnumerable<int> strr;
+            IEnumerable<int> state;
+            IEnumerable<String> courses;
+            List<String> lst = new List<string>();
+            List<int> lstId = new List<int>();
+            List<int> lstState = new List<int>();
             try
             {
-                IEnumerable<String> courses;
-                List<String> lst = new List<string>();
-                List<int> lstId = new List<int>();
+
                 try
                 {
                     //gets all the users active in the day
@@ -71,8 +74,14 @@ namespace AppLabRedes.Overview
                     strr = (from DataRow dr in dt.Rows
                             where ((DateTime)dr["tbegin"]).Date == e.Day.Date || ((DateTime)dr["tEnd"]).Date == e.Day.Date
                             select (int)dr["id"]);
+
+                    state = (from DataRow dr in dt.Rows
+                             where ((DateTime)dr["tbegin"]).Date == e.Day.Date || ((DateTime)dr["tEnd"]).Date == e.Day.Date
+                             select (int)dr["active"]);
+
                     lstId = strr.ToList();
                     lst = courses.ToList();
+                    lstState = state.ToList();
                 }
                 catch (Exception ex)
                 { }
@@ -81,11 +90,22 @@ namespace AppLabRedes.Overview
                 //if there are courses
                 if (lst.Count != 0)
                 {
-                    e.Cell.HorizontalAlign = HorizontalAlign.Left;
-                    e.Cell.BackColor = Color.FromArgb(92, 184, 92);
-
                     for (int i = 0; i < lst.Count; i++)
                     {
+                        e.Cell.HorizontalAlign = HorizontalAlign.Left;
+                        int st = lstState.ElementAt(i);
+                        if (st == 0)
+                        {
+                            e.Cell.BackColor = Color.FromArgb(217, 83, 79);
+                        }
+                        else if (st == 1)
+                        {
+                            e.Cell.BackColor = Color.FromArgb(240, 173, 78);
+                        }
+                        else if (st == 2)
+                        {
+                            e.Cell.BackColor = Color.FromArgb(238, 238, 238);
+                        }
                         //adds a line break
                         e.Cell.Controls.Add(lineBreak);
                         //sets the name
