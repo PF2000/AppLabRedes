@@ -41,7 +41,7 @@
                     </div>
                     <div class="col-xs-">
                         <div class="form-group">
-                            <asp:Button ID="btnSearch" runat="server" CssClass="btn btn-default" Text="Search" OnClick="btnSearch_Click"  />
+                            <asp:Button ID="btnSearch" runat="server" CssClass="btn btn-default" Text="Search" OnClick="btnSearch_Click" />
                         </div>
                     </div>
                 </div>
@@ -53,40 +53,44 @@
     <div class="row">
         <h4>Overview Courses </h4>
         <hr />
-        <asp:ListView ID="lstCourses" runat="server" DataKeyNames="id">
-            <ItemTemplate>
-                <div class="col-md-6 ">
-                    <div class="panel panel-default text-center">
-                        <div class="panel-heading">
-                            <a href='<%# "CourseDetails.aspx?idCourse="+Eval ("id") %>'>
-                                <h4><%#Eval("cName")%></h4>
-                            </a>
-                        </div>
+        <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+            <ContentTemplate>
+                <asp:ListView ID="lstCourses" runat="server" DataKeyNames="id">
+                    <ItemTemplate>
+                        <div class="col-md-6 ">
+                            <div class="panel panel-default text-center">
+                                <div class="panel-heading">
+                                    <a href='<%# "CourseDetails.aspx?idCourse="+Eval ("id") %>'>
+                                        <h4><%#Eval("cName")%></h4>
+                                    </a>
+                                </div>
 
-                        <div class="panel-body">
-                            <p>Course type - <strong> <%#Eval("typee")%> </strong></p>
-                            <hr />
-                            <h5>Number of Pods - <strong><%#Eval("numUsers")%></strong></h5>
-                            <a href='<%# "EditCourse.aspx?idCourse="+Eval ("id") %>' class="btn btn-primary">Edit</a>
-                            <asp:LinkButton ID="btnRemoveCourse" runat="server" CssClass="btn btn-primary" OnCommand="btnRemoveCourse_Command" CommandArgument='<%# Eval ("id") %>' OnClientClick="return confirm('Are you sure you want to remove this course ?')">Remove</asp:LinkButton>                       
-                            <asp:LinkButton ID="btnGenPdf" runat="server" CssClass="btn btn-primary" OnCommand="btnGenPdf_Command" CommandArgument='<%# Eval ("id") %>' >PDF</asp:LinkButton>               
+                                <div class="panel-body">
+                                    <p>Course type - <strong><%#Eval("typee")%> </strong></p>
+                                    <hr />
+                                    <h5>Number of Pods - <strong><%#Eval("numUsers")%></strong></h5>
+                                    <a href='<%# "EditCourse.aspx?idCourse="+Eval ("id") %>' class="btn btn-primary">Edit</a>
+                                    <asp:LinkButton ID="btnRemoveCourse" runat="server" CssClass="btn btn-primary" OnCommand="btnRemoveCourse_Command" CommandArgument='<%# Eval ("id") %>' OnClientClick="return confirm('Are you sure you want to remove this course ?')">Remove</asp:LinkButton>
+                                    <asp:LinkButton ID="btnGenPdf" runat="server" CssClass="btn btn-primary" OnCommand="btnGenPdf_Command" CommandArgument='<%# Eval ("id") %>'>PDF</asp:LinkButton>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </ItemTemplate>
-            <EmptyDataTemplate>
-                <h4>No courses in the time span selected</h4>
-            </EmptyDataTemplate>
-            <LayoutTemplate>
-                <div runat="server" id="itemPlaceholderContainer" style=""><span runat="server" id="itemPlaceholder" /></div>
-                <div style="">
-                </div>
-            </LayoutTemplate>
-        </asp:ListView>
+                    </ItemTemplate>
+                    <EmptyDataTemplate>
+                        <h4>No courses in the time span selected</h4>
+                    </EmptyDataTemplate>
+                    <LayoutTemplate>
+                        <div runat="server" id="itemPlaceholderContainer" style=""><span runat="server" id="itemPlaceholder" /></div>
+                        <div style="">
+                        </div>
+                    </LayoutTemplate>
+                </asp:ListView>
+            </ContentTemplate>
+        </asp:UpdatePanel>
         <div class="row">
-        <asp:LinkButton runat="server" PostBackUrl="~/Course/CreateCourse.aspx" ToolTip="Create Course">&nbsp;<span class="glyphicon glyphicon-plus fa-4x" /></asp:LinkButton>
-    </div>
+            <asp:LinkButton runat="server" PostBackUrl="~/Course/CreateCourse.aspx" ToolTip="Create Course">&nbsp;<span class="glyphicon glyphicon-plus fa-4x" /></asp:LinkButton>
         </div>
+    </div>
 
     <%--http://mugifly.github.io/jquery-simple-datetimepicker/--%>
     <script type="text/javascript" src="../MyFolder/Scripts/bootstrap-datepicker.min.js"></script>
@@ -96,7 +100,7 @@
         $(function () {
             $("body").on("mousemove", function () {
                 $("body").find(".date").datepicker({
-                   // daysOfWeekDisabled: "0",
+                    // daysOfWeekDisabled: "0",
                     format: "dd/mm/yyyy",
                     //daysOfWeekDisabled: "0",
                     autoclose: true,

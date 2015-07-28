@@ -22,45 +22,47 @@ namespace AppLabRedes.Course
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (ddlLabs.Items.Count == 0)
+            if (!IsPostBack)
             {
-                //get allLabs
-                DataTable dtLabs = SqlCode.PullDataToDataTable("select * from tblLabs");
-                //default Item
-                System.Web.UI.WebControls.ListItem lst1 = new System.Web.UI.WebControls.ListItem(" ", "-1");
-                ddlLabs.Items.Add(lst1);
-                //db Items
-                foreach (DataRow row in dtLabs.Rows) // Loop over the items.
+                if (ddlLabs.Items.Count == 0)
                 {
-                    String tp = Convert.ToString(row["name"]);
-                    String tId = Convert.ToString(row["id"]);
-                    System.Web.UI.WebControls.ListItem lst = new System.Web.UI.WebControls.ListItem(tp, tId);
-                    ddlLabs.Items.Add(lst);
+                    //get allLabs
+                    DataTable dtLabs = SqlCode.PullDataToDataTable("select * from tblLabs");
+                    //default Item
+                    System.Web.UI.WebControls.ListItem lst1 = new System.Web.UI.WebControls.ListItem(" ", "-1");
+                    ddlLabs.Items.Add(lst1);
+                    //db Items
+                    foreach (DataRow row in dtLabs.Rows) // Loop over the items.
+                    {
+                        String tp = Convert.ToString(row["name"]);
+                        String tId = Convert.ToString(row["id"]);
+                        System.Web.UI.WebControls.ListItem lst = new System.Web.UI.WebControls.ListItem(tp, tId);
+                        ddlLabs.Items.Add(lst);
+                    }
                 }
-            }
-            //gets course string from query string
-            String view = Convert.ToString(Request.QueryString["View"]);
-            DataTable dt;
-            if (view != null)
-            {
-                //decides what view to show
-                if (view.Equals("active"))
+                //gets course string from query string
+                String view = Convert.ToString(Request.QueryString["View"]);
+                DataTable dt;
+                if (view != null)
                 {
-                    dt = SqlCode.PullDataToDataTable("select DISTINCT c.id,c.description,c.numUsers,c.cName, ty.type  as typee  from tblcourse c ,tblLOginTimes lt, tblLabType ty where ty.id=c.cType and lt.course=c.id and (select MONTH(lt.tBegin)) = (SELECT MONTH(GETDATE())) and lt.active = 1;");
+                    //decides what view to show
+                    if (view.Equals("active"))
+                    {
+                        dt = SqlCode.PullDataToDataTable("select DISTINCT c.id,c.description,c.numUsers,c.cName, ty.type  as typee  from tblcourse c ,tblLOginTimes lt, tblLabType ty where ty.id=c.cType and lt.course=c.id and (select MONTH(lt.tBegin)) = (SELECT MONTH(GETDATE())) and lt.active = 1;");
+                    }
+                    else
+                    {
+                        dt = SqlCode.PullDataToDataTable("select DISTINCT c.id,c.description,c.numUsers,c.cName, ty.type as typee from tblcourse c ,tblLOginTimes lt, tblLabType ty where ty.id=c.cType and lt.course=c.id and (select MONTH(lt.tBegin)) = (SELECT MONTH(GETDATE())) and lt.active = 0;");
+                    }
                 }
-                else 
+                else
                 {
-                    dt = SqlCode.PullDataToDataTable("select DISTINCT c.id,c.description,c.numUsers,c.cName, ty.type as typee from tblcourse c ,tblLOginTimes lt, tblLabType ty where ty.id=c.cType and lt.course=c.id and (select MONTH(lt.tBegin)) = (SELECT MONTH(GETDATE())) and lt.active = 0;");
+                    dt = SqlCode.PullDataToDataTable("select DISTINCT c.id,c.description,c.numUsers,c.cName, ty.type  as typee  from tblcourse c ,tblLOginTimes lt, tblLabType ty where ty.id=c.cType and lt.course=c.id and (select MONTH(lt.tBegin)) = (SELECT MONTH(GETDATE())) and lt.active != 2;");
                 }
-            }
-            else
-            {
-                dt = SqlCode.PullDataToDataTable("select DISTINCT c.id,c.description,c.numUsers,c.cName, ty.type  as typee  from tblcourse c ,tblLOginTimes lt, tblLabType ty where ty.id=c.cType and lt.course=c.id and (select MONTH(lt.tBegin)) = (SELECT MONTH(GETDATE())) and lt.active != 2;");
-            }
 
-            lstCourses.DataSource = dt;
-            lstCourses.DataBind();
-
+                lstCourses.DataSource = dt;
+                lstCourses.DataBind();
+            }
         }
         /// <summary>
         /// Button for course removal
@@ -223,7 +225,7 @@ namespace AppLabRedes.Course
                     dEnd = dEnd.AddMinutes(59);
 
                     //pulls data for courses in the selected dates
-                    DataTable dt = SqlCode.PullDataToDataTable("select DISTINCT c.id,c.description,c.numUsers,c.cName, ty.type  as typee  from tblcourse c ,tblLOginTimes lt, tblLabType ty where ty.id=c.cType and lt.course=c.id and c.Lab = '" + ddlLabs.SelectedValue + "' and (lt.tBegin >= '" + dBegin.ToString("yyyy-MM-dd HH:mm") + "' and lt.tBegin <= '" + dEnd.ToString("yyyy-MM-dd HH:mm") + "' ) or (lt.tEnd <=  '" + dBegin.ToString("yyyy-MM-dd HH:mm") + "' and  lt.tEnd >= '" + dEnd.ToString("yyyy-MM-dd HH:mm") + "' );");
+                    DataTable dt = SqlCode.PullDataToDataTable("select DISTINCT c.id as id,c.description,c.numUsers,c.cName, ty.type  as typee  from tblcourse c ,tblLOginTimes lt, tblLabType ty where ty.id=c.cType and lt.course=c.id and c.Lab = '" + ddlLabs.SelectedValue + "' and (lt.tBegin >= '" + dBegin.ToString("yyyy-MM-dd HH:mm") + "' and lt.tBegin <= '" + dEnd.ToString("yyyy-MM-dd HH:mm") + "' ) or (lt.tEnd <=  '" + dBegin.ToString("yyyy-MM-dd HH:mm") + "' and  lt.tEnd >= '" + dEnd.ToString("yyyy-MM-dd HH:mm") + "' );");
                     //if exists
                     if (dt.Rows.Count != 0)
                     {
@@ -252,6 +254,7 @@ namespace AppLabRedes.Course
                 cphErrorMessage.Visible = true;
                 txtOutput.Text = "Error!! Select a valid lab or check the dates!!";
             }
+            UpdatePanel1.Update();
         }
 
         protected void btnGenPdf_Command(object sender, CommandEventArgs e)
