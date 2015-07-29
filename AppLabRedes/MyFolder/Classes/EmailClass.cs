@@ -91,7 +91,20 @@ namespace AppLabRedes.MyScripts
                 Credentials = new NetworkCredential(EmailMail, EmailPass),
                 EnableSsl = true
             };
-            client.Send(EmailMail, recipient, "Credentials", EmailMessage + "/n Ip Lab: " + labIP + "/n " + Message);
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Credentials");
+            sb.AppendLine("");
+            sb.AppendLine("Ip Lab: " + labIP);
+            sb.AppendLine("");
+            sb.AppendLine("Users: ");
+            sb.AppendLine(Message);
+            sb.AppendLine("");
+            sb.AppendLine("");
+            sb.AppendLine(EmailMessage);
+
+
+            client.Send(EmailMail, recipient, "Credentials", sb.ToString());
 
 
 

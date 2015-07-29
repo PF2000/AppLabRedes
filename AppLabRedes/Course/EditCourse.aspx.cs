@@ -1,4 +1,5 @@
-﻿using AppLabRedes.Scripts.MyScripts;
+﻿using ActiveDirectoryHelper;
+using AppLabRedes.Scripts.MyScripts;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -6,6 +7,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -876,6 +878,9 @@ namespace AppLabRedes.Course
         /// <param name="idCourse"></param>
         private void RemoveUsers(int idCourse)
         {
+            // to remove users from AD.
+            DataTable dt = SqlCode.PullDataToDataTable("select u.usr from  tblCourse as c , tblUsers as u where u.course=c.id and c.id = '"+idCourse+"' ");
+            RemoveUsers(dt);
 
             String strConn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection openCon = new SqlConnection(strConn))
@@ -1017,6 +1022,31 @@ namespace AppLabRedes.Course
                 return true;
             }
         }
+        bool errorRemove = false;
+        public void RemoveUsers(DataTable dt)
+        {
+            StringBuilder sb = new StringBuilder();
+            try
+            {
+                //TextBox txt = new TextBox();
+                ActiveDirectory ad = new ActiveDirectory();
 
+                foreach (DataRow row in dt.Rows) // Loop over the items.
+                {
+                    String userName = row["usr"].ToString();
+                    ad.DeleteUser(sb, userName);
+                }
+                //SqlCode.UpdateDB(dt, 2);
+                SqlCode.copyDataEventLogger("Successfully deleted users", "success", sb.ToString());
+
+                errorRemove = false;
+            }
+            catch (Exception ex)
+            {
+                if (errorRemove == false)
+                    SqlCode.copyDataEventLogger("Error removing users", "danger", ex.Message);
+                errorRemove = true;
+            }
+        }
     }
 }
