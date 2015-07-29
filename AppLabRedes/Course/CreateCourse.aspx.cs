@@ -264,15 +264,21 @@ namespace AppLabRedes.CourseDetails
                 if (bDate != "" && eDate != "" && bTime != "" && eTime != "")
                 {
                     //Converts to dateTime
-                    DateTime tBegin = ConvertTime(Convert.ToDateTime(bDate), ddlTimeZone.SelectedValue);
-                    DateTime tEnd = ConvertTime(Convert.ToDateTime(eDate), ddlTimeZone.SelectedValue);
+                    DateTime tBegin = Convert.ToDateTime(bDate);
+                    DateTime tEnd = Convert.ToDateTime(eDate);
                     //Converts to dateTime
-                    DateTime timeBegin = ConvertTime(Convert.ToDateTime(bTime), ddlTimeZone.SelectedValue);
-                    DateTime timeEnd = ConvertTime(Convert.ToDateTime(eTime), ddlTimeZone.SelectedValue);
+                    DateTime timeBegin = Convert.ToDateTime(bTime);
+                    DateTime timeEnd = Convert.ToDateTime(eTime);
 
                     //if end time is bigger than begin time
                     if (tBegin <= tEnd && timeBegin < timeEnd)
                     {
+
+                        DateTime dtt = new DateTime(tBegin.Year, tBegin.Month, tBegin.Day, timeBegin.Hour, timeBegin.Minute, timeBegin.Second);
+                        DateTime dtEnd = new DateTime(tEnd.Year, tEnd.Month, tEnd.Day, timeEnd.Hour, timeEnd.Minute, timeEnd.Second);
+
+                        dtt = ConvertTime(dtt, ddlTimeZone.SelectedValue);
+                        dtEnd = ConvertTime(dtEnd, ddlTimeZone.SelectedValue);
 
                         //counts the number of days
                         TimeSpan ts = tEnd - tBegin;
@@ -283,16 +289,13 @@ namespace AppLabRedes.CourseDetails
                         int numHours = timeHours.Hours;
                         int numMin = timeHours.Minutes;
 
-                        DateTime dtt = new DateTime(tBegin.Year, tBegin.Month, tBegin.Day, timeBegin.Hour, timeBegin.Minute, timeBegin.Second);
-                        DateTime dtEnd = new DateTime(tEnd.Year, tEnd.Month, tEnd.Day, timeEnd.Hour, timeEnd.Minute, timeEnd.Second);
-
                         //gets lab id
                         int idLab = Convert.ToInt16(ddlLabs.SelectedValue);
 
                         //initializes the number of pods left by date with the max number of users
                         numPodsLeftByDate = numPodsFromLab;
 
-                        while (dtt.AddHours(numHours) <= dtEnd)
+                        while (dtt.AddHours(numHours).AddMinutes(numMin) <= dtEnd)
                         {
                             DateTime tB = dtt;
                             DateTime tE = dtt.AddHours(numHours).AddMinutes(numMin);
@@ -501,7 +504,8 @@ namespace AppLabRedes.CourseDetails
             {
                 String mail = ((TextBox)lstItem.FindControl("txtMail")).Text;
                 String pass = ((TextBox)lstItem.FindControl("txtPass")).Text;
-                if (!IsValidEmail(mail) && !IsPassValid(pass))
+                //if (!IsPassValid(pass) || !IsValidEmail(mail))
+                if ( !IsValidEmail(mail))
                 {
                     validMailPass = false;
                     break;
