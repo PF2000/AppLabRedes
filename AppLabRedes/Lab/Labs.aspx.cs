@@ -15,7 +15,24 @@ namespace AppLabRedes.Lab
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            //gets course id from query string
+            String op = Convert.ToString(Request.QueryString["op"]);
+            //displays message if course edited or created
+            if (op == "createSuccess")
+            {
+                System.Web.UI.ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Message", "alert('Course created successfully');", true);
+                Response.Redirect("/Lab/Labs.aspx");
+            }
+            else if (op == "editSuccess")
+            {
+                System.Web.UI.ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Message", "alert('Course edited successfully');", true);
+                Response.Redirect("/Lab/Labs.aspx");
+            }
+            else if (op == "deleteSuccess")
+            {
+                System.Web.UI.ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Message", "alert('Course deleted successfully');", true);
+                Response.Redirect("/Lab/Labs.aspx");
+            }
         }
         /// <summary>
         /// Button to remove the selected Lab

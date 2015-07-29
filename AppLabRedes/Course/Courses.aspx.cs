@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.UI;
@@ -28,15 +29,28 @@ namespace AppLabRedes.Course
             if (op == "createSuccess")
             {
                 System.Web.UI.ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Message", "alert('Course created successfully');", true);
+                Response.Redirect("/Course/Courses.aspx");
             }
             else if (op == "editSuccess")
             {
                 System.Web.UI.ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Message", "alert('Course edited successfully');", true);
+                Response.Redirect("/Course/Courses.aspx");
             }
             else if (op == "deleteSuccess")
             {
                 System.Web.UI.ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Message", "alert('Course deleted successfully');", true);
+                Response.Redirect("/Course/Courses.aspx");
             }
+
+            
+            ////removes query string ------------------------------------------
+            //PropertyInfo isreadonly = typeof(System.Collections.Specialized.NameValueCollection).GetProperty(
+            //  "IsReadOnly", BindingFlags.Instance | BindingFlags.NonPublic);
+            //// make collection editable
+            //isreadonly.SetValue(this.Request.QueryString, false, null);
+            //// remove
+            //this.Request.QueryString.Remove("op");
+            ////----------------------------------------------------------------
 
             if (!IsPostBack)
             {
