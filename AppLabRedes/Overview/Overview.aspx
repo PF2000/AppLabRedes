@@ -88,7 +88,7 @@
             <div class="col-lg-8">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <i class="fa fa-users fa-fw"></i>  Courses Calendar 
+                        <i class="fa fa-users fa-fw"></i>  Courses Calendar (UTC - Lisbon)
                            
                     </div>
                     <!-- /.panel-heading -->

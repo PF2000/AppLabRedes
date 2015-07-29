@@ -555,15 +555,22 @@ namespace AppLabRedes.Course
                 if (bDate != "" && eDate != "" && bTime != "" && eTime != "")
                 {
                     //Converts to dateTime
-                    DateTime tBegin = ConvertTime(Convert.ToDateTime(bDate), ddlTimeZone.SelectedValue);
-                    DateTime tEnd = ConvertTime(Convert.ToDateTime(eDate), ddlTimeZone.SelectedValue);
+                    DateTime tBegin = Convert.ToDateTime(bDate);
+                    DateTime tEnd = Convert.ToDateTime(eDate);
                     //Converts to dateTime
-                    DateTime timeBegin = ConvertTime(Convert.ToDateTime(bTime), ddlTimeZone.SelectedValue);
-                    DateTime timeEnd = ConvertTime(Convert.ToDateTime(eTime), ddlTimeZone.SelectedValue);
+                    DateTime timeBegin = Convert.ToDateTime(bTime);
+                    DateTime timeEnd = Convert.ToDateTime(eTime);
 
-                    //se end time is bigger than begin time
+                    //if end time is bigger than begin time
                     if (tBegin <= tEnd && timeBegin < timeEnd)
                     {
+
+                        DateTime dtt = new DateTime(tBegin.Year, tBegin.Month, tBegin.Day, timeBegin.Hour, timeBegin.Minute, timeBegin.Second);
+                        DateTime dtEnd = new DateTime(tEnd.Year, tEnd.Month, tEnd.Day, timeEnd.Hour, timeEnd.Minute, timeEnd.Second);
+
+                        dtt = ConvertTime(dtt, ddlTimeZone.SelectedValue);
+                        dtEnd = ConvertTime(dtEnd, ddlTimeZone.SelectedValue);
+
                         //counts the number of days
                         TimeSpan ts = tEnd - tBegin;
                         int numDays = ts.Days;
@@ -572,9 +579,6 @@ namespace AppLabRedes.Course
                         TimeSpan timeHours = timeEnd - timeBegin;
                         int numHours = timeHours.Hours;
                         int numMin = timeHours.Minutes;
-
-                        DateTime dtt = new DateTime(tBegin.Year, tBegin.Month, tBegin.Day, timeBegin.Hour, timeBegin.Minute, timeBegin.Second);
-                        DateTime dtEnd = new DateTime(tEnd.Year, tEnd.Month, tEnd.Day, timeEnd.Hour, timeEnd.Minute, timeEnd.Second);
 
                         //gets lab id
                         int idLab = Convert.ToInt16(ddlLabs.SelectedValue);

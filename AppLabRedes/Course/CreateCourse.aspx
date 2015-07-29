@@ -192,7 +192,7 @@
                                                                 <div class="col-xs-3">
                                                                     <div class="form-group">
                                                                         <label>Pass</label>
-                                                                        <asp:TextBox ID="txtPass" runat="server" CssClass="form-control" Text='<%# Eval("Pass") %>'></asp:TextBox>
+                                                                        <asp:TextBox ID="txtPass" runat="server" CssClass="form-control" Text='<%# Eval("Pass") %>' Enabled="false"></asp:TextBox>
                                                                     </div>
                                                                 </div>
                                                             </div>

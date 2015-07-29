@@ -36,7 +36,7 @@ namespace AppLabRedes
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             //starts the Thread
-            //StartMainThread(5000);
+            StartMainThread(5000);
             //StartPingThread(4000);
 
         }
@@ -73,7 +73,7 @@ namespace AppLabRedes
             //SqlCode.copyData("Check the Users - begin or end","info");
 
             //Gets the users to Add
-            DataTable dt = SqlCode.PullDataToDataTable("select distinct usr,pass, tl.id as id, u.email as email  , l.labIP from tblLOginTimes tl, tblUsers u, tblCourse c, tblLabs l where tl.course = u.course and c.Lab = l.Id and GETDATE() > tl.tEnd and tl.active = '0'");
+            DataTable dt = SqlCode.PullDataToDataTable("select distinct usr,pass, tl.id as id, u.email as email  , l.labIP from tblLOginTimes tl, tblUsers u, tblCourse c, tblLabs l where tl.course = u.course and c.Lab = l.Id and GETDATE() > tl.tBegin and tl.active = '0'");
             if (dt.Rows.Count != 0)
             {
                 SaveUsers(dt);
